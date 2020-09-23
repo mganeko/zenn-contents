@@ -78,6 +78,18 @@ momoが起動したら、ブラウザーで http://_RaspberryPiのIPアドレス
 
 ## Soraモードでの利用
 
+momoの映像配信をインターネット経由で見たいので、サーバー連携させます。連携には次の2種類が選べます。
+
+- Ayameモード ... [WebRTCシグナリングサービスAyame Lite](https://ayame-lite.shiguredo.jp/beta)と連携
+  - 使い方はこちら https://github.com/shiguredo/momo/blob/develop/doc/USE_AYAME.md
+- Soraモード ... 製品のSoraか、[WebRTC SFU Sora検証サービスのSora Labo](https://sora-labo.shiguredo.jp)と連携
+  - 使い方はこちら https://github.com/shiguredo/momo/blob/develop/doc/USE_SORA.md
+
+今回はSora Laboを使わせていただきました。GitHubアカウントでサインインして「シグナリングキー」を取得しておきます。
+
+
+
+
 # Raspberry piにHomebrigeをインストール
 
 
