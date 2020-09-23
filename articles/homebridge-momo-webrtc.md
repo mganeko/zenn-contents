@@ -8,10 +8,15 @@ published: false # 公開設定（falseにすると下書き）
 
 # WebRTC Native Client MomoをHomebridgeから起動する
 
+## やりたいこと
+
+
+
 ## WebRTC Native Client Momoとは
 
 WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使ったネイティブクライアントアプリです。
 
+- サイト https://momo.shiguredo.jp/
 - GitHub https://github.com/shiguredo/momo
 
 Webブラウザで利用することが多いWebRTCを、ネイティブアプリとして利用できるようにしたオープンソースソフトウェアです。
@@ -22,6 +27,25 @@ Webブラウザで利用することが多いWebRTCを、ネイティブアプ�
 
 
 ## Homebridgeとは
+
+Appleのスマートホーム向けの仕組みであるHomeKitに、対応デバイス以外をつなぐことができるソフトウェアです。npmで対応するプラグインを探すことができます。
+
+- サイト https://homebridge.io/
+- GitHub https://github.com/homebridge/homebridge
+- 対応プラグイン https://www.npmjs.com/search?q=keywords:homebridge-plugin
+
+こちらも色々なプラットフォームで動作しますが、スマートホームと言ったらRaspberry Piで動かしたくなります。
+
+## HomeKitを使うには
+
+HomeKitはAppleのサービスなので、インターネット経由でも利用できます。そのためには、家のネットワークに中心となる「ホームハブ」を設置する必要があります。2020年9月現在、「ホームハブ」として利用できるのは次の3つです。
+
+- AppleTV (第3世代以降)
+- iPad
+- HomePod
+
+AppleTVを持っている人は、それを利用するのがスムーズです。私はiPadで利用してますが、安定して利用するには常時ACアダプターにつないだ状態の方が良い感触です。
+
 
 # Raspberry piにmomoをインストール
 
