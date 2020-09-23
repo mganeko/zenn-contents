@@ -10,6 +10,16 @@ published: false # 公開設定（falseにすると下書き）
 
 ## WebRTC Native Client Momoとは
 
+WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使ったネイティブクライアントアプリです。
+
+- GitHub https://github.com/shiguredo/momo
+
+Webブラウザで利用することが多いWebRTCを、ネイティブアプリとして利用できるようにしたオープンソースソフトウェアです。
+映像、音声の送信だけでなく、受信にも対応しています。単独で使ったり、同じく時雨堂が提供しているサーバーと連携して利用することができます。
+
+複数のプラットフォームをサポートしていますが、Raspberry PiやJetsonシリーズなど、小さなコンピューターの性能を使い切ってくれるところが非常に魅力的です。
+
+
 
 ## Homebridgeとは
 
