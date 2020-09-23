@@ -10,6 +10,7 @@ published: false # 公開設定（falseにすると下書き）
 
 ## やりたいこと
 
+iPhoneに「Hey Siri, 家の様子を見せて」と呼びかけると、Safariで家の様子（ペットや、子供の様子など）見れるようにしよう、というのが今回の狙いです。
 
 
 ## WebRTC Native Client Momoとは
@@ -44,14 +45,36 @@ HomeKitはAppleのサービスなので、インターネット経由でも利�
 - iPad
 - HomePod
 
-AppleTVを持っている人は、それを利用するのがスムーズです。私はiPadで利用してますが、安定して利用するには常時ACアダプターにつないだ状態の方が良い感触です。
+AppleTVを持っている人は、それを利用するのがスムーズです。私はiPadで利用してますが、安定して利用するには常時ACアダプターにつないでおく必要があります。
 
 
 # Raspberry piにmomoをインストール
 
+今回、Raspberry Pi にセットアップしました。
+
 ## ダウンロード
 
-## テスト
+こちらの手順に従ってモジュールをダウンロード、解凍します。
+
+- https://github.com/shiguredo/momo/blob/develop/doc/SETUP_RASPBERRY_PI.md
+
+また未インストールであれば、libnspr4, libnss3といった関連するライブラリもインストールしてください。
+
+
+## テストモード
+
+USBカメラまたはRaspberry Piのカメラモジュールを接続し、テストモードで起動します。
+
+https://github.com/shiguredo/momo/blob/develop/doc/USE_TEST.md
+
+```
+./momo --no-audio-device test
+```
+
+この時、カレントディレクトリに解凍して出来たhtmlフォルダーがある必要があります。
+
+
+
 
 ## Soraモードでの利用
 
