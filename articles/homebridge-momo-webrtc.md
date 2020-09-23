@@ -21,7 +21,7 @@ WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使�
 - GitHub https://github.com/shiguredo/momo
 
 Webブラウザで利用することが多いWebRTCを、ネイティブアプリとして利用できるようにしたオープンソースソフトウェアです。
-映像、音声の送信だけでなく、受信にも対応しています。単独で使ったり、同じく時雨堂が提供しているサーバーと連携して利用することができます。
+映像、音声の送信だけでなく、受信にも対応しています。単独で使ったり、同じく時雨堂が提供しているサーバーと連携して利用できます。
 
 複数のプラットフォームをサポートしていますが、Raspberry PiやJetsonシリーズなど、小さなコンピューターの性能を使い切ってくれるところが非常に魅力的です。
 
@@ -41,7 +41,7 @@ Appleのスマートホーム向けの仕組みであるHomeKitに、対応デ�
 
 HomeKitはAppleのサービスなので、インターネット経由でも利用できます。そのためには、家のネットワークに中心となる「ホームハブ」を設置する必要があります。2020年9月現在、「ホームハブ」として利用できるのは次の3つです。
 
-- AppleTV (第3世代以降)
+- AppleTV（第3世代以降）
 - iPad
 - HomePod
 
@@ -50,30 +50,30 @@ AppleTVを持っている人は、それを利用するのがスムーズです�
 
 # Raspberry piにmomoをインストール
 
-今回、Raspberry Pi にセットアップしました。
+今回はRaspberry Piにセットアップしました。
 
 ## ダウンロード
 
-こちらの手順に従ってモジュールをダウンロード、解凍します。
+こちらの手順にしたがってモジュールをダウンロード、解凍します。
 
 - https://github.com/shiguredo/momo/blob/develop/doc/SETUP_RASPBERRY_PI.md
 
 また未インストールであれば、libnspr4, libnss3といった関連するライブラリもインストールしてください。
 
 
-## テストモード
+## テストモードでの確認
 
-USBカメラまたはRaspberry Piのカメラモジュールを接続し、テストモードで起動します。
+USBカメラまたはRaspberry Piのカメラモジュールを接続し、こちらの手順にしたがってテストモードで起動します。
 
-https://github.com/shiguredo/momo/blob/develop/doc/USE_TEST.md
+- https://github.com/shiguredo/momo/blob/develop/doc/USE_TEST.md
 
 ```
 ./momo --no-audio-device test
 ```
 
-この時、カレントディレクトリに解凍して出来たhtmlフォルダーがある必要があります。
+この時、カレントディレクトリに解凍してできたhtmlフォルダーが必要です。
 
-
+momoが起動したら、ブラウザーで http://_RaspberryPiのIPアドレス_:8080/html/test.html にアクセスします。[Connect]ボタンをクリックして、カメラの映像が表示されることを確認しましょう。
 
 
 ## Soraモードでの利用
