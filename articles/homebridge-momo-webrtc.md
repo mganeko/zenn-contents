@@ -87,6 +87,29 @@ momoの映像配信をインターネット経由で見たいので、サーバ�
 
 今回はSora Laboを使わせていただきました。GitHubアカウントでサインインして「シグナリングキー」を取得しておきます。
 
+- Sora Labo ドキュメント　https://github.com/shiguredo/sora-labo-doc
+
+検証目的では無料で利用できますが、条件があるので確認しておきましょう。
+
+- 商用目的での利用できません
+- Sora Labo は検証目的以外では利用できません
+- 法人や個人事業主での利用は申請が必須です
+
+などなど。
+Soraモードでのmomoからの映像配信は次のように行います。
+
+```
+./momo --no-audio-device  sora wss://sora-labo.shiguredo.jp/signaling githubのID@ルーム名  --auto  --audio false --video true --video-codec H264 --video-bitrate 800  --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}'
+```
+
+ブラウザでの受信は、[Sora Laboのダッシュボード](https://sora-labo.shiguredo.jp/dashboard)から、「シングルストリーム受信」のサンプルを開き、ルーム名を指定してビデオコーデック「H264」を選んで接続、映像が受信できることを確認してください。
+
+あるいは、私が用意したこちらのサンプルでも接続できます。
+
+- https://mganeko.github.io/react_ts_recvonly/?room=githubのID@ルーム名&key=取得したシグナリングキー
+
+※長時間の接続はできませんので、momoおよびブラウザは確認が終わったら終了させてください。
+
 
 
 
