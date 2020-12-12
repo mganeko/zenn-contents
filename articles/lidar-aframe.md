@@ -42,7 +42,7 @@ three.jsなど、WebGLを使ったライブラリを活用します。今回はA
 
 # 実装
 
-A-FRAMEを使うことで、表示だけなら簡単にできます。
+[A-FRAME](https://aframe.io/)を使うことで、表示だけなら簡単にできます。
 
 ![表示例](images/aframe_screen.png)
 
