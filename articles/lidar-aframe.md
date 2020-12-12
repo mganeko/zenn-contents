@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # はじめに
 
-これは非公式[Infocom Advent Calendar 2020](https://qiita.com/advent-calendar/2020/infocom)の記事です。
+これは非公式[Infocom Advent Calendar 2020](https://qiita.com/advent-calendar/2020/infocom)3日目の記事です。
 
 # やりたいこと
 
