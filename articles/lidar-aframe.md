@@ -44,7 +44,7 @@ three.jsなど、WebGLを使ったライブラリを活用します。今回はA
 
 [A-FRAME](https://aframe.io/)を使うことで、表示だけなら簡単にできます。
 
-![表示例](images/aframe_screen.png)
+![表示例](https://storage.googleapis.com/zenn-user-upload/gagu8v40y0n4dc8f9okzecfuurw8)
 
 
 ## コード例: GLTF/GLB形式
