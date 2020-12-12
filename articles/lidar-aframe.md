@@ -39,12 +39,74 @@ three.jsなど、WebGLを使ったライブラリを活用します。今回はA
 
 - A-FRAME ... https://aframe.io/
 
+
 # 実装
+
+A-FRAMEを使うことで、表示だけなら簡単にできます。
+
+![表示例](images/aframe_screen.png)
+
 
 ## コード例: GLTF/GLB形式
 
+GLTF/GLBの場合は、<a-gltf-model>を使うのが簡単です。
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>gltf in A-Frame</title>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+</head>
+
+<body>
+  <a-scene>
+    <a-assets>
+      <!-- asset for model file -->
+      <a-asset-item id="tree" src="path/some.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- Using the asset management system. -->
+    <a-gltf-model src="#tree" position="0 0.5 -2" rotation="0 -45 0" scale="0.2 0.2 0.2"></a-gltf-model>
+
+    <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+</body>
+
+</html>
+```
+
 ## コード例: OBJ形式
 
+OBJファイルの場合は、関連するMTLやテクスチャファイル(JPG等)と一緒にWebサーバーに配置します。<a-entity obj-model>を使って表示します。
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Obj in A-Frame</title>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+</head>
+
+<body>
+  <a-scene>
+    <a-assets>
+      <!-- asset for model file -->
+      <a-asset-item id="tree-obj" src="path/some.obj"></a-asset-item>
+      <a-asset-item id="tree-mtl" src="path/some.mtl"></a-asset-item>
+    </a-assets>
+
+    <!-- Using the asset management system. -->
+    <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="-0.5 2 -0.5" scale="0.5 0.5 0.5"></a-entity>
+
+    <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+</body>
+
+</html>
+```
 
 ## 苦労したところ
 
@@ -63,6 +125,7 @@ three.jsなど、WebGLを使ったライブラリを活用します。今回はA
 ※各ファイル形式のフォーマットを理解すれば根本的な対策できそうですが、そこまではできず。
 
 ### カメラと3D物体の位置関係
+
 
 - 表示するまで、どのような位置に物体が表示されるか予想できない
 - 対策 ... ブラウザーでインスペクターを起動してトライ＆エラー
