@@ -151,7 +151,7 @@ $ chmod +x sora.sh
 
 
 
-# Raspberry piにHomebrigeをインストール
+# Raspberry PiにHomebrigeをインストール
 
 こちらの記事を参考に、Raspberry Pi 4にHomebridgeをインストールしました。
 
@@ -191,9 +191,9 @@ Homebridgeはいろいろのなプラグインを利用できるのが魅力で�
 $ npm install homebridge-cmdswitch2
 ```
 
-## homebridgeの指定
+## Homebridgeの指定
 
-homebridgeをインストールすると、 ~/.homebridge ディレクトリができているはずです。そこに設定ファイルを作成します。
+Homebridgeをインストールすると、 ~/.homebridge ディレクトリができているはずです。そこに設定ファイルを作成します。
 
 ```
 $ cd ~/.homebridge/
@@ -238,7 +238,7 @@ config.jsonの内容は次の様になります。 platforms の部分か今回�
 
 ## 起動の確認
 
-homebridgeをインストールしたディレクトリに移動し、次の様に起動します。
+Homebridgeをインストールしたディレクトリに移動し、次の様に起動します。
 
 ```
 $ npx homebridge
