@@ -1,14 +1,14 @@
 ---
-title: "Hey, Siriでmomoを起動、自宅の様子を見る" # 記事のタイトル
+title: "「Hey, Siri」でmomoを起動し、外から自宅の様子を見れるようにした話" # 記事のタイトル
 emoji: "🍑" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: [webrtc homebridge] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # やりたいこと
 
-iPhoneに「Hey Siri, 家の様子を見せて」と呼びかけると、Safariで家の様子（ペットや、子供の様子など）見れるようにしよう、というのが今回の狙いです。そのために次のアプリやサービスを利用します。
+iPhoneに「Hey Siri, 家の様子を見せて」のように呼びかけると、Safariで家の様子（ペットや、子供の様子など）見れるようにしよう、というのが今回の狙いです。そのために次のアプリやサービスを利用します。
 
 - Raspberry Pi （Zero, 3, 4 など）
 - WebRTC Native Cleint Momo
@@ -23,7 +23,7 @@ iPhoneに「Hey Siri, 家の様子を見せて」と呼びかけると、Safari�
 
 ## WebRTC Native Client Momo とは
 
-WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使ったネイティブクライアントアプリです。
+WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使えるネイティブクライアントアプリです。
 
 - サイト https://momo.shiguredo.jp/
 - GitHub https://github.com/shiguredo/momo
@@ -120,12 +120,6 @@ Soraモードでのmomoからの映像配信は次のように行います。
  --auto --audio false --video true --video-codec-type H264 --video-bit-rate 800  \
  --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}'
 ```
-
-
-./momo --no-audio-device sora wss://sora-labo.shiguredo.jp/signaling mganeko@raspberry4 \
- --auto --audio false --video true --video-codec-type H264 --video-bit-rate 800  \
- --role sendonly --metadata '{"signaling_key": "OgCfN4JzcLoQKUe1EqKUco3k9YqKe2VJKEmfVNXxXK0PcdRo"}'
-
 
 
 ブラウザでの受信は、[Sora Laboのダッシュボード](https://sora-labo.shiguredo.jp/dashboard)から、「シングルストリーム受信」のサンプルを開き、ルーム名を指定してビデオコーデック「H264」を選んで接続、映像が受信できることを確認してください。
