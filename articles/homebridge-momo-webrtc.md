@@ -129,7 +129,7 @@ Soraモードでのmomoからの映像配信は次のように行います。
 
 ※長時間の接続はできませんので、momoおよびブラウザは確認が終わったら終了させてください。
 
-## 起動スクリプトの用意
+## momoの起動スクリプトの用意
 
 後で利用するため、次の様にシェルスクリプト(sora.sh)を用意しておきます。今回は momo のバイナリを /home/pi/momo/ にインストールした場合を例にしています。自分の環境に合わせて、momoのバイナリをフルパスで指定してください。
 
@@ -147,7 +147,7 @@ nohup /home/pi/momo/momo --no-audio-device sora wss://sora-labo.shiguredo.jp/sig
 
 ## Homebridge本体
 
-私の環境では、Node.jsやavahiはインストール済だったので、Homebridgeのインストールから実施します。また今回はグローバルではなく、ユーザー(ここでは pi とします)のホームディレクトリ下にインストールしました。
+私の環境では、Node.jsやavahiはインストール済だったので、Homebridgeのインストールから実施します。また今回はグローバルではなく、ユーザー(ここではpiユーザー)のホームディレクトリ下にインストールしました。
 
 ```
 $ cd
@@ -231,3 +231,23 @@ homebridgeをインストールしたディレクトリに移動し、次の様�
 ```
 $ npx homebridge
 ```
+
+iPhoneやMacの「ホーム」アプリに、momoのが表示されればOKです。タップしてオン/オフが切り替わることを確認してください。
+
+![Macのホームアプリ](https://storage.googleapis.com/zenn-user-upload/jtxliw11awhdyxz9necqn304qwft)
+
+同時に、次のことも確認します。
+
+- Raspberry Piで、momoのプロセスが起動/終了すること
+- Sora Laboを通して、映像が配信されてブラウザで見れること
+
+## Homebridgeの自動起動
+
+
+# Siriとの連携
+
+## ショートカットアプリへの登録
+
+## Siriで起動
+
+
