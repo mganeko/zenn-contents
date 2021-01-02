@@ -117,8 +117,16 @@ momoの映像配信をインターネット経由で見たいので、サーバ�
 Soraモードでのmomoからの映像配信は次のように行います。
 
 ```
-./momo --no-audio-device  sora wss://sora-labo.shiguredo.jp/signaling githubのID@ルーム名  --auto  --audio false --video true --video-codec-type H264 --video-bit-rate 800  --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}'
+./momo --no-audio-device sora wss://sora-labo.shiguredo.jp/signaling githubのID@ルーム名 \
+ --auto --audio false --video true --video-codec-type H264 --video-bit-rate 800  \
+ --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}'
 ```
+
+
+./momo --no-audio-device sora wss://sora-labo.shiguredo.jp/signaling mganeko@raspberry4 \
+ --auto --audio false --video true --video-codec-type H264 --video-bit-rate 800  \
+ --role sendonly --metadata '{"signaling_key": "OgCfN4JzcLoQKUe1EqKUco3k9YqKe2VJKEmfVNXxXK0PcdRo"}'
+
 
 
 ブラウザでの受信は、[Sora Laboのダッシュボード](https://sora-labo.shiguredo.jp/dashboard)から、「シングルストリーム受信」のサンプルを開き、ルーム名を指定してビデオコーデック「H264」を選んで接続、映像が受信できることを確認してください。
@@ -134,7 +142,18 @@ Soraモードでのmomoからの映像配信は次のように行います。
 後で利用するため、次の様にシェルスクリプト(sora.sh)を用意しておきます。今回は momo のバイナリを /home/pi/momo/ にインストールした場合を例にしています。自分の環境に合わせて、momoのバイナリをフルパスで指定してください。
 
 ```:sora.sh
-nohup /home/pi/momo/momo --no-audio-device sora wss://sora-labo.shiguredo.jp/signaling githubのID@ルーム名 --auto --audio false --video true --video-codec-type H264 --video-bit-rate 800 --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}' &
+#!/bin/sh
+
+nohup /home/pi/momo/momo --no-audio-device \
+ sora wss://sora-labo.shiguredo.jp/signaling githubのID@ルーム名 --auto \
+ --audio false --video true --video-codec-type H264 --video-bit-rate 800 \
+ --role sendonly --metadata '{"signaling_key": "取得したシグナリングキー"}' &
+```
+
+またシェルスクリプトには次の様に実行権限をつけておきます。
+
+```
+$ chemod +x sora.sh
 ```
 
 
@@ -240,14 +259,108 @@ iPhoneやMacの「ホーム」アプリに、momoのが表示されればOKで�
 
 - Raspberry Piで、momoのプロセスが起動/終了すること
 - Sora Laboを通して、映像が配信されてブラウザで見れること
+  - Sora Laboのダッシュボード https://sora-labo.shiguredo.jp/dashboard
+  - 私のサンプル https://mganeko.github.io/react_ts_recvonly/
 
 ## Homebridgeの自動起動
 
+ここまで準備ができたら、こちらの記事を参考にsystemdを使ってHomebridgeを自動起動させます。
+
+- [ラズパイ(Raspberry Pi)で家電をコントロールする:HomeBridgeの使い方 | ホームアプリの使い方](https://www.apollomaniacs.com/ipod/howto_homekit_raspberrypi.htm#%E3%83%A9%E3%82%BA%E3%83%91%E3%82%A4%E8%B5%B7%E5%8B%95%E6%99%82%E3%81%ABHomeBridge%E3%82%82%E8%87%AA%E5%8B%95%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B)
+
+### 関連ファイルの用意
+
+下記はpiユーザーのホームディレクトリに設定ファイルを置いた場合の例です。実際の環境に合わせて設定してください。
+
+```:/etc/default/homebdige
+# Defaults / Configuration options for homebridge
+# The following settings tells homebridge where to find the config.json file and where to persist the data (i.e. pairing and others)
+
+HOMEBRIDGE_OPTS=-U /home/pi/.homebridge
+```
+
+
+```:/etc/systemd/system/homebridge.service
+[Unit]
+Description=Node.js HomeKit Server
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+#User=homebridge
+User=root
+EnvironmentFile=/etc/default/homebridge
+
+# Adapt this to your specific setup (could be /usr/bin/homebridge)
+# See comments below for more information
+#ExecStart=/usr/local/bin/homebridge $HOMEBRIDGE_OPTS
+ExecStart=/home/pi/homebridge/node_modules/homebridge/bin/homebridge $HOMEBRIDGE_OPTS
+
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+今回はhomebridgeをグローバルにインストールぜすに、piユーザーのホームの下にインストールしているため、それに合わせた設定にしています。実際の環境に合わせて適宜記述してください。
+またユーザーは手を抜いてrootで起動していますが、適宜実行用のユーザーを作って、その権限で起動してください。
+
+### サービスの登録
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable homebridge
+$ sudo systemctl start homebridge
+```
+
+これでhomebridgeが自動起動するようになりました。リブートして確かめてください。
 
 # Siriとの連携
 
+最後は、iPhoneのSiriを使ってmomoの起動ができるようにします。
+
 ## ショートカットアプリへの登録
 
+iPhoneに「ショートカット」アプリがあるので、それを利用します。使い方は公式サイトを参考にしてください。
+
+- [ショートカット ユーザガイド](https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios)
+
+参考までに、私が用意したショートカットの内容はこちらです。
+
+- 発音しやすい名前を指定 ...「モモを見る]
+- ホームアプリで、"マイホーム"をコントロール
+  - momoを「オン」にする
+- Safariで、サンプルページを開く
+  - https://mganeko.github.io/react_ts_recvonly/?room=githubのID@ルーム名&key=取得したシグナリングキー
+
+![ショートカットの設定例](https://storage.googleapis.com/zenn-user-upload/n47w9roetktq29guuahokz5uzhl0)
+
+同様に、たとえば「モモを消す」ショートカットも作成し、momoをオフにします。
+
+## ショートカットの実行
+
+ショートカットアプリを開いて「モモを見る」をタップすると、次の2つが実行されます。
+
+- ホームアプリを使って、momoをオンに
+- Safariで配信を見るためのページをオープン
+
+あとはSafariで[connect]ボタンをタップすれば、どこからでもmomoの映像を見ることができます。
+
+
 ## Siriで起動
+
+作成したショートカットは次の様にSiriを使って呼び出すことが可能です。
+
+- 「Hey Siri, モモを見る]
+- 「Hey Siri, モモを消す」
+
+# まとめ
+
+momo, Sora labo, HomeKit + Homebridge, Siri + ショートカットアプリ、を組みあわせることでiPhoneから自分の家の様子を見ることができるようになりました。残念ながら外出する機会自体が減っている今日この頃ですが、何かの参考になれば嬉しいです。
+
+
 
 
