@@ -18,7 +18,7 @@ iPhoneに「Hey Siri, 家の様子を見せて」のように呼びかけると�
 
 全体図はこちらです。
 
-![全体図](https://storage.googleapis.com/zenn-user-upload/ekisa16kttnbwo8pw9zt3ndmsqzp)
+![全体図](https://storage.googleapis.com/zenn-user-upload/v4xpxi7evh3gx9dq5qtn66wox6vn)
 
 
 ## WebRTC Native Client Momo とは
