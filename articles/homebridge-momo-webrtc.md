@@ -6,19 +6,7 @@ topics: [webrtc homebridge] # タグ。["markdown", "rust", "aws"]のように�
 published: false # 公開設定（falseにすると下書き）
 ---
 
-# WebRTC Native Client MomoをHomebridgeから起動する
-
-## TODO
-
-- DONE: momo 最新版
-- DONE: momo 起動コマンドの確認
-- SKIP: サンプルをアップデート、sora 最新SDKに
-- homebridgeの設定方法を確認
-- iOS ショートカット
-- Siri で使う
-
-
-## やりたいこと
+# やりたいこと
 
 iPhoneに「Hey Siri, 家の様子を見せて」と呼びかけると、Safariで家の様子（ペットや、子供の様子など）見れるようにしよう、というのが今回の狙いです。そのために次のアプリやサービスを利用します。
 
@@ -28,7 +16,12 @@ iPhoneに「Hey Siri, 家の様子を見せて」と呼びかけると、Safari�
 - HomeKit
 - Homebrige
 
-## WebRTC Native Client Momoとは
+全体図はこちらです。
+
+![全体図](https://storage.googleapis.com/zenn-user-upload/ekisa16kttnbwo8pw9zt3ndmsqzp)
+
+
+## WebRTC Native Client Momo とは
 
 WebRTC Native Client Momoとは、時雨堂が公開している、WebRTCを使ったネイティブクライアントアプリです。
 
@@ -40,6 +33,12 @@ Webブラウザで利用することが多いWebRTCを、ネイティブアプ�
 
 複数のプラットフォームをサポートしていますが、Raspberry PiやJetsonシリーズなど、小さなコンピューターの性能を使い切ってくれるところが非常に魅力的です。
 
+## Sora Labo とは
+
+同じく時雨堂が開発しているWebRTC SFU Soraを試すことができるサービスです。検証用途なら無料で利用できます。
+
+- Sora labo ... https://sora-labo.shiguredo.jp
+- Sora Labo ドキュメント ... https://github.com/shiguredo/sora-labo-doc
 
 
 ## HomeKitを使うには
@@ -153,7 +152,7 @@ nohup /home/pi/momo/momo --no-audio-device \
 またシェルスクリプトには次の様に実行権限をつけておきます。
 
 ```
-$ chemod +x sora.sh
+$ chmod +x sora.sh
 ```
 
 
