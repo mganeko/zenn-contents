@@ -244,7 +244,7 @@ Homebridgeをインストールしたディレクトリに移動し、次の様�
 $ npx homebridge
 ```
 
-iPhoneやMacの「ホーム」アプリに、momoのが表示されればOKです。タップしてオン/オフが切り替わることを確認してください。
+iPhoneやMacの「ホーム」アプリに、momoが表示されればOKです。タップしてオン/オフが切り替わることを確認してください。
 
 ![Macのホームアプリ](https://storage.googleapis.com/zenn-user-upload/jtxliw11awhdyxz9necqn304qwft)
 
@@ -352,7 +352,7 @@ iPhoneに「ショートカット」アプリがあるので、それを利用�
 
 # まとめ
 
-momo, Sora labo, HomeKit + Homebridge, Siri + ショートカットアプリ、を組みあわせることでiPhoneから自分の家の様子を見ることができるようになりました。残念ながら外出する機会自体が減っている今日この頃ですが、何かの参考になれば嬉しいです。
+momo, Sora Labo, HomeKit + Homebridge, Siri + ショートカットアプリ、を組みあわせることでiPhoneから自分の家の様子を見ることができるようになりました。残念ながら外出する機会自体が減っている今日この頃ですが、何かの参考になれば嬉しいです。
 
 
 
