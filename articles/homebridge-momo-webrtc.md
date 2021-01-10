@@ -35,7 +35,7 @@ Webブラウザで利用することが多いWebRTCを、ネイティブアプ�
 
 ## Sora Labo とは
 
-同じく時雨堂が開発しているWebRTC SFU Soraを試すことができるサービスです。検証用途なら無料で利用できます。
+同じく時雨堂が開発しているWebRTC SFU Soraを試すことができるサービスです。検証用途なら無料で利用できます。（法人の場合は検証用途でも申請が必要です）
 
 - Sora labo ... https://sora-labo.shiguredo.jp
 - Sora Labo ドキュメント ... https://github.com/shiguredo/sora-labo-doc
