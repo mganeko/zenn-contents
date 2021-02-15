@@ -1,5 +1,5 @@
 ---
-title: "requestAnimationFrameの泣き所をVideoTrackReaderで解決する" # 記事のタイトル
+title: "requestAnimationFrameの泣き所をVideoTrackReader/MediaStreamTrackProcessorで解決する" # 記事のタイトル
 emoji: "🎬" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["JavaScript", "WebCodec", "WebRTC" ] # タグ。["markdown", "rust", "aws"]のように指定する
