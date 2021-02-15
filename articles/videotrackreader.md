@@ -80,6 +80,8 @@ https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
 ## コード例
 
 ```js
+  let videoTrackReader = null;
+
   // --- VideoTrackReader を準備する ---
   function startReader(stream) {
     const track = stream.getVideoTracks()[0];
@@ -114,7 +116,50 @@ VideoTrackReaderの検証を行っていうる最中に、Chromeコンソール�
 
 - https://w3c.github.io/mediacapture-insertable-streams/
 
+使い方はVideoTrackReaderとは異なりますが、こちらを使っ他場合も画面が完全に隠れた状態で映像が停止することを回避できます。
 
+## コード例
+
+```js
+  let processor = null;
+  let writable = null;
+
+  // --- MediaStreamTrackProcessor を準備する ---
+  function startProcessor(stream) {
+    const track = stream.getVideoTracks()[0];
+    processor = new MediaStreamTrackProcessor(track);
+    writable = new WritableStream({
+      start() {
+        console.log('Writable start');
+      },
+      async write(videoFrame) {
+        const imageBitmap = await videoFrame.createImageBitmap();
+
+        // --- この中でCanvasへの描画を行う ---
+        drawCanvasBitmap(imageBitmap);
+
+        imageBitmap.close();
+        videoFrame.destroy();
+      },
+      stop() {
+        console.log('Writable stop');
+      }
+    })
+
+    processor.readable
+      .pipeTo(writable);
+  }
+
+  // --- MediaStreamTrackProcessor を停止する ---
+  // ※安全な停止方法は不明
+  function stopProcessor() {
+    //writable.close(); // streamがlockされているため、stop()できない
+    writable = null;
+
+    //processor.readable.cancel(); // cancel()できない
+    processor = null;
+  }
+```
 
 
 # サンプル
