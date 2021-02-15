@@ -65,6 +65,16 @@ VideoTrackのフレームごとに呼び出されるため、上記のような�
 
 ## VideoTrackReaderを使うには
 
+2021年2月現在、VideoTrackReaderはデフォルトでは有効になっていません。
+Chrome 88 以降で、次のどちらかの設定が必要です。
+
+- chrome://flags/#enable-experimental-web-platform-features 有効（Enabled）にする
+- chromeを起動する際のコマンドライン引数で、--enable-blink-features=WebCodecs を指定して起動する（※要確認）
+- オリジントライアルに登録する
+https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
+
+
+
 
 
 # サンプル
@@ -76,6 +86,10 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
 ## setInterval()版
 
 ## VideoTrackReader版
+
+
+[Deprecation] VideoTrackReader is deprecated; use MediaStreamTrackProcessor instead.
+
 
 # おわりに
 
