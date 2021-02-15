@@ -100,3 +100,5 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
 
 [Video processing with WebCodecs](https://web.dev/webcodecs/)
 
+
+https://w3c.github.io/mediacapture-insertable-streams/
