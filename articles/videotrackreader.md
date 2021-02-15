@@ -59,20 +59,60 @@ published: false # 公開設定（falseにすると下書き）
 
 # VideoTrackReaderを使った解決
 
-MeidaStream -> MediaStreamTrack (Video) --> VideoTrackReader --> VideoFrame --> createImageBitmap() --> ctx.drawImage(image, x, y)
+VideoTrackReaderを使えば、次の処理 (C) が可能です。
 
-VideoTrackのフレームごとに呼び出されるため、上記のようなタイマー系の仕組みを必要がない。そのためウィンドウが隠れていても呼び出され、映像がコマ送り/停止することはない。
+- MediaStreamからビデオトラックを取り出す
+- ビデオトラックを指定し、VideoTrackReaderを用意する
+- ビデオのフレームが到着するたびにイベントが発生し、コールバックが呼ばれる「
+- コールバックでビットマップ画像を取得し、Canvasに描画する
+
+ビデオのフレームごとに呼び出されるため、(A)(B)のようなタイマー系の仕組みは必要ありません。そのためウィンドウが完全に隠れていても呼び出され、映像がコマ送り/停止することはありません。
 
 ## VideoTrackReaderを使うには
 
-2021年2月現在、VideoTrackReaderはデフォルトでは有効になっていません。
-Chrome 88 以降で、次のどちらかの設定が必要です。
+2021年2月現在、VideoTrackReaderはデフォルトでは有効になっていません。Chrome 88以降で、次のどれかの設定が必要です。
 
 - chrome://flags/#enable-experimental-web-platform-features 有効（Enabled）にする
-- chromeを起動する際のコマンドライン引数で、--enable-blink-features=WebCodecs を指定して起動する（※要確認）
-- オリジントライアルに登録する
+- chromeを起動する際のコマンドライン引数で、--enable-blink-features=WebCodecs を指定して起動する（※未確認）
+- オリジントライアルに登録する ... 
 https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
 
+## コード例
+
+```js
+  // --- VideoTrackReader を準備する ---
+  function startReader(stream) {
+    const track = stream.getVideoTracks()[0];
+    videoTrackReader = new VideoTrackReader(track);
+    videoTrackReader.start(async (videoFrame) => {
+      const imageBitmap = await videoFrame.createImageBitmap();
+
+      // --- この中でCanvasへの描画を行う ---
+      drawCanvasBitmap(imageBitmap);
+      
+      imageBitmap.close();
+      videoFrame.destroy();
+    });
+  }
+
+  // --- VideoTrackReader を停止する ---
+  function stopReader() {
+    videoTrackReader.stop();
+    videoTrackReader = null;
+  }
+```
+
+# MediaStreamTrackProcessorを使う方法
+
+VideoTrackReaderの検証を行っていうる最中に、Chromeコンソールに次のメッセージが表示されることに気がつきました。
+
+```
+[Deprecation] VideoTrackReader is deprecated; use MediaStreamTrackProcessor instead.
+```
+
+なんと、VideoTrackReaderはもはや非推奨で、新たに「MediaStreamTrackProcessor」を使えとうことです。これはInsertableStreamの一環として提案されているものでした。
+
+- https://w3c.github.io/mediacapture-insertable-streams/
 
 
 
@@ -81,14 +121,27 @@ https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
 
 navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで現在時刻を合成、MediaRecorderで録画するサンプルを用意しまました。
 
-## requestAnimationFrame()版
+- GitHub [mganko/videotrackreader_demo](https://github.com/mganeko/videotrackreader_demo)
+- GitHub Pages ... https://mganeko.github.io/videotrackreader_demo/
 
-## setInterval()版
+## 使い方
 
-## VideoTrackReader版
+- フラグを有効にしたChromeで https://mganeko.github.io/videotrackreader_demo/ を開く
+- 4種類の方法の内、1つをクリックする
+- [Start] ボタンをクリック
+  - カメラ映像が取得される
+  - Canvasにカメラ映像と時刻を合成したアニメーションが表示される
+  - 録画が開始
+- 録画中に、Chromeのウィンドウを完全に隠したり、最小化してみる
+- Chromeのウィンドウを元に戻す
+- [Stop] ボタンをクリックkする
+  - カメラ映像が停止
+  - アニメーション停止
+  - 録画停止
+  - 録画した映像が再生される
 
+requestAnimationFrame() / setInterval() を使った場合には、録画中にウィンドウが完全に隠れた場合、録画が止まったりコマ送りになっていることが確認できるはずです。
 
-[Deprecation] VideoTrackReader is deprecated; use MediaStreamTrackProcessor instead.
 
 
 # おわりに
@@ -96,9 +149,7 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
 
 # 参考
 
-[WebCodecs と WebTransport でビデオチャット](https://blog.jxck.io/entries/2020-09-01/webcodecs-webtransport-chat.html)
+- [WebCodecs と WebTransport でビデオチャット](https://blog.jxck.io/entries/2020-09-01/webcodecs-webtransport-chat.html)
+- [Video processing with WebCodecs](https://web.dev/webcodecs/)
+- https://w3c.github.io/mediacapture-insertable-streams/
 
-[Video processing with WebCodecs](https://web.dev/webcodecs/)
-
-
-https://w3c.github.io/mediacapture-insertable-streams/
