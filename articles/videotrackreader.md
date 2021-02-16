@@ -77,6 +77,10 @@ VideoTrackReaderを使えば、次の処理 (C) が可能です。
 - オリジントライアルに登録する ... 
 https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
 
+フラグ設定
+
+![フラグ設定](https://storage.googleapis.com/zenn-user-upload/2wa8rlwb3gwgws74prqx35dxwqn8)
+
 ## コード例
 
 ```js
@@ -112,7 +116,7 @@ VideoTrackReaderの検証を行っていうる最中に、Chromeコンソール�
 [Deprecation] VideoTrackReader is deprecated; use MediaStreamTrackProcessor instead.
 ```
 
-なんと、VideoTrackReaderはもはや非推奨で、新たに「MediaStreamTrackProcessor」を使えとうことです。これはInsertableStreamの一環として提案されているものでした。
+なんとVideoTrackReaderはもはや非推奨で、新たに「MediaStreamTrackProcessor」を使えとうことです。これはInsertableStreamの一環として提案されているものでした。
 
 - https://w3c.github.io/mediacapture-insertable-streams/
 
