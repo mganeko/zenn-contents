@@ -185,16 +185,21 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
   - 録画停止
   - 録画した映像が再生される
 
-requestAnimationFrame() / setInterval() を使った場合には、録画中にウィンドウが完全に隠れた場合、録画が止まったりコマ送りになっていることが確認できるはずです。
-
+requestAnimationFrame() / setInterval() を使った場合には、録画中にウィンドウが完全に隠れた場合、映像が止まったりコマ送りになっていることが確認できるはずです。
+また VideoTrackReader / MediaStreamTrackProcessor を使った場合には、ウィンドウが完全に隠れても、映像がスムーズに動き続けることが確認できます。
 
 
 # おわりに
+
+Canvasを利用した映像加工では従来の方法では映像が止まってしまう課題がありました。新たに策定が進んでいる VideoTrackReader(ただし非推奨)やMediaStreamTrackProcessorを使うと、その課題が克服できます。フラグが必要になりますが、すでに現在のChromeでは機能を試すことができます。
+
+多くのブラウザでサポートされるようになると、ブラウザを使った映像可能の利用シーンが広がります。楽しみですね。
+
 
 
 # 参考
 
 - [WebCodecs と WebTransport でビデオチャット](https://blog.jxck.io/entries/2020-09-01/webcodecs-webtransport-chat.html)
 - [Video processing with WebCodecs](https://web.dev/webcodecs/)
-- https://w3c.github.io/mediacapture-insertable-streams/
+- [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
 
