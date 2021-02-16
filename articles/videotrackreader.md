@@ -157,10 +157,10 @@ VideoTrackReaderの検証を行っていうる最中に、Chromeコンソール�
   // --- MediaStreamTrackProcessor を停止する ---
   // ※安全な停止方法は不明
   function stopProcessor() {
-    //writable.close(); // streamがlockされているため、stop()できない
+    //writable.close(); // streamがlockされているため、close()できない
     writable = null;
 
-    //processor.readable.cancel(); // cancel()できない
+    //processor.readable.cancel(); // streamがlockされているため、cancel()できない
     processor = null;
   }
 ```
