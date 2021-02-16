@@ -175,6 +175,7 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
 
 ## 使い方
 
+- Chrome 88以降で「Experimental Web Platform Features」フラグを有効にする
 - フラグを有効にしたChromeで https://mganeko.github.io/videotrackreader_demo/ を開く
 - 4種類の方法の内、1つをクリックする
 - [Start] ボタンをクリック
