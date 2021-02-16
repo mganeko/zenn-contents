@@ -122,6 +122,12 @@ VideoTrackReaderの検証を行っていうる最中に、Chromeコンソール�
 
 使い方はVideoTrackReaderとは異なりますが、こちらを使った場合 (D) でも画面が完全に隠れた状態で映像が停止することを回避できます。
 
+## MediaStreamTrackProcessorを使うには
+
+2021年2月現在、MediaStreamTrackProcessorはデフォルトでは有効になっていません。Chrome 88以降で、次のフラグを有効にする必要があります。オリジントライアルは行われていません。
+
+- chrome://flags/#enable-experimental-web-platform-features 有効（Enabled）にする
+
 ## コード例
 
 ```js
