@@ -51,7 +51,7 @@ published: false # 公開設定（falseにすると下書き）
 - MediaStreamをMediaRecorderで録画する
 - MediaStreamを、WebRTC (RTCPeerConnection) を使って他のブラウザ/デバイスに対して送信する
 
-どちらの場合には映像加工で使っているウィンドウは必ずしも表示しておく必要はありませんが、残念ながら完全に隠れてしまうとうまく動きません。
+どちらの場合には映像加工で使っているウィンドウは本来は表示しておく必要はありませんが、完全に隠れてしまうと映像が停止/コマ落ちしてしまうので一部でも表示しておく必要があります。
 
 利用例としてはgetDisplayMedia()を使って画面キャプチャーを取得し、その映像を加工するケースが考えられます。他のアプリケーションを全画面表示にすると、ブラウザが隠れてしまうのでCanvasで合成した映像は停止してしまいます。
 
@@ -185,8 +185,8 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
   - 録画停止
   - 録画した映像が再生される
 
-requestAnimationFrame() / setInterval() を使った場合には、録画中にウィンドウが完全に隠れた場合、映像が止まったりコマ送りになっていることが確認できるはずです。
-また VideoTrackReader / MediaStreamTrackProcessor を使った場合には、ウィンドウが完全に隠れても、映像がスムーズに動き続けることが確認できます。
+(A)requestAnimationFrame() / (B)setInterval() を使った場合には、録画中にウィンドウが完全に隠れた場合、映像が止まったりコマ送りになっていることが確認できるはずです。
+また (C)VideoTrackReader / (D)MediaStreamTrackProcessor を使った場合には、ウィンドウが完全に隠れても、映像がスムーズに動き続けることが確認できます。
 
 
 # おわりに
