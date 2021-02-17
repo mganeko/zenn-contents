@@ -110,7 +110,7 @@ https://developer.chrome.com/origintrials/#/view_trial/-7811493553674125311
 
 # MediaStreamTrackProcessorを使う方法
 
-VideoTrackReaderの検証を行っていうる最中に、Chromeコンソールに次のメッセージが表示されることに気がつきました。
+VideoTrackReaderの検証を行っている最中に、Chromeコンソールに次のメッセージが表示されることに気がつきました。
 
 ```
 [Deprecation] VideoTrackReader is deprecated; use MediaStreamTrackProcessor instead.
@@ -124,9 +124,11 @@ VideoTrackReaderの検証を行っていうる最中に、Chromeコンソール�
 
 ## MediaStreamTrackProcessorを使うには
 
-2021年2月現在、MediaStreamTrackProcessorはデフォルトでは有効になっていません。Chrome 88以降で、次のフラグを有効にする必要があります。オリジントライアルは行われていません。
+2021年2月現在、MediaStreamTrackProcessorはデフォルトでは有効になっていません。Chrome 88以降で、次のフラグを有効にする必要があります。
 
 - chrome://flags/#enable-experimental-web-platform-features 有効（Enabled）にする
+
+また、オリジントライアルは行われていません。
 
 ## コード例
 
@@ -179,10 +181,22 @@ navigator.mediaDevices.getUserMedia()でカメラ映像を取得し、Canvasで�
 - GitHub [mganko/videotrackreader_demo](https://github.com/mganeko/videotrackreader_demo)
 - GitHub Pages ... https://mganeko.github.io/videotrackreader_demo/
 
+## 前提環境
+
+https://mganeko.github.io/ でオリジントライアルに登録しました (～2021.05)。そのため Chrome 88以降を使えばフラグ設定不要で (A)～(C) を試すことできます。
+
+- (A)requestAnimationFrame()
+- (B)setInterval() 
+- (C)VideoTrackReader
+
+最後の1種類だけは、「Experimental Web Platform Features」フラグを有効にする必要があります。
+
+- (D)MediaStreamTrackProcessor
+
+
 ## 使い方
 
-- Chrome 88以降で「Experimental Web Platform Features」フラグを有効にする
-- フラグを有効にしたChromeで https://mganeko.github.io/videotrackreader_demo/ を開く
+- Chrome 88以降で https://mganeko.github.io/videotrackreader_demo/ を開く
 - 4種類の方法の内、1つをクリックする
 - [Start] ボタンをクリック
   - カメラ映像が取得される
