@@ -20,8 +20,50 @@ MediaStreamTrackProcessorを使うと、VideoのMediaStreamTrackからはViderFr
 
 # MediaStreamTrackProcessorでAudioを扱う方法
 
+## MediaStreamTrackProcessorの生成
 
-## WebAudioで再生する
+MediaStreamからAudioのMediaStreamTrackを取得し、それを引数にMediaStreamTrackProcessorのインスタンスを生成します。
+
+```js
+  const [audioTrack] = mediastream.getAudioTracks();
+  const processor = new MediaStreamTrackProcessor(audioTrack);
+```
+
+## WebAudioで再生する場合
+
+```js
+  // --- WebAudio AudioContextの準備 ---
+  const audioCtx = new AudioContext();
+  const audioSampleRate = audioCtx.sampleRate;
+  let audioTime = audioCtx.currentTime;
+
+  // --- WritableStreamを準備 ---
+  const writable = new WritableStream({
+    // --- AudioFrameが渡された時のイベント ---
+    async write(audioFrame) {
+      // --- WebAudioを使って再生する ---
+      const source = audioCtx.createBufferSource();
+      source.buffer = audioFrame.buffer;
+      source.connect(audioCtx.destination);
+      source.start(audioTime);
+      audioTime = audioTime + audioFrame.buffer.duration;
+    },
+
+    // --- その他のイベント ---
+    start() {
+      console.log('Audio Writable start');
+    },
+    close() {
+      console.log('Audio Writable close');
+    },
+    abort(reason) {
+      console.log('Audio Writable abort:', reason);
+    },
+  });
+
+  // --- にMediaStreamTrackProcessor のストリームを接続する ---
+  processor.readable.pipeTo(writable);
+```
 
 ## MediaStreamTrackGeneratorで書き出す
 
