@@ -37,7 +37,6 @@ AudioFrameからはAudioBufferを取得し、それをWebAudioのAudioBufferSour
 ```js
   // --- WebAudio AudioContextの準備 ---
   const audioCtx = new AudioContext();
-  const audioSampleRate = audioCtx.sampleRate;
   let audioTime = audioCtx.currentTime;
 
   // --- WritableStreamを準備 ---
