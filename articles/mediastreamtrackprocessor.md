@@ -31,6 +31,9 @@ MediaStreamからAudioのMediaStreamTrackを取得し、それを引数にMediaS
 
 ## WebAudioで再生する場合
 
+まずWritableStreamを作成し、そのwrite()ハンドラでAudioFrameを取得します。
+AudioFrameからはAudioBufferを取得し、それをWebAudioのAudioBufferSourceNodeを使って再生します。
+
 ```js
   // --- WebAudio AudioContextの準備 ---
   const audioCtx = new AudioContext();
@@ -40,7 +43,7 @@ MediaStreamからAudioのMediaStreamTrackを取得し、それを引数にMediaS
   // --- WritableStreamを準備 ---
   const writable = new WritableStream({
     // --- AudioFrameが渡された時のイベント ---
-    async write(audioFrame) {
+    write(audioFrame) {
       // --- WebAudioを使って再生する ---
       const source = audioCtx.createBufferSource();
       source.buffer = audioFrame.buffer;
