@@ -12,7 +12,27 @@ published: false # 公開設定（falseにすると下書き）
 
 # MediaStreamTrackProcessorとは
 
+MediaStreamTrackProcessorはMediaStreamから取り出したVideo/AudioのMediaStreamTrackを扱うための新しい仕組みです。2021年2月現在、まだW3Cでも非公式なドラフトとして提案されている状態です。
+
+- Unofficial Draft: [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
+
+MediaStreamTrackProcessorを使うと、VideoのMediaStreamTrackからはViderFrameを、AudioのMediaStreamTrackからはAudioFrameをストリーム（ReadableStream）経由で取り出すことができます。
+
+# MediaStreamTrackProcessorでAudioを扱う方法
+
+
+## WebAudioで再生する
+
+## MediaStreamTrackGeneratorで書き出す
+
+## WebCodecsでエンコードする
+
+
+
+
+# 参考
 
 - [WebRTC Insertable Media using Streams](https://w3c.github.io/webrtc-insertable-streams/)
 - [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
 
+https://webrtc.github.io/samples/
