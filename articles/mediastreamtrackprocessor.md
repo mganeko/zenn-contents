@@ -20,7 +20,7 @@ MediaStreamTrackProcessorを使うと、VideoのMediaStreamTrackからはViderFr
 
 # MediaStreamTrackProcessorでAudioを扱う方法
 
-## MediaStreamTrackProcessorの生成
+## 準備： MediaStreamTrackProcessorの生成
 
 MediaStreamからAudioのMediaStreamTrackを取得し、それを引数にMediaStreamTrackProcessorのインスタンスを生成します。
 
@@ -86,22 +86,22 @@ MediaStreamTrackProcessorを使うとMediaStreamTrackからAudioFrameを取り�
   await audioElement.play();
 ```
 
-一般にはそのまま戻しても意味がないため、途中にTransformStreamを挟んでオーディオデータを加工します。
+そのまま戻しても意味がないため、通常は途中にTransformStreamを挟んでオーディオデータを加工します。
 
 ```js
   // --- TransformStreamを準備 ---
   const transformer = new TransformStream({
     // --- 変換処理 ---
     async transform(audioFrame, controller) {
-      // --- AudioFrameから音声サンプルを取得 (Float32Array) ---
+      // --- AudioFrameからオーディオサンプルを取得 (Float32Array) ---
       const samples = audioFrame.buffer.getChannelData(0); // 1チャンネルと仮定
 
       // --- 加工を行う ---
       for(let i = 0; i < samples.length; i++) {
-        samples[i] = sameples[i] + (Math.random() * 2 - 1)*0.2; // ノイズを加える例
+        samples[i] = samples[i] + (Math.random() * 2 - 1)*0.1; // ノイズを加える例
       }
 
-      // --- 音声サンプルをAudioFrameに戻す --
+      // --- 音オーディオサンプルをAudioFrameに戻す --
       audioFrame.buffer.copyToChannel(samples, 0); // 1チャンネルと仮定
 
       // --- 次のストリームに渡す ---
@@ -119,16 +119,75 @@ MediaStreamTrackProcessorを使うとMediaStreamTrackからAudioFrameを取り�
 ```
 
 
+## WebCodecsでエンコード/デコードする場合
+
+MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEncoderを使ってエンコード（圧縮）することが可能です。これを何かの方法（たとえばWebSocketやWebTrasport）でリモートに送り、AudioDecoderでデコード（復元）すれば音声として再生するここができます。
+
+```js
+  // --- Encoderを準備 ---
+  const audioEncoder = new AudioEncoder({
+    output: function (chunk) {
+      // --- エンコード後のデータを受け取る。ここでリモートに送ったりする ---
+      // ... 省略 ...
+    },
+    error: function () {
+      console.error(arguments)
+    }
+  });
+
+  // ---  設定 ---
+  const audioCtx = new AudioContext();
+  const audioSampleRate = audioCtx.sampleRate;
+  await audioEncoder.configure({
+    codec: 'opus',
+    sampleRate: audioSampleRate,
+    bitrate: '128000',
+    numberOfChannels: 1,
+  });
+
+  // --- WritableStreamを準備 ---
+  const writable = new WritableStream({
+    // --- AudioFrameが渡された時のイベント ---
+    write(audioFrame) {
+      // --- エンコードする ---
+      audioEncoder.encode(audioFrame);
+      audioFrame.close();
+    },
+
+    // --- その他のイベント ---
+    start() {
+      console.log('Audio Writable start');
+    },
+    close() {
+      console.log('Audio Writable close');
+    },
+    abort(reason) {
+      console.log('Audio Writable abort:', reason);
+    },
+  });
+
+  // --- WritableStream に MediaStreamTrackProcessor のストリームを接続する ---
+  processor.readable.pipeTo(writable);
+```
+
+デコード側では、エンコードデータを受け取り、それをデコード（復元）後に再生する。たとえばWebAudioを使って再生する場合は次のようになる。
+
+```js
 
 
-## WebCodecsでエンコードする
 
+```
 
-
+# まとめ
 
 # 参考
 
-- [WebRTC Insertable Media using Streams](https://w3c.github.io/webrtc-insertable-streams/)
+
 - [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
 
 https://webrtc.github.io/samples/
+
+- [WebCodecs](https://wicg.github.io/web-codecs/)
+
+
+- [WebRTC Insertable Media using Streams](https://w3c.github.io/webrtc-insertable-streams/)
