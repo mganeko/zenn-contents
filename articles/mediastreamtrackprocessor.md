@@ -64,7 +64,7 @@ MediaStreamTrackProcessorを作成したWritableStreamに接続することで�
     },
   });
 
-  // --- WritableStream に MediaStreamTrackProcessor のストリームを接続する ---
+  // --- WritableStream を MediaStreamTrackProcessor のストリームに接続する ---
   processor.readable.pipeTo(writable);
 ```
 
@@ -123,6 +123,10 @@ MediaStreamTrackProcessorを使うとMediaStreamTrackからAudioFrameを取り�
 
 MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEncoderを使ってエンコード（圧縮）することが可能です。これを何かの方法（たとえばWebSocketやWebTrasport）でリモートに送り、AudioDecoderでデコード（復元）すれば音声として再生するここができます。
 
+### エンコードまで
+
+まずWritableStreamを作成し、そのwrite()ハンドラでAudioFrameを取得し、AudioEncoderに渡します。AudioEncoderではエンコード後のデータを受けとるoutput()ハンドラが呼ばれるので、そこでリモート送信など次の処理を行います。
+
 ```js
   // --- Encoderを準備 ---
   const audioEncoder = new AudioEncoder({
@@ -166,11 +170,13 @@ MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEnco
     },
   });
 
-  // --- WritableStream に MediaStreamTrackProcessor のストリームを接続する ---
+  // --- WritableStream を MediaStreamTrackProcessor のストリームに接続する ---
   processor.readable.pipeTo(writable);
 ```
 
-デコード側では、エンコードデータを受け取り、それをデコード（復元）後に再生します。たとえばWebAudioを使って再生する場合は次のようになるでしょう。
+### デコード側
+
+デコード側では、エンコードデータを受け取り、それをAudioDecoderでデコード（復元）後に再生します。たとえばWebAudioを使って再生する場合は次のようになるでしょう。
 
 ```js
   // ---  AudioContextを準備 ---
@@ -208,17 +214,15 @@ MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEnco
   }
 ```
 
+用意した関数handleEncodedChunk()をEncoderのoutput()ハンドラで直接呼び出せば、エンコード→デコードの処理を直結できます。あまり意味は無いですが、処理の理解の助けにはなるでしょう。
 
 # まとめ
 
+まだまだ非公式ドラフト状態の MediaStreamTrackProcessor / MediaStreamTrackGenerator について取り上げました。対象としては、まだ情報が少ない Audio（オーディオ）を選び、WebAudioを使った再生の例を示しています。
+また関連してWebCodecsの一部である AudioEncoder / AudioDecoder についても記載しました。将来的にはWebTransportとも組み合わせることで、自由（と苦労）が増えそうです。
+
 # 参考
 
-
 - [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
-
-https://webrtc.github.io/samples/
-
 - [WebCodecs](https://wicg.github.io/web-codecs/)
-
-
-- [WebRTC Insertable Media using Streams](https://w3c.github.io/webrtc-insertable-streams/)
+- [WebRTC samples Audio processing with insertable streams](https://webrtc.github.io/samples/src/content/insertable-streams/audio-processing/)
