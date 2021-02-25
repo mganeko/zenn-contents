@@ -218,7 +218,7 @@ MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEnco
 
 # まとめ
 
-まだまだ非公式ドラフト状態の MediaStreamTrackProcessor / MediaStreamTrackGenerator について取り上げました。対象としては、まだ情報が少ない Audio（オーディオ）を選び、WebAudioを使った再生の例を示しています。
+まだ非公式ドラフト状態の MediaStreamTrackProcessor / MediaStreamTrackGenerator について取り上げました。対象としては、まだまだ情報が少ない Audio（オーディオ）を選び、WebAudioを使った再生の例を示しています。
 また関連してWebCodecsの一部である AudioEncoder / AudioDecoder についても記載しました。将来的にはWebTransportとも組み合わせることで、自由（と苦労）が増えそうです。
 
 # 参考
