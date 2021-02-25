@@ -170,13 +170,44 @@ MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEnco
   processor.readable.pipeTo(writable);
 ```
 
-デコード側では、エンコードデータを受け取り、それをデコード（復元）後に再生する。たとえばWebAudioを使って再生する場合は次のようになる。
+デコード側では、エンコードデータを受け取り、それをデコード（復元）後に再生します。たとえばWebAudioを使って再生する場合は次のようになるでしょう。
 
 ```js
+  // ---  AudioContextを準備 ---
+  const audioCtx = new AudioContext();
+  const audioSampleRate = audioCtx.sampleRate;
+  let audioTime = audioCtx.currentTime;
 
+  // --- Decoderを準備 ---
+  const audioDecoder = new AudioDecoder({
+    output: async function (audioFrame) {
+      // --- WebAudioを使って再生する ---
+      const source = audioCtx.createBufferSource();
+      source.buffer = audioFrame.buffer;
+      source.connect(audioCtx.destination);
+      source.start(audioTime);
+      audioTime = audioTime + audioFrame.buffer.duration;
+    },
+    error: function () {
+      console.error(arguments)
+    }
+  });
 
+  // --- Decoder設定 ---
+  await audioDecoder.configure({
+    codec: 'opus',
+    numberOfChannels: 1,
+    sampleRate: audioSampleRate,
+    bitrate: '128000',
+  });
 
+  // --- エンコード済みのオーディオデータを受け取る関数 ---
+  function handleEncodedChunk(chunk) {
+    // encoderから来たchunk
+    audioDecoder.decode(chunk); // 上記の output が呼ばれる
+  }
 ```
+
 
 # まとめ
 
