@@ -18,6 +18,10 @@ MediaStreamTrackProcessorはMediaStreamから取り出したVideo/AudioのMediaS
 
 MediaStreamTrackProcessorを使うと、VideoのMediaStreamTrackからはViderFrameを、AudioのMediaStreamTrackからはAudioFrameをストリーム（ReadableStream）経由で取り出すことができます。
 
+ところで2021年2月現在、MediaStreamTrackProcessorはデフォルトでは有効になっていません。Chrome 88以降で、次のフラグを有効にする必要があります。
+
+- chrome://flags/#enable-experimental-web-platform-features 有効（Enabled）にする
+
 # MediaStreamTrackProcessorでAudioを扱う方法
 
 ## 準備： MediaStreamTrackProcessorの生成
