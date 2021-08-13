@@ -73,7 +73,7 @@ $ npm install holoplay
 
 # 実装
 
-公式のガイド「[Creating Your First HoloPlay.js App](https://docs.lookingglassfactory.com/developer-tools/three/setup#creating-your-first-holoplay-js-app)」と、サンプルのソース「[](view-source:https://dhtk4bwj5r21z.cloudfront.net/HoloplayJS/examples/gltf/index.html)」を参考に実装します。
+公式のガイド「[Creating Your First HoloPlay.js App](https://docs.lookingglassfactory.com/developer-tools/three/setup#creating-your-first-holoplay-js-app)」と、サンプル「[Load gLTF Model](https://docs.lookingglassfactory.com/developer-tools/three/examples#load-gltf-model)」のソースを参考に実装します。
 
 
 ## シンプルなGLB形式の表示
