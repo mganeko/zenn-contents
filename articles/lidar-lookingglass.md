@@ -143,11 +143,14 @@ Looking Glass に表示するには次の手順を踏みます。
 - ウィンドウを Looking Glass側に移動する
 - ウィンドウの中身をクリックし、最大化する
 
-これでLookig Glassに表示されるハズですが、実際にはほとんどのケースでまともに表示されません。3Dモデルのスケールや中心軸がバラバラで、表示に適切な値になっていないためです。
+これでLookig Glassに表示されるハズですが、実際にはほとんどのケースでまともに表示されません。3Dモデルのスケールやセンター位置がバラバラで、表示に適切な値になっていないためです。
 
 次のステップでは、ある自動的に簡易補正するコードを追加します。
 
 ## GLB形式の簡易補正つき表示
+
+### 簡易補正つきコード例
+
 
 ```html
 <!DOCTYPE HTML>
@@ -224,7 +227,40 @@ Looking Glass に表示するには次の手順を踏みます。
 </html>
 ```
 
+### スケールの補正
 
+スケールの補正には、バウンディングボックス（モデルを囲う直方体）を取得し、その対角線を結ぶ直接の長さが程よい長さになるように補正しています。
+
+```js
+      let desiredScale = 0.1; // 目標とするスケール
+
+      // -- バウンディングボックスを使ってスケール補正を計算 --
+      let boundigbox = new THREE.Box3().setFromObject(gltf.scene);
+      let d = boundigbox.min.distanceTo(boundigbox.max);
+      let scale = desiredScale * (1 / (d/2));
+```
+
+程よい長さ(desiredScale)は、サンプル「[Load gLTF Model](https://docs.lookingglassfactory.com/developer-tools/three/examples#load-gltf-model)」に含まれるモデルの大きさを参考に決めています。
+もし期待する大きさにならない場合は、desiredScaleを調整してください。
+
+
+### センター位置の補正
+
+センター位置の補正にも、バウンディングボックスを利用しています。バウンディングボックスの中心が、ラッパーの中心に来るように offset を計算しています。
+
+```js
+      // -- センター位置補正を計算 --
+      let center = new THREE.Vector3().addVectors(boundigbox.min, boundigbox.max);
+      let offset = center.clone();
+      offset.multiplyScalar(scale);
+      offset.add(adjustOffset);
+```
+
+実際には、センター位置をずらす量もスケール補正をかけています。さらに、スキャンに使うアプリによってセンター位置の上下（Yの値）が異なっているように見えます。それを補正するために adjustOffset を設定しています。
+これは私がスキャンした少ないサンプルで割り出した値なので、みさなんの撮影条件では異なる可能性があります。その場合は、 adjustOffset を調整して、程よい位置に表示されるようにしてください。
+
+
+# 表示例
 
 
 
@@ -235,8 +271,9 @@ Looking Glass に表示するには次の手順を踏みます。
 
 # まとめ
 
-LiDARで撮影した物体/風景を見るのは楽しいです。
-GLTF形式やOBJ形式とA-FRAMEを組み合わせれば、iOSだけでなくいろいろなブラウザで楽しむことができます。
+Looking Glass Portraitは想像していたよりもはるかに立体感/奥行き感が感じられます。
+ポートレートモードで撮影した写真を表示させるだけでも楽しいですが、LiDARで撮影した物体/風景を表示させると、よりその真価を発揮できます。
+もし使える機会があったら、ぜひお試しああれ。
 
 
 
