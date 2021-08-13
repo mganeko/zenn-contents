@@ -76,7 +76,9 @@ $ npm install holoplay
 公式のガイド「[Creating Your First HoloPlay.js App](https://docs.lookingglassfactory.com/developer-tools/three/setup#creating-your-first-holoplay-js-app)」と、サンプルのソース「[](view-source:https://dhtk4bwj5r21z.cloudfront.net/HoloplayJS/examples/gltf/index.html)」を参考に実装します。
 
 
-## 基本のコード例: GLB形式の表示
+## シンプルなGLB形式の表示
+
+### 基本のコード例
 
 GLB/GLTFの場合は、three/examples/js/loaders/GLTFLoader.js を使います。
 
@@ -128,79 +130,108 @@ GLB/GLTFの場合は、three/examples/js/loaders/GLTFLoader.js を使います�
 </html>
 ```
 
-## コード例: OBJ形式
+### 実行
 
-OBJファイルの場合は、関連するMTLやテクスチャファイル(JPG等)と一緒にWebサーバーに配置します。<a-entity obj-model>を使って表示します。
+実行にはローカルにWebサーバーを立てて、ファイル一式をそこに配置します。
+エディターにVS Codeを使っている場合は、[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)を利用すると便利です。Microsoftからも[Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)のプレビュー版が公開されているので、こちらを使うのもありです（試してません）
+
+Looking Glass に表示するには次の手順を踏みます。
+
+- 新しくブラウザのウィンドを開く
+- 作成したファイルのURLにアクセスする
+  - 例えば http://localhost:5500/simple.html など
+- ウィンドウを Looking Glass側に移動する
+- ウィンドウの中身をクリックし、最大化する
+
+これでLookig Glassに表示されるハズですが、実際にはほとんどのケースでまともに表示されません。3Dモデルのスケールや中心軸がバラバラで、表示に適切な値になっていないためです。
+
+次のステップでは、ある自動的に簡易補正するコードを追加します。
+
+## GLB形式の簡易補正つき表示
 
 ```html
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+  <body>
+    <script src="node_modules/three/build/three.js"></script>
+    <script src="node_modules/holoplay/dist/holoplay.js"></script>
+    <script src="node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
 
-<head>
-  <title>Obj in A-Frame</title>
-  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-</head>
+    <script>
+      // -- カメラ、シーンを用意 --
+      const scene = new THREE.Scene();
+      const camera = new HoloPlay.Camera();
+      const renderer = new HoloPlay.Renderer();
+      document.body.appendChild(renderer.domElement);
+  
+      // -- 光源を用意 --
+      const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+      directionalLight.position.set(0, 1, 2);
+      scene.add(directionalLight);
+      const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
+      scene.add(ambientLight);
+  
+      // -- GLB形式のモデルを読み込み --
+      let model = new THREE.Group(); // モデルをラップして、扱いやすくしてく
+      const modelFile = 'path/to/your/model.glb'; // ※モデルのパス(URL)に書き換えてください
+      new THREE.GLTFLoader().load(modelFile, (gltf) => {
+        // -- 簡易補正用 --
+        let desiredScale = 0.1; // 目標とするスケール
+        let adjustOffset = new THREE.Vector3(0, 0, 0); // for Polycam
+        //let adjustOffset = new THREE.Vector3(0, -0.15, 0); // for Scaniverse
+        //let adjustOffset = new THREE.Vector3(0, -0.04, 0); // for 3dScanner App
 
-<body>
-  <a-scene>
-    <a-assets>
-      <!-- asset for model file -->
-      <a-asset-item id="tree-obj" src="path/some.obj"></a-asset-item>
-      <a-asset-item id="tree-mtl" src="path/some.mtl"></a-asset-item>
-    </a-assets>
+        // -- バウンディングボックスを使ってスケール補正を計算 --
+        let boundigbox = new THREE.Box3().setFromObject(gltf.scene);
+        let d = boundigbox.min.distanceTo(boundigbox.max);
+        let scale = desiredScale * (1 / (d/2));
+        
+        // -- センター位置補正を計算 --
+        let center = new THREE.Vector3().addVectors(boundigbox.min, boundigbox.max);
+        let offset = center.clone();
+        offset.multiplyScalar(scale);
+        offset.add(adjustOffset);
 
-    <!-- Using the asset management system. -->
-    <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position="-0.5 2 -0.5" scale="0.5 0.5 0.5"></a-entity>
+        //console.log("gltf distance, scale, BondingBox:", d, scale, boundigbox);
+        //console.log("center, offset", center, offset);
+        
+        // -- モデルのスケール、位置を補正 --
+        gltf.scene.scale.setScalar(scale);
+        gltf.scene.rotation.y = Math.PI;
+        gltf.scene.position.add(offset);
 
-    <a-sky color="#ECECEC"></a-sky>
-  </a-scene>
-</body>
+        // -- シーンにモデルを追加 --
+        model.add(gltf.scene);
+        model.rotation.x = Math.PI /180 * 15; // 仰角を調整
+        scene.add(model);
+      });
 
+      // -- 描画 --
+      function update(time) {
+        requestAnimationFrame(update);
+
+        // -- モデルを回転する --
+        let duration = 20000;
+        if (model) {
+          model.rotation.y = (Math.PI) *  (time / duration);
+        }
+
+        renderer.render(scene, camera);
+      }
+      requestAnimationFrame(update);
+    </script>
+  </body>
 </html>
 ```
 
-## 面倒なところ
-
-### obj/mtlファイルの読み込みデーエラー
-
-- 3Dデータの読み込みでエラー or 正しく表示されない
-- 対策(1) ... 手でファイルを修正する
-  - OBJ形式利用時に、テクスチャのマッピングを示すMTLファイルの読み込みでエラー
-  - 存在しないテクスチャ(JPG)を参照している箇所を、手動で削除 → 読み込み成功
-- 対策(2) ... 他の形式を使う
-  - OBJ形式でうまくいかない場合hは、 GLTF/GLB形式を利用→うまくいくケースあり
-- 対策(3) ... 他のアプリを使う
-  - 3d Scanner Appからエクスポートしたファイルの読み込みに失敗
-  - アプリの不具合か設定の不備か、原因は不明
-
-※各ファイル形式のフォーマットを理解すれば根本的な対策できそうですが、そこまではできず。
-
-### カメラと3D物体の位置関係
 
 
-- 表示するまで、どのような位置に物体が表示されるか予想できない
-- 対策 ... ブラウザーでインスペクターを起動してトライ＆エラー
-  - インスペクターの起動は [ctrl] + [Alt] + i
-  - 要素の位置、スケール、ローテーションを調整
-  - →程よい値を割り出し、プロパティに反映
 
-### 3D物体の回転軸の調整
 
-- 3D物体のローテーションを調整した時に、必ずしも中心軸にそって回転しない
-  - 特にアプリ側でトリミングしてからエクスポートした場合に発生
-  - 回転軸をオフセットする方法が見つからず
-- 対策...他のエレメントでラップする
-  - 回転は、ラッパー側で行う
-  - ラッパーに対する3D物体の相対位置（オフセット）を指定し、回転軸を調整する
 
-```html:抜粋
-<!-- 回転は wrap_pbj で行う -->
-<a-entity id="wrap_pbj" position="0 0 0" rotation="0 20 0">
-  <!-- 3D物体の位置を、wrap_pbjに対しての相対オフセットで指定する -->
-  <a-entity id="obj" obj-model="obj: #tree-obj; mtl: #tree-mtl" position="-0.5 0.4 0.5" scale="0.5 0.5 0.5">
-  </a-entity>
-</a-entity>
-```
+
+
+
 
 # まとめ
 
