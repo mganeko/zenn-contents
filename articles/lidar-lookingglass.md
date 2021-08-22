@@ -34,9 +34,9 @@ Looking Glass Portraitを使うには、まず公式のソフトウェアをイ�
 
 アプリは複数ありますが、主にこちらを利用しています。
 
-- Polycam ... データのエクスポート機能は有料
-- 3d Scanner App ... 無料
-- Scaniverse ... Pro版の機能も2021年8月に無料に
+- [Polycam](https://apps.apple.com/jp/app/polycam-lidar-3d-スキャナー/id1532482376) ... データのエクスポート機能は有料
+- [3d Scanner App](https://apps.apple.com/jp/app/3d-scanner-app/id1419913995) ... 無料
+- [Scaniverse](https://apps.apple.com/jp/app/scaniverse-lidar-3d-scanner/id1541433223) ... Pro版の機能も2021年8月に無料に
 
 ## 3Dデータ
 
