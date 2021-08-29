@@ -1,5 +1,5 @@
 ---
-title: "NestHubがfuchsiaになって、ホスト名が変わった件" # 記事のタイトル
+title: "OSがfuchsiaになったNestHubのホスト名の調べ方" # 記事のタイトル
 emoji: "🌹" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["NestHub", "fucshia", "mDNS"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -10,7 +10,7 @@ published: false # 公開設定（falseにすると下書き）
 
 # はじめに
 
-スマートディスプレイのGoogle NestHubのOSが、徐々にfuchsia（フクシア）にアップデートされています（参考：[ITmedia](https://www.itmedia.co.jp/news/articles/2105/26/news054.html)）。OSの種類が自動アップデートで置き換わるのいうのはなかなかアグレッシブですが、基本的な機能では特に問題は耳にしてません。
+スマートディスプレイのGoogle NestHubのOSが、徐々にfuchsia（フクシア）にアップデートされています（参考：[ITmedia](https://www.itmedia.co.jp/news/articles/2105/26/news054.html)）。OSの種類が自動アップデートで置き換えるのはなかなかアグレッシブですが、基本的な機能では特に問題は耳にしてません。
 
 我が家のNestHubも最近アップデートが来てfuchsiaに置き換わっていました。ところがその影響で自分で作り込んでいる連携アプリが一部動かなくなっていました。
 
@@ -25,11 +25,65 @@ published: false # 公開設定（falseにすると下書き）
 
 # 原因
 
-自作アプリではデバイスのホスト名をmDNSを利用して「xxxxxx.local」形式で指定しています。今回の
+自作アプリではデバイスのホスト名をmDNSを利用して「xxxxxx.local」形式で指定しています。この記事のタイトルにもあるように、今回のfuchsiaへのアップデートの結果、mDNS上のホスト名が変わってしまったようです。そのため、もともと使っていたホスト名では到達できずに、音声castに失敗していました。
 
+元のホスト名が使えなくなったのは、ターミナルからpingで到達しなくなっていたので判明しました。
 
 
 # 対処
+
+fuchsiaになって変わってしまったNestHubのホスト名を改めて調べました。
+
+## fuchsiaより前のホスト名の調べ方(Mac)
+
+私はMacを使っていますが、dns-sdを使って次のようにホスト名を推定していました。
+
+```
+$ dns-sd -B _googlezone._tcp
+Timestamp     A/R    Flags  if Domain               Service Type         Instance Name
+18:45:38.260  Add        2  11 local.               _googlezone._tcp.    xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
+^C
+```
+
+この場合、「xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx.local」がGoogle Homeや以前のNestHubのホスト名でした。
+
+## fuchsiaのホスト名の調べ方（Mac）
+
+fuchsiaにアップデート後は、上記の対応付ルールは無くなりました。ホスト名は別途調べる必要があります。同じくdns-sdを使って追加の操作をすることで、無事取得することができました。
+
+```
+$ dns-sd -L xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx _googlezone._tcp
+Lookup xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx._googlezone._tcp.local
+DATE: ---Sun 29 Aug 2021---
+18:53:21.356  ...STARTING...
+18:53:21.358  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx._googlezone._tcp.local. can be reached at fuchsia-xxxx-xxxx-xxxx.local.:10001 (interface 11)
+^C
+```
+
+この結果、ホスト名は「fuchsia-xxxx-xxxx-xxxx.local」ということが分かりました。
+
+
+## アプリで調べる(Mac)
+
+Macの場合、もっと便利なアプリがあります。こちらを使えば簡単にホスト名を調べることができます。
+
+- Discovery - DNS-SD Browser [App Store]( https://apps.apple.com/us/app/discovery-dns-sd-browser/id1381004916)
+
+## Linuxでのホスト名を調べる
+
+Linuxでは、mDNSのサービス/ツールであるavahiで調べることができます。
+
+```
+$ avahi-browse -r _googlezone._tcp
+=  wlan0 IPv4 xxxxxxxx-xxxx-xxxx-xxxx-xxxx     _googlezone._tcp   local
+   hostname = [fuchsia-xxxx-xxxx-xxxx.local]
+   address = [192.168.0.xx]
+   port = [10001]
+...
+```
+
+ホスト名は「fuchsia-xxxx-xxxx-xxxx.local」になります。
+
 
 # まとめ
 
