@@ -84,11 +84,78 @@ $ avahi-browse -r _googlezone._tcp
 
 ホスト名は「fuchsia-xxxx-xxxx-xxxx.local」になります。
 
+## Node.jsで調べる（Windows対応）
+
+Windowsで調べる方法を探しましたが、AppleのiTunesと一緒にインストールされるBonjour機能を利用する方法があるようです。
+
+なるべく余計なアプリをインストールせすに調べる方法として、今回はNode.js + [mdns-js](https://www.npmjs.com/package/mdns-js)モジュールを利用したコードを作成しました。
+
+###  準備
+
+- Node.js, npm をインストール
+- npm install mdns-js を実行し、モジュールをインストール
+
+### ソースコード
+
+次のソースを例えば browser.js として保存します。
+
+```js
+
+const mdns = require('mdns-js');
+const TIMEOUT = 5000; //5 seconds
+
+//const browser = mdns.createBrowser(); //defaults to mdns.ServiceType.wildcard
+//const browser = mdns.createBrowser(mdns.tcp('googlecast'));
+const browser = mdns.createBrowser(mdns.tcp('googlezone')); // サービス名
+
+browser.on('ready', function onReady() {
+  console.warn('browser is ready');
+  browser.discover();
+});
+
+browser.on('update', function onUpdate(data) {
+  console.log('data:', data);
+});
+
+//stop after timeout
+setTimeout(function () {
+  browser.stop();
+}, TIMEOUT);
+
+```
+
+GitHub ... [https://github.com/mganeko/mdns_browser](https://github.com/mganeko/mdns_browser)
+
+### 実行
+
+Windowsの場合
+
+```
+> node browser.js | find "fuchsia"
+browser is ready
+  host: 'fuchsia-xxxx-xxxx-xxxx.local',
+  host: 'fuchsia-xxxx-xxxx-xxxx.local',
+```
+
+Macの場合
+
+```
+$ node browser.js | grep fuchsia
+browser is ready
+  host: 'fuchsia-xxxx-xxxx-xxxx.local',
+  host: 'fuchsia-xxxx-xxxx-xxxx.local',
+```
+
+※同じ情報が複数回表示されることがあります
+
+このように、[mdns-js](https://www.npmjs.com/package/mdns-js)を利用してホスト名を調べる事ができます。
+
+
 
 # まとめ
 
 IoT機器のファムウェアアップデートはなかなか厄介ですが、Google HomeやNestHubといったスマートスピーカー/スマートディスプレイは勝手にアップデートしてくれます。日々進化していく様子は楽しいのですが、時々思わぬ変更があリ、標準から外れた使い方をしている場合には困ることがあります。
 
-それでもIoT機器もいろいろなネットワーク技術やWeb技術の上に成り立っているので、トラブルシューティングを通して今回のmDNSのように既存の技術の理解につながることがあります。これからもいろいろなデバイスをいじたいところです。
+今回はホスト名が変わるという大きめな変更がありましたが、IoT機器といってもいろいろなネットワーク技術やWeb技術の上に成り立っているので、今回はmDNSを使って調べることができました。
 
 
