@@ -88,7 +88,7 @@ $ avahi-browse -r _googlezone._tcp
 
 Windowsで調べる方法を探しましたが、AppleのiTunesと一緒にインストールされるBonjour機能を利用する方法があるようです。
 
-なるべく余計なアプリをインストールせすに調べる方法として、今回はNode.js + [mdns-js](https://www.npmjs.com/package/mdns-js)モジュールを利用したコードを作成しました。
+別の方法として、今回はNode.js + [mdns-js](https://www.npmjs.com/package/mdns-js)モジュールを利用したコードを作成しました。
 
 ###  準備
 
