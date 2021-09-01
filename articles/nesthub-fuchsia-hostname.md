@@ -142,7 +142,6 @@ Windows PowerShellの場合
 > node browser.js | Select-Sring "fuchsia"
 browser is ready
   host: 'fuchsia-xxxx-xxxx-xxxx.local',
-  host: 'fuchsia-xxxx-xxxx-xxxx.local',
 ```
 
 
@@ -151,7 +150,6 @@ Macの場合
 ```
 $ node browser.js | grep fuchsia
 browser is ready
-  host: 'fuchsia-xxxx-xxxx-xxxx.local',
   host: 'fuchsia-xxxx-xxxx-xxxx.local',
 ```
 
