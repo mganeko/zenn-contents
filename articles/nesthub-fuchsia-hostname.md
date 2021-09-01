@@ -128,14 +128,23 @@ GitHub ... [https://github.com/mganeko/mdns_browser](https://github.com/mganeko/
 
 ### 実行
 
-Windowsの場合
+Windows コマンドプロンプトの場合
 
 ```
 > node browser.js | find "fuchsia"
 browser is ready
   host: 'fuchsia-xxxx-xxxx-xxxx.local',
+```
+
+Windows PowerShellの場合
+
+```
+> node browser.js | Select-Sring "fuchsia"
+browser is ready
+  host: 'fuchsia-xxxx-xxxx-xxxx.local',
   host: 'fuchsia-xxxx-xxxx-xxxx.local',
 ```
+
 
 Macの場合
 
