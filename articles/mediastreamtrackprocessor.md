@@ -228,6 +228,6 @@ MediaStreamTrackProcessorで取り出したAudioFrameは、WebCodecsのAudioEnco
 
 # 参考
 
-- [MediaStreamTrack Insertable Media Processing using Streams](https://w3c.github.io/mediacapture-insertable-streams/)
+- [MediaStreamTrack Insertable Media Processing using Streams](https://alvestrand.github.io/mediacapture-transform/)
 - [WebCodecs](https://wicg.github.io/web-codecs/)
 - [WebRTC samples Audio processing with insertable streams](https://webrtc.github.io/samples/src/content/insertable-streams/audio-processing/)
