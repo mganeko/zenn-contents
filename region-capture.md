@@ -19,6 +19,27 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 
 タブを選択したときに特定の領域だけを切り抜いて共有するのが、今回のRegion Captureです。領域は座標で直接指定するのではなく、DOMエレメントを使って作成します。
 
+# デモ
+
+早速動きを見てみましょう。こちらにデモを用意しました。Chrome M104以降でアクセスしてください。(※2022年7月現在、Chrome安定版は103なので動きません)
+- GitHub pages:　https://mganeko.github.io/region_capture/
+- ソース: https://github.com/mganeko/region_capture
+
+## 操作方法
+- Chrome M104以降で、https://mganeko.github.io/region_capture/ を開く
+- [start capture]ボタンをクリック
+- [現在のタブ/This Tab]を選択
+- [共有/Share]をクリック
+
+![共有開始](/images/start_capture.png)
+
+- &lt;div&gt;に囲まれたテキスト、およびテキストエリアのみが共有され、上のビデオ要素に表示される
+- テキストエリアを編集すると、その様子がビデオ要素にも反映される
+
+![共有中](/images/while_region_capture.png)
+
+- [stop capture]ボタンをクリックすると、共有が停止
+
 
 
 
