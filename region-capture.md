@@ -3,7 +3,7 @@ title: "Chrome M104で実装されるRegion Captureを試してみた" # 記事�
 emoji: "📹" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["WebRTC", "Chrome"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # はじめに
@@ -19,7 +19,7 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 
 タブを選択したときに特定の領域だけを切り抜いて共有するのが、今回のRegion Captureです。領域は座標で直接指定するのではなく、DOMエレメントを使って作成します。
 
-# デモ
+# サンプル
 
 早速動きを見てみましょう。こちらにデモを用意しました。Chrome M104以降でアクセスしてください。(※2022年7月現在、Chrome安定版は103なので動きません)
 - GitHub pages:　https://mganeko.github.io/region_capture/
@@ -40,9 +40,41 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 
 - [stop capture]ボタンをクリックすると、共有が停止
 
+# ソースコード抜粋
 
+```js
+    async function startCapture() {
+      // 対象となるDOM要素(div)を取得、そこから領域を指定する CropTargetを生成
+      const captureArea = document.querySelector('#caputre_area');
+      const cropTarget = await CropTarget.fromElement(captureArea);
 
+      // 画面共有（現在のタブを選択する）
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        preferCurrentTab: true,
+      });
 
+      // ビデオトラックを取得し、領域を切り取る
+      const [videoTrack] = stream.getVideoTracks();
+      await videoTrack.cropTo(cropTarget);
+
+      // ビデオ要素で再生する
+      localVideo.srcObject = stream;
+      await localVideo.play();
+      console.log('started');
+    }
+```
+
+- DOM要素を指定し、CropTraget.formElement()で領域を取得
+  - Promiseを返すので、awaitで待つ
+-  navigator.mediaDevices.getDisplayMedia()で取得したVideoTrackを、cropTo()で切り抜く
+
+## 注意点と特徴
+
+-  CropTraget.formElement()に渡せるDOM要素には制限がある
+  - 現在は&lt;dig;&gt;と&lt;iframe;&gt;のみOK
+- 生成されたCropTargetはシリアライズ可能、PostMessageでiframe等に渡せる
+- cropTo()で切り出せるビデオトラックは、同じタブのビデオのみ（現在のところ）
+- ターゲット領域がウィンドウ外に出ると、映像は取得されない
 
 
 # 参考
