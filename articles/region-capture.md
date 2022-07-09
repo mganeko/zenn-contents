@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # はじめに
 
-Chrome M104のWebRTC関連のリリースノートに、「Region Captureが使えるようになる」と書いてあると耳にしたので、Chrome Canary 105で試してみました。
+Chrome M104のWebRTC関連のリリースノートに「Region Captureが使えるようになる」と書いてあると耳にしたので、Chrome Canary 105で試してみました。
 - [WebRTC M104 Release Notes](https://groups.google.com/g/discuss-webrtc/c/PZxgk-aUFhw)
 
 # Region Capture
@@ -40,7 +40,9 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 
 - [stop capture]ボタンをクリックすると、共有が停止
 
-# ソースコード抜粋
+# 使い方
+
+## ソースコード抜粋
 
 ```js
     async function startCapture() {
@@ -71,10 +73,17 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 ## 注意点と特徴
 
 -  CropTraget.formElement()に渡せるDOM要素には制限がある
-  - 現在は&lt;dig;&gt;と&lt;iframe;&gt;のみOK
+  - 現在は&lt;div&gt;と&lt;iframe&gt;のみOK
 - 生成されたCropTargetはシリアライズ可能、PostMessageでiframe等に渡せる
 - cropTo()で切り出せるビデオトラックは、同じタブのビデオのみ（現在のところ）
 - ターゲット領域がウィンドウ外に出ると、映像は取得されない
+
+# 終わりに
+
+Region Captureを使うと、ブラウザのタブの一部だけを画面共有することができます。想定しているユースケースとしては、プレゼン時にスピーカーノートやチャットコメントを共有対象外にする、といった場面があるようです。
+
+他のブラウザが追従するかは分かりませんが、なかなか面白い使い方ができそうです。
+
 
 
 # 参考
