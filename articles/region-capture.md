@@ -72,7 +72,7 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 
 ## 注意点と特徴
 
-- CropTraget.formElement()に渡せるDOM要素には制限がある
+- CropTraget.fromElement()に渡せるDOM要素には制限がある
   - 現在は&lt;div&gt;と&lt;iframe&gt;のみOK
 - 生成されたCropTargetはシリアライズ可能、PostMessageでiframe等に渡せる
 - cropTo()で切り出せるビデオトラックは、同じタブのビデオのみ（現在のところ）
