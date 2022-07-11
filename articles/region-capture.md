@@ -14,7 +14,9 @@ Chrome M104のWebRTC関連のリリースノートに「Region Captureが使え�
 # Region Capture
 
 Chromeをはじめとするモダンブラウザでは、画面共有の機能があります。
+
 -  navigator.mediaDevices.getDisplayMedia()
+
 共有対象として、画面全体や、ウィンドウ、(Chromeの場合)ブラウザのタブが選択できます。
 
 タブを選択したときに特定の領域だけを切り抜いて共有するのが、今回のRegion Captureです。領域は座標で直接指定するのではなく、DOMエレメントを使って作成します。
