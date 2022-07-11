@@ -29,7 +29,7 @@ Chromeをはじめとするモダンブラウザでは、画面共有の機能�
 ## 操作方法
 - Chrome M104以降で、https://mganeko.github.io/region_capture/ を開く
 - [start capture]ボタンをクリック
-- [現在のタブ/This Tab]を選択
+- [現在のタブ/This Tab]を選択、表示されているタブのサムネイルをクリック
 - [共有/Share]をクリック
 
 ![共有開始](/images/start_capture.png)
