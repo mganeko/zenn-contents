@@ -1,0 +1,12 @@
+title: "Azure Bootcamp"
+summary: "Azureの基本的な操作を試して覚える本"
+topics: ["Azure", "VM"]
+published: false
+price: 0
+# 👇 ここでチャプターの並び順を指定する
+chapters:
+  - about
+  - vm-by-portal
+  - vm-by-cli
+  - vm-with-application-gateway
+  
