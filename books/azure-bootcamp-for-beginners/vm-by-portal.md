@@ -236,29 +236,37 @@ cd /var/www/html
 エディターでファイルを編集(vi/vim, emacs, nano等で好きなものを利用してください）
 
 ```
-vi hello.html
+sudo vi hello.html
 ```
 
-たとえば次の内容など。好きな内容で良いですが、"BOOTCAMP" の部分はあとで利用するので、どこか1箇所に入れてください。
+好きな内容で良いですが、例えば次のようなものでOKです。
+
 hello.htmlの内容
 
 ```html
 <!DOCTYPE html>
 <html>
  <body>
-  <h2>Hello, BOOTCAMP!</h2>
+  <h2>Hello, Azure Bootcamp!</h2>
  </body>
 </html>
 ```
 
 ※viを利用しているケースでコピー＆ペーストで文字が欠ける場合は、次の方法で対処できます。
-ペーストモードを使う
-viの中で、「:set paste」とcommandを入力
-※元のモードに戻るには「:set nopaste」
-1行ずつコピー＆ペーストする
-Windowsの場合、別のターミナルアプリをインストールして利用する
-例） RLogin http://nanno.dip.jp/softlib/man/rlogin/
 
-ファイルを保存してからローカルのブラウザで http://xxx.xxx.xxx.xxx/hello.html にアクセスしてください。次のように表示さればOKです。
+- ペーストモードを使う
+  - viの中で、「:set paste」とcommandを入力
+  - ※元のモードに戻るには「:set nopaste」
+- 1行ずつコピー＆ペーストする
+- Windowsの場合、別のターミナルアプリをインストールして利用する
+  - 例） RLogin http://nanno.dip.jp/softlib/man/rlogin/
+
+ファイルを保存してからブラウザでアクセスしてください。
+
+- http://_作成したVMのIPアドレス_/hello.html 
+
+上記の例の場合、次のように表示さればOKです。
+
+![helloページ](/images/azure_hello_page.png)
 
 
