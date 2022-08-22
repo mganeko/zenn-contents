@@ -115,4 +115,64 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 
 ## VMに接続
 
-## nginxのインストール
+起動したVMに、sshやターミナルエミュレーターで接続します。
+
+### MacやLinuxの場合
+
+ターミナルを開き、次のように秘密キーのパーミッション（アクセス権限）を変更してから、sshで接続します。
+
+```
+chmod 600  ~/.ssh/firstVM_key.pem
+
+ssh -i ~/.ssh/firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
+```
+
+- _~/.ssh/firstVM_key.pem_ の部分は、実際に保存した秘密キーのパスを指定
+- _xxx.xxx.xxx.xxx_ の部分は、先ほど記録した「パブリック IP アドレス」を指定
+- 初回に接続する際には、「接続先を信頼するか」「鍵ファイルを記録するか」等の確認メッセージが出るので、Yes/OKして進む
+
+
+### Windowsの場合
+
+コマンドプロンプト、またはPower Shellを開き、次の様にsshで接続します。
+
+```
+ssh -i C:\Users\username\.ssh\firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
+```
+
+- _C:\Users\username\.ssh\firstVM_key.pem_ の部分は、実際に保存した秘密キーのパスを指定
+- _xxx.xxx.xxx.xxx_ の部分は、先ほど記録した「パブリック IP アドレス」を指定
+- 初回に接続の際に確認メッセージが出るので、Yes/OKして進む　（※実際のメッセージを確認）
+
+あるいは、「[rlogin]()」等のターミナルエミュレーターを利用してもOKです。（秘密鍵ファイルを指定して接続）
+
+
+## Webサーバー(nginx)のインストール
+
+VMに接続できたら、その状態でWebサーバ([nginx](https://www.nginx.com/resources/wiki/))をインストールして動かします。
+※手物とのマシン(Mac/Linux/Windows)ではなく、先ほど接続したVMに対して操作します。
+
+### VMのパッケージを更新
+
+```
+sudo apt update
+sudo apt upgrade
+```
+
+### nginxのインストール
+
+```
+sudo apt install nginx
+ps -ef | grep nginx
+```
+
+ここでnginxのプロセスがいくつか表示されればOKです。
+
+※図をいれる
+
+### httpポートの公開
+
+Azureの持つネットワークの保護機能により、このままではhttpポート(80/tcp)は外部からアクセスアクセスできません。そこで、ポータル画面がから明示的にアクセスを許可します。
+
+
+
