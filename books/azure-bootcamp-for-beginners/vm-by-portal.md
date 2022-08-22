@@ -144,13 +144,21 @@ ssh -i C:\Users\username\.ssh\firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 - _xxx.xxx.xxx.xxx_ の部分は、先ほど記録した「パブリック IP アドレス」を指定
 - 初回に接続の際に確認メッセージが出るので、Yes/OKして進む　（※実際のメッセージを確認）
 
-あるいは、「[rlogin]()」等のターミナルエミュレーターを利用してもOKです。（秘密鍵ファイルを指定して接続）
+あるいは、「[RLogin](https://kmiya-culti.github.io/RLogin/)」等のターミナルエミュレーターを利用してもOKです。（秘密キーのファイルを指定して接続）
 
 
 ## Webサーバー(nginx)のインストール
 
 VMに接続できたら、その状態でWebサーバ([nginx](https://www.nginx.com/resources/wiki/))をインストールして動かします。
 ※手物とのマシン(Mac/Linux/Windows)ではなく、先ほど接続したVMに対して操作します。
+
+### nginxとは
+
+- オープンソースのWebサーバー
+- リバースプロキシ、ロードバランサ機能を持つ
+- 処理性能や並行性が高い、メモリ使用量が小さい
+- Apacheを超えるシェア
+
 
 ### VMのパッケージを更新
 
@@ -166,13 +174,61 @@ sudo apt install nginx
 ps -ef | grep nginx
 ```
 
-ここでnginxのプロセスがいくつか表示されればOKです。
+ここでnginxのプロセスがいくつか表示されればOKです。（おそらく2つ）
 
 ※図をいれる
+
+インストールが終わると、上記のように自動的に起動します。また関連するファイルは次の場所に保管されています。
+
+- 実行バイナリ ... /usr/sbin/nginx
+- 設定ファイル ... /etc/nginx/
+- HTMLファイル ... /var/www/html/
+
+※要確認
+
 
 ### httpポートの公開
 
 Azureの持つネットワークの保護機能により、このままではhttpポート(80/tcp)は外部からアクセスアクセスできません。そこで、ポータル画面がから明示的にアクセスを許可します。
 
+
+### HTMLファイルを追加
+次に、HTMLファイルを追加してみましょう。
+VMのターミナルで操作（#の行は入力しない）
+
+htmlのディレクトリに移動
+
+```
+cd /var/www/html
+```
+
+
+エディターでファイルを編集(vi/vim, emacs, nano等で好きなものを利用してください）
+
+```
+vi hello.html
+```
+
+たとえば次の内容など。好きな内容で良いですが、"BOOTCAMP" の部分はあとで利用するので、どこか1箇所に入れてください。
+hello.htmlの内容
+
+```html
+<!DOCTYPE html>
+<html>
+ <body>
+  <h2>Hello, BOOTCAMP!</h2>
+ </body>
+</html>
+```
+
+※viを利用しているケースでコピー＆ペーストで文字が欠ける場合は、次の方法で対処できます。
+ペーストモードを使う
+viの中で、「:set paste」とcommandを入力
+※元のモードに戻るには「:set nopaste」
+1行ずつコピー＆ペーストする
+Windowsの場合、別のターミナルアプリをインストールして利用する
+例） RLogin http://nanno.dip.jp/softlib/man/rlogin/
+
+ファイルを保存してからローカルのブラウザで http://xxx.xxx.xxx.xxx/hello.html にアクセスしてください。次のように表示さればOKです。
 
 
