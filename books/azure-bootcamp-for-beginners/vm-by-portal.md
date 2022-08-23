@@ -58,6 +58,7 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
   - 仮想マシン名 ... 作成するVMの名前。任意に指定（例えば _firstVM_ など）
   - 地域 ... Japan Eastなど
   - イメージ ... OSの種類。今回は「Ubuntu Server 20.04LTS - Gen2」を選択
+    - ※選択が反映されない場合は、一度たのイメージを洗濯してから、再度「Ubuntu Server 20.04LTS - Gen2」を選択
 
 ![新規VM指定1](/images/azure_new_vm_panel1.png)
 
