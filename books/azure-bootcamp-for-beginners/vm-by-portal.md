@@ -287,7 +287,7 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
 ![DNS指定](/images/azure_dns_name.png)
 
 - ブラウザで指定したDNS名を使ったURLにアクセス
-  - http://_dnsname_.japaneast.cloudapp.azure.com/hello.html (※今回の例)
+  - http://_firstvm77_.japaneast.cloudapp.azure.com/hello.html (※今回の例)
 
 
 ## 後片付け
