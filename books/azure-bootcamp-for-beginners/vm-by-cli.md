@@ -61,6 +61,31 @@ $ az version
   - ただし、先頭の\$ はプロンプトなので入力しない
 - ※先頭に「\$」の無い行が出力結果
 
+azコマンドの詳細は、公式リファレンスを参照してください
+
+- https://docs.microsoft.com/ja-jp/cli/azure/reference-index?view=azure-cli-latest
+
 
 ## CLIでリソースグループを作成
 
+Cloud Shell上で、CLI(azコマンド)を使って、リソースグループを作成します。この例では作成するリソースグループ名を「myCLIgroup」とします。
+
+```
+$ az group create --name myCLIgroup --location japaneast
+{
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup",
+  "location": "japaneast",
+  "managedBy": null,
+  "name": "myCLIgroup",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+```
+
+ここでオプション指定は次の通りです。
+
+- --name リソーグループ名を指定
+- --location 作成する地域を指定
