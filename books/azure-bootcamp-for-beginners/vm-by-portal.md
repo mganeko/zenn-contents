@@ -140,7 +140,7 @@ ssh -i ~/.ssh/firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 ssh -i C:\Users\username\.ssh\firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 ```
 
-- _C:\Users\username\.ssh\firstVM_key.pem_ の部分は、実際に保存した秘密キーのパスを指定
+- _C:\Users\username\\.ssh\firstVM_key.pem_ の部分は、実際に保存した秘密キーのパスを指定
 - _xxx.xxx.xxx.xxx_ の部分は、先ほど記録した「パブリック IP アドレス」を指定
 - 初回に接続の際に確認メッセージが出るので、Yes/OKして進む　（※実際のメッセージを確認）
 
@@ -163,14 +163,13 @@ VMに接続できたら、その状態でWebサーバ([nginx](https://www.nginx.
 ### VMのパッケージを更新
 
 ```
-sudo apt update
-sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 ```
 
 ### nginxのインストール
 
 ```
-sudo apt install nginx
+sudo apt install nginx -y
 ps -ef | grep nginx
 ```
 
