@@ -7,11 +7,11 @@ published: false # 公開設定（falseにすると下書き）
 
 この章では、AzureのCLI（コマンドラインインターフェイス）を使って、VMの起動とWebサーバーのセットアップを行います。（コマンドの使い方は2022年8月時点のものです）
 
-コマンドラインから各種操作を行えるようになることが、さまざまな自動化の入り口になります。
+コマンドラインから各種操作を行うことが、さまざまな自動化の入り口になります。
 
 ## azコマンド: Auzre の CLI
 
-Azureの子マインドラインツール(CLI)は「az」コマンドです。インストール方法は公式サイトを参照するのが確実です。
+Azureのコマンドラインインターフェイス(CLI)は「az」コマンドです。インストール方法は公式サイトを参照するのが確実です。
 
 - [Azure CLI をインストールする方法](https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli)
 
@@ -21,7 +21,7 @@ CLIは次の環境で利用できます。
 - Dockerコンテナ
 - Azure Cloud Shell ... Azure Potal上で利用できるコンソール機能
 
-今回は一番手軽な「Azure Cloud Shell」を使います。
+今回は一番手軽な「Azure Cloud Shell」を使います。（CLIのインストール不要）
 
 ## Cloud Shellの開始
 
@@ -40,9 +40,27 @@ CLIは次の環境で利用できます。
 
 ### CLI コマンドの確認
 
+Cloud Shell上で、次のコマンドを実行し、azコマンドが動くことを確認します。
+
 ```
 az version
 ```
+
+出力結果の例:
+
+```
+{
+  "azure-cli": "2.39.0",
+  "azure-cli-core": "2.39.0",
+  "azure-cli-telemetry": "1.0.6",
+  "extensions": {
+    "ai-examples": "0.2.5",
+    "azure-cli-ml": "1.41.0",
+    "ssh": "1.1.2"
+  }
+}
+```
+
 
 ## CLIでリソースグループを作成
 
