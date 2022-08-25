@@ -89,3 +89,39 @@ $ az group create --name myCLIgroup --location japaneast
 
 - --name リソーグループ名を指定
 - --location 作成する地域を指定
+
+実行したら、リソースグループが作成されたことをポータル画面でも確認してください。
+
+## CLIでVMを起動
+
+次はVMを作成して起動します。Cloud Shellからazコマンドを実行します。
+
+```
+$ az vm create \
+  --resource-group myCLIgroup \
+  --name myVM \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --storage-sku StandardSSD_LRS \
+  --admin-username azureuser \
+  --generate-ssh-keys
+
+```
+
+ここでオプション指定は次の通りです。
+
+- --resource-group ... VMを作るリソーグループ名を指定
+- --name ... VMの名前
+- --image ... 元にするOSのイメージ。ここではUbuntu 20.04 LTS-gen2を指定
+  - ※単に UbuntuLTS だと、Ubuntu 18.04 LTSになる (2022年8月現在)
+- --size ... VMのサイズ。ここではメモリ0.5GiBの小さなサイズを指定
+- --public-ip-sku ... パブリックIPアドレスの種類
+- --storage-sku ... ストレージの種類
+- --admin-username ... 管理ユーザーの名前
+- --generate-ssh-keys ... ssh鍵を新しく作る（既存のものを使うことも可能）
+
+実行すると次のような結果が返ってきます。
+
+```
+```
