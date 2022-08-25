@@ -9,6 +9,10 @@ published: false # 公開設定（falseにすると下書き）
 
 コマンドラインから各種操作を行うことが、さまざまな自動化の入り口になります。
 
+こちらの公式サイトの内容をベースにしています。
+
+- [クイック スタート:Azure CLI で Linux 仮想マシンを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/quick-create-cli)
+
 ## azコマンド: Auzre の CLI
 
 Azureのコマンドラインインターフェイス(CLI)は「az」コマンドです。インストール方法は公式サイトを参照するのが確実です。
@@ -44,7 +48,12 @@ Cloud Shell上で、次のコマンドを実行し、azコマンドが動くこ�
 
 
 ```
-$ az version
+az version
+```
+
+実行すると、次のようにバージョン情報が表示されます。
+
+```
 {
   "azure-cli": "2.39.0",
   "azure-cli-core": "2.39.0",
@@ -57,10 +66,6 @@ $ az version
 }
 ```
 
-- ※ここで「\$」で始まる行が入力するコマンド
-  - ただし、先頭の\$ はプロンプトなので入力しない
-- ※先頭に「\$」の無い行が出力結果
-
 azコマンドの詳細は、公式リファレンスを参照してください
 
 - https://docs.microsoft.com/ja-jp/cli/azure/reference-index?view=azure-cli-latest
@@ -71,7 +76,17 @@ azコマンドの詳細は、公式リファレンスを参照してください
 Cloud Shell上で、CLI(azコマンド)を使って、リソースグループを作成します。この例では作成するリソースグループ名を「myCLIgroup」とします。
 
 ```
-$ az group create --name myCLIgroup --location japaneast
+az group create --name myCLIgroup --location japaneast
+```
+
+ここでオプション指定は次の通りです。
+
+- --name リソーグループ名を指定
+- --location 作成する地域を指定
+
+作成が完了すると、次のように結果が表示されます。
+
+```
 {
   "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup",
   "location": "japaneast",
@@ -85,19 +100,16 @@ $ az group create --name myCLIgroup --location japaneast
 }
 ```
 
-ここでオプション指定は次の通りです。
-
-- --name リソーグループ名を指定
-- --location 作成する地域を指定
-
 実行したら、リソースグループが作成されたことをポータル画面でも確認してください。
 
 ## CLIでVMを起動
 
+### VMの作成
+
 次はVMを作成して起動します。Cloud Shellからazコマンドを実行します。
 
 ```
-$ az vm create \
+az vm create \
   --resource-group myCLIgroup \
   --name myVM \
   --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
@@ -106,7 +118,6 @@ $ az vm create \
   --storage-sku StandardSSD_LRS \
   --admin-username azureuser \
   --generate-ssh-keys
-
 ```
 
 ここでオプション指定は次の通りです。
@@ -121,7 +132,121 @@ $ az vm create \
 - --admin-username ... 管理ユーザーの名前
 - --generate-ssh-keys ... ssh鍵を新しく作る（既存のものを使うことも可能）
 
-実行すると次のような結果が返ってきます。
+作成には1分程度かかります。実行すると次のような結果が返ってきます。
 
 ```
+{
+  "fqdns": "",
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup/providers/Microsoft.Compute/virtualMachines/myVM",
+  "location": "japaneast",
+  "macAddress": "xx-xx-xx-xx-xx-xx",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.x",
+  "publicIpAddress": "xxx.xxx.xxx.xxx",
+  "resourceGroup": "myCLIgroup",
+  "zones": ""
+}
 ```
+
+「publicIpAddress」がインターネット側に公開されるパブリックIPアドレスです。後で使うのでこれを記録しておきます。
+
+### VMのパブリックIPアドレスの確認
+
+次のコマンドでVMのIPアドレスを確認することができます。
+
+```
+az vm show --show-details --resource-group myCLIgroup --name myVM --query publicIps -o tsv
+```
+
+後で利用できるように、Cloud Shell上で環境変数に設定しておきましょう。
+
+```
+VMIP=$(az vm show --show-details --resource-group myCLIgroup --name myVM --query publicIps -o tsv)
+echo $VMIP
+```
+
+### VMに接続確認
+
+作成したVMに接続できることを確認します。Cloud ShellからVMを作成した場合、SSHの秘密鍵は自動的に保存されるので、すぐに接続することができます。
+
+```
+ssh azureuser@$VMIP
+```
+
+初回の接続時は「Are you sure you want to continue connecting (yes/no/[fingerprint])? 」と聞かれるので、「yes」と入力して続行してください。
+
+接続できたら「exit」とコマンドを打って、Cloud Shellに戻ります。
+
+## Webサーバー(nginx)のセットアップ
+
+### nginxのインストール
+
+次にVMのアップデートと、Webサーバー(nginx)のインストールを行います。実行には数分かかります。
+
+```
+az vm run-command invoke \
+  --resource-group myCLIgroup \
+  --name myVM \
+  --command-id RunShellScript \
+  --scripts "sudo apt update && sudo apt upgrade -y && sudo apt-get install -y nginx"
+```
+
+ここでオプション指定は次の通りです。
+
+- --resource-group ... VMの所属するリソーグループ名を指定
+- --name ... VMの名前
+- --command-id ... 実行するコマンドの種類
+- --scripts ... 実行するコマンド
+  - ここでは、パッケージの更新とnginxのインストールを実行
+
+
+### httpポートの公開
+
+インターネットからアクセスできるように、Cloud Shellからhttp(80)ポートを公開します。
+
+```
+az vm open-port --port 80 --resource-group myCLIgroup --name myVM
+```
+
+- --port ... アクセスを許可するポート番号。ここでは80番(HTTP) 
+- --resource-group ... VMの所属するリソーグループ名を指定
+- --name ... VMの名前
+
+数十秒待つとポートの公開が完了します。
+このままCloud Shellからcurlコマンドでアクセスして確認します。
+
+```
+curl http://$VMIP
+```
+
+下記のような結果が表示さればOKです。
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+
