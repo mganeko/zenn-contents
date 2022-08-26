@@ -290,3 +290,17 @@ az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: na
 
 - http://_つけた名前_.japaneast.cloudapp.azure.com/ (japan eastに作っている場合)
 
+## VM削除
+
+```
+az vm delete --resource-group myCLIgroup --name myVM
+```
+
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y [enter]」と入力して削除を実行します。
+
+VMが削除されても、次のリソースが残ります。
+
+- ネットワーク セキュリティ グループ
+- パブリック IP アドレス
+- 仮想ネットワーク(VNET)
+
