@@ -116,6 +116,8 @@ az vm create \
   --size Standard_B1ls \
   --public-ip-sku Standard \
   --storage-sku StandardSSD_LRS \
+  --nic-delete-option Delete \
+  --os-disk-delete-option Delete \
   --admin-username azureuser \
   --generate-ssh-keys
 ```
@@ -129,6 +131,10 @@ az vm create \
 - --size ... VMのサイズ。ここではメモリ0.5GiBの小さなサイズを指定
 - --public-ip-sku ... パブリックIPアドレスの種類
 - --storage-sku ... ストレージの種類
+- --nic-delete-option ... VM削除時にネットワークインターフェイスを消すか
+  - 今回は一緒に削除（Delete)
+- --os-disk-delete-option ... VM削除時にOS用ディスクを消すか
+  - 今回は一緒に削除（Delete)
 - --admin-username ... 管理ユーザーの名前
 - --generate-ssh-keys ... ssh鍵を新しく作る（既存のものを使うことも可能）
 
@@ -254,4 +260,33 @@ working. Further configuration is required.</p>
 
 ![nginxデフォルト](/images/azure_nginx_default_page.png)
 
+
+### ページの追加
+
+## DNSの設定
+
+パブリックIPアドレスに対して、DNS名を設定します。
+
+```
+IPNAME=$(az network public-ip list --resource-group myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name}" -o tsv)
+echo $IPNAME
+```
+
+dnsを指定
+
+```
+az network public-ip update --resource-group myCLIgroup -n $IPNAME --dns-name my-dns-name-2022 
+```
+
+「_my-dns-name-2022_」の部分はその地域（リージョン）で一意となる（他のユーザーのつける名前と重ならない）ように、名前を選んでください。
+
+確認
+
+```
+az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name, fqdn: dnsSettings.fqdn, address: ipAddress}"
+```
+
+ブラウザでアクセス
+
+- http://_つけた名前_.japaneast.cloudapp.azure.com/ (japan eastに作っている場合)
 
