@@ -304,3 +304,128 @@ VMが削除されても、次のリソースが残ります。
 - パブリック IP アドレス
 - 仮想ネットワーク(VNET)
 
+## シェルスクリプトでVM再作成
+
+次の前提のもと、シェルスクリプトで一連の処理（VMの作成〜Webサーバーのインストールまで）を実行します。
+
+- リソースグループ作成済み
+- パブリックIP作成済み
+- 仮想ネットワーク(VNET)がある
+- ネットワークセキュリティグループで、HTTP(80)ポートを許可済み
+
+シェルスクリプトの内容
+
+setup_web_vm.sh
+
+```
+#!/bin/sh
+#
+# setup_web_vm.sh
+#
+# usege:
+#   sh setup_web_vm.sh resorucegoupname vmname ipname nsg
+
+# -- param --
+RGNAME=$1
+VMNAME=$2
+IPNAME=$3
+NSG=$4
+echo "ResourceGroup Name=" + $RGNAME
+echo "VM Name=" + $VMNAME
+echo "PublicIP Name=" + $IPNAME
+echo "Network Security Group=" $NSG
+
+# -- create VM ---
+echo "-- creating VM name=" $VMNAME " --"
+az vm create \
+  --resource-group $RGNAME \
+  --name $VMNAME \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-address $IPNAME \
+  --public-ip-sku Standard \
+  --nsg $NSG \
+  --storage-sku StandardSSD_LRS \
+  --nic-delete-option Delete \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys
+
+echo "create VM result:" $?
+
+# -- update VM --
+echo "-- update VM name=" $VMNAME " --"
+az vm run-command invoke \
+  --resource-group $RGNAME \
+  --name $VMNAME \
+  --command-id RunShellScript \
+  --scripts "sudo apt update && sudo apt upgrade -y"
+echo "update VM result:" $?
+
+# -- install nginx --
+echo "-- install Nginx --"
+az vm run-command invoke \
+  --resource-group $RGNAME \
+  --name $VMNAME \
+  --command-id RunShellScript \
+  --scripts "sudo apt-get install -y nginx"
+echo "intall nginx result:" $?
+
+# -- access check --
+IPADDR=$(az network public-ip show --resource-group $RGNAME --name $IPNAME --query  ipAddress -o tsv)
+echo "IP address=" $IPADDR
+echo "-- access test: curl http://$IPADDR --"
+curl http://$IPADDR
+echo "curl result:" $?
+
+
+# -- finish --
+echo "-- setup VM and Web(nginx) DONE ---"
+exit 0
+
+```
+
+
+
+
+## シェルスクリプトでVM削除
+
+```
+#!/bin/sh
+#
+# delete_vm.sh
+#
+# usege:
+#   sh delete_vm.sh resorucegoupname vmname
+
+# -- param --
+RGNAME=$1
+VMNAME=$2
+echo "ResourceGroup Name=" + $RGNAME
+echo "VM Name=" + $VMNAME
+
+# -- delete VM ---
+echo "-- deleting VM name=" $VMNAME " --"
+az vm delete --resource-group $RGNAME --name $VMNAME
+echo "delete VM result:" $?
+
+```
+
+
+
+## 全てのリソースの削除
+
+最後に後片付けとして、リソースグループごと全てのリソースを削除します。
+
+```
+az group delete --name myCLIgroup
+```
+
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除実行してください。
+
+
+## まとめ/次回予告
+
+AzureでVMを作る/削除する操作を、コマンドラインインターフェイスの az コマンドを使って実施しました。次はロードバランサーの一種であるApplication Gatewayを使って、簡易的なBlue/Greenデプロイ（サービスを止めずに切り替えるデプロイ方法）をやってみる予定です。
+
+
