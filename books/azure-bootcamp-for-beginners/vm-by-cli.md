@@ -313,7 +313,7 @@ VMが削除されても、次のリソースが残ります。
 - 仮想ネットワーク(VNET)がある
 - ネットワークセキュリティグループで、HTTP(80)ポートを許可済み
 
-シェルスクリプトの内容
+### シェルスクリプトの内容
 
 setup_web_vm.sh
 
@@ -334,6 +334,7 @@ echo "ResourceGroup Name=" + $RGNAME
 echo "VM Name=" + $VMNAME
 echo "PublicIP Name=" + $IPNAME
 echo "Network Security Group=" $NSG
+echo ""
 
 # -- create VM ---
 echo "-- creating VM name=" $VMNAME " --"
@@ -352,6 +353,8 @@ az vm create \
   --generate-ssh-keys
 
 echo "create VM result:" $?
+echo ""
+
 
 # -- update VM --
 echo "-- update VM name=" $VMNAME " --"
@@ -361,6 +364,7 @@ az vm run-command invoke \
   --command-id RunShellScript \
   --scripts "sudo apt update && sudo apt upgrade -y"
 echo "update VM result:" $?
+echo ""
 
 # -- install nginx --
 echo "-- install Nginx --"
@@ -369,7 +373,8 @@ az vm run-command invoke \
   --name $VMNAME \
   --command-id RunShellScript \
   --scripts "sudo apt-get install -y nginx"
-echo "intall nginx result:" $?
+echo "install nginx result:" $?
+echo ""
 
 # -- access check --
 IPADDR=$(az network public-ip show --resource-group $RGNAME --name $IPNAME --query  ipAddress -o tsv)
@@ -377,12 +382,25 @@ echo "IP address=" $IPADDR
 echo "-- access test: curl http://$IPADDR --"
 curl http://$IPADDR
 echo "curl result:" $?
+echo ""
 
 
 # -- finish --
 echo "-- setup VM and Web(nginx) DONE ---"
+echo ""
+
 exit 0
 
+```
+
+### シェルスクリプトの実行
+
+用意したリソースグループ名、今回作成するVM名、作成済みのパブリックIPの名前、作成済みのネットワークセキュリティグループの名前、を指定して起動します。
+
+例)
+
+```
+sh setup_web_vm.sh myCLIgroup myWebVM myVMPublicIP myVMNSG
 ```
 
 
@@ -403,11 +421,13 @@ RGNAME=$1
 VMNAME=$2
 echo "ResourceGroup Name=" + $RGNAME
 echo "VM Name=" + $VMNAME
+echo ""
 
 # -- delete VM ---
 echo "-- deleting VM name=" $VMNAME " --"
 az vm delete --resource-group $RGNAME --name $VMNAME
 echo "delete VM result:" $?
+echo ""
 
 ```
 
