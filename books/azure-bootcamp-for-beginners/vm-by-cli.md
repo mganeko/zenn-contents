@@ -323,17 +323,47 @@ setup_web_vm.sh
 # setup_web_vm.sh
 #
 # usege:
-#   sh setup_web_vm.sh resorucegoupname vmname ipname nsg
+#   sh setup_web_vm.sh resorucegoupname vmname
 
 # -- param --
+if [ $# -ne 2 ]; then
+  echo "ERROR: Please specify ResourceGroupName and VMName (2 args)."
+  exit 1
+fi
+
 RGNAME=$1
 VMNAME=$2
-IPNAME=$3
-NSG=$4
-echo "ResourceGroup Name=" + $RGNAME
-echo "VM Name=" + $VMNAME
-echo "PublicIP Name=" + $IPNAME
-echo "Network Security Group=" $NSG
+IPNAME=""
+NSG=""
+
+echo "ResourceGroup Name=" $RGNAME
+echo "VM Name=" $VMNAME
+echo ""
+
+# -- get PubliIP name --
+IPNAME=$(az network public-ip list -g $RGNAME --query "[?ipConfiguration == null].{name: name}" --output tsv)
+
+if [ -n "$IPNAME" ]; then
+  echo "PublicIP found:" $IPNAME
+else
+  echo "ERROR: Available PublicIP NOT FOUND."
+  exit 2
+fi
+
+# -- get NSG name --
+NSG=$(az network nsg list --resource-group $RGNAME --query "[].{name: name}" --output tsv)
+
+if [ -n "$NSG" ]; then
+  echo "Network Security Group found:" $NSG
+else
+  echo "ERROR: Available Network Security Group NOT FOUND."
+  exit 2
+fi
+
+#echo "ResourceGroup Name=" $RGNAME
+#echo "VM Name=" $VMNAME
+#echo "PublicIP Name=" $IPNAME
+#echo "Network Security Group=" $NSG
 echo ""
 
 # -- create VM ---
@@ -386,7 +416,7 @@ echo ""
 
 
 # -- finish --
-echo "-- setup VM and Web(nginx) DONE ---"
+echo "==== setup VM:" $VMNAME " and Web(nginx) DONE ===="
 echo ""
 
 exit 0
