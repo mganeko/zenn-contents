@@ -425,12 +425,12 @@ exit 0
 
 ### シェルスクリプトの実行
 
-用意したリソースグループ名、今回作成するVM名、作成済みのパブリックIPの名前、作成済みのネットワークセキュリティグループの名前、を指定して起動します。
+用意したリソースグループ名、今回作成するVM名を指定して起動します。実行には数分かかります。
 
-例)
+例) リソースグループ名:myCLIgroup、作成するVM名:myWebVM の場合
 
 ```
-sh setup_web_vm.sh myCLIgroup myWebVM myVMPublicIP myVMNSG
+sh setup_web_vm.sh myCLIgroup myWebVM
 ```
 
 
@@ -460,6 +460,18 @@ echo "delete VM result:" $?
 echo ""
 
 ```
+
+### シェルスクリプトの実行
+
+対象のリソースグループ名、削除するするVM名を指定して起動します。
+
+例) リソースグループ名:myCLIgroup、削除するVM名:myWebVM の場合
+
+```
+sh delete_vm.sh myCLIgroup myWebVM
+```
+
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除実行してください。
 
 
 
