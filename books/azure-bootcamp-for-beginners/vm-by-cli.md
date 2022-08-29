@@ -534,6 +534,9 @@ exit 0
 sh setup_web_vm.sh myCLIgroup myWebVM
 ```
 
+残っていたパブリックIPアドレス、DNS名を引き継いでいるので、ブラウザからアクセスして確認してください。
+
+- http://_つけた名前_.japaneast.cloudapp.azure.com/ (japan eastに作っている場合)
 
 
 
