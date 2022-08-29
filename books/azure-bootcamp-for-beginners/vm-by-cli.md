@@ -263,6 +263,24 @@ working. Further configuration is required.</p>
 
 ### ページの追加
 
+ページ追加も試してみましょう。Cloud Shellから次のコマンドを実行します。
+
+
+```
+az vm run-command invoke \
+  --resource-group myCLIgroup \
+  --name myVM \
+  --command-id RunShellScript \
+  --scripts "sudo echo '<html><body><H2>Hello Azure<h2></body></html>' > /var/www/html/hello.html"
+```
+
+完了したら、ブラウザからアクセスできるか確認してみましょう。
+
+- http//_VMのIPアドレス_/hello.html
+
+「Hello Azure」と表示されればOKです。
+
+
 ## DNSの設定
 
 パブリックIPアドレスに対して、DNS名を設定します。
