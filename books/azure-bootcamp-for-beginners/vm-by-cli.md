@@ -158,7 +158,7 @@ az vm create \
 
 ### VMのパブリックIPアドレスの確認
 
-次のコマンドでVMのIPアドレスを確認することができます。
+次のコマンドでVMのIPアドレスを確認することができます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
 ```
 az vm show --show-details --resource-group myCLIgroup --name myVM --query publicIps -o tsv
@@ -183,7 +183,10 @@ ssh azureuser@$VMIP
 
 接続できたら「exit」とコマンドを打って、Cloud Shellに戻ります。
 
+
 ## Webサーバー(nginx)のセットアップ
+
+リソースグループ名が「myCLIgroup」、VM名が「myVM」とします。
 
 ### nginxのインストール
 
@@ -283,32 +286,58 @@ az vm run-command invoke \
 
 ## DNSの設定
 
-パブリックIPアドレスに対して、DNS名を設定します。
+パブリックIPアドレスに対して、DNS名を設定してみましょう
+
+### パブリックIPの名前を取得
+
+まずパブリックIPの名前を取得し環境変数にセットします。
 
 ```
 IPNAME=$(az network public-ip list --resource-group myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name}" -o tsv)
 echo $IPNAME
 ```
 
-dnsを指定
+### DNS名を指定
+
+次にDNS名を指定します。例えば「_my-dns-name-2022_」を指定する場合は次のコマンドを実行します。
 
 ```
 az network public-ip update --resource-group myCLIgroup -n $IPNAME --dns-name my-dns-name-2022 
 ```
 
-「_my-dns-name-2022_」の部分はその地域（リージョン）で一意となる（他のユーザーのつける名前と重ならない）ように、名前を選んでください。
+ここで「_my-dns-name-2022_」の部分はその地域（リージョン）で一意となる（他のユーザーのつける名前と重ならない）ように、名前を選んでください。
 
-確認
+### DNSの指定を確認
+
+Cloud Shellから次のコマンドを実行します。
 
 ```
 az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name, fqdn: dnsSettings.fqdn, address: ipAddress}"
 ```
 
-ブラウザでアクセス
+次のような結果が表示されればOKです。
+
+```
+[
+  {
+    "address": "xxx.xxx.xxx.xxx",
+    "fqdn": "つけた名前.japaneast.cloudapp.azure.com",
+    "name": "パブリックIPの名前"
+  }
+]
+```
+
+### ブラウザでアクセス
+
+次のURLにブラウザでアクセスし、デフォルトページが表示されればOKです。
 
 - http://_つけた名前_.japaneast.cloudapp.azure.com/ (japan eastに作っている場合)
 
+
+
 ## VM削除
+
+VMの削除もコマンドで実行できます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
 ```
 az vm delete --resource-group myCLIgroup --name myVM
@@ -322,6 +351,7 @@ VMが削除されても、次のリソースが残ります。
 - パブリック IP アドレス
 - 仮想ネットワーク(VNET)
 
+
 ## シェルスクリプトでVM再作成
 
 次の前提のもと、シェルスクリプトで一連の処理（VMの作成〜Webサーバーのインストールまで）を実行します。
@@ -333,7 +363,7 @@ VMが削除されても、次のリソースが残ります。
 
 ### シェルスクリプトの内容
 
-setup_web_vm.sh
+エディタを使い、setup_web_vm.sh を次の内容で作成してください。
 
 ```
 #!/bin/sh
@@ -509,6 +539,8 @@ sh setup_web_vm.sh myCLIgroup myWebVM
 
 ## シェルスクリプトでVM削除
 
+VMを削除するシェルスクリプトは次の通りです。エディタで　「delete_vm.sh」として作成してください。
+
 ```
 #!/bin/sh
 #
@@ -548,7 +580,7 @@ sh delete_vm.sh myCLIgroup myWebVM
 
 ## 全てのリソースの削除
 
-最後に後片付けとして、リソースグループごと全てのリソースを削除します。
+最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myCLIgroup」の場合は次の通りです。
 
 ```
 az group delete --name myCLIgroup
