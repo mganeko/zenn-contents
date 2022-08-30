@@ -108,7 +108,7 @@ az group create --name myCLIgroup --location japaneast
 
 次はVMを作成して起動します。Cloud Shellからazコマンドを実行します。
 
-```
+```shellsession
 az vm create \
   --resource-group myCLIgroup \
   --name myVM \
@@ -140,7 +140,7 @@ az vm create \
 
 作成には1分程度かかります。実行すると次のような結果が返ってきます。
 
-```
+```textfile
 {
   "fqdns": "",
   "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup/providers/Microsoft.Compute/virtualMachines/myVM",
@@ -160,13 +160,13 @@ az vm create \
 
 次のコマンドでVMのIPアドレスを確認することができます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
-```
+```shellsession
 az vm show --show-details --resource-group myCLIgroup --name myVM --query publicIps -o tsv
 ```
 
 後で利用できるように、Cloud Shell上で環境変数に設定しておきましょう。
 
-```
+```shellsession
 VMIP=$(az vm show --show-details --resource-group myCLIgroup --name myVM --query publicIps -o tsv)
 echo $VMIP
 ```
@@ -175,7 +175,7 @@ echo $VMIP
 
 作成したVMに接続できることを確認します。Cloud ShellからVMを作成した場合、SSHの秘密鍵は自動的に保存されるので、すぐに接続することができます。
 
-```
+```shellsession
 ssh azureuser@$VMIP
 ```
 
@@ -192,7 +192,7 @@ ssh azureuser@$VMIP
 
 次にVMのアップデートと、Webサーバー(nginx)のインストールを行います。実行には数分かかります。
 
-```
+```shellsession
 az vm run-command invoke \
   --resource-group myCLIgroup \
   --name myVM \
@@ -213,7 +213,7 @@ az vm run-command invoke \
 
 インターネットからアクセスできるように、Cloud Shellからhttp(80)ポートを公開します。
 
-```
+```shellsession
 az vm open-port --port 80 --resource-group myCLIgroup --name myVM
 ```
 
@@ -224,13 +224,13 @@ az vm open-port --port 80 --resource-group myCLIgroup --name myVM
 数十秒待つとポートの公開が完了します。
 このままCloud Shellからcurlコマンドでアクセスして確認します。
 
-```
+```shellsession
 curl http://$VMIP
 ```
 
 下記のような結果が表示さればOKです。
 
-```
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -269,7 +269,7 @@ working. Further configuration is required.</p>
 ページ追加も試してみましょう。Cloud Shellから次のコマンドを実行します。
 
 
-```
+```shellsession
 az vm run-command invoke \
   --resource-group myCLIgroup \
   --name myVM \
@@ -292,7 +292,7 @@ az vm run-command invoke \
 
 まずパブリックIPの名前を取得し環境変数にセットします。
 
-```
+```shellsession
 IPNAME=$(az network public-ip list --resource-group myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name}" -o tsv)
 echo $IPNAME
 ```
@@ -301,7 +301,7 @@ echo $IPNAME
 
 次にDNS名を指定します。例えば「_my-dns-name-2022_」を指定する場合は次のコマンドを実行します。
 
-```
+```shellsession
 az network public-ip update --resource-group myCLIgroup -n $IPNAME --dns-name my-dns-name-2022 
 ```
 
@@ -311,13 +311,13 @@ az network public-ip update --resource-group myCLIgroup -n $IPNAME --dns-name my
 
 Cloud Shellから次のコマンドを実行します。
 
-```
+```shellsession
 az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: name, fqdn: dnsSettings.fqdn, address: ipAddress}"
 ```
 
 次のような結果が表示されればOKです。
 
-```
+```textfile
 [
   {
     "address": "xxx.xxx.xxx.xxx",
@@ -339,7 +339,7 @@ az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: na
 
 VMの削除もコマンドで実行できます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
-```
+```shellsession
 az vm delete --resource-group myCLIgroup --name myVM
 ```
 
@@ -365,7 +365,7 @@ VMが削除されても、次のリソースが残ります。
 
 エディタを使い、setup_web_vm.sh を次の内容で作成してください。
 
-```
+```shell
 #!/bin/sh
 #
 # setup_web_vm.sh
@@ -530,7 +530,7 @@ exit 0
 
 例) リソースグループ名:myCLIgroup、作成するVM名:myWebVM の場合
 
-```
+```shellsession
 sh setup_web_vm.sh myCLIgroup myWebVM
 ```
 
@@ -544,7 +544,7 @@ sh setup_web_vm.sh myCLIgroup myWebVM
 
 VMを削除するシェルスクリプトは次の通りです。エディタで　「delete_vm.sh」として作成してください。
 
-```
+```shell
 #!/bin/sh
 #
 # delete_vm.sh
@@ -573,7 +573,7 @@ echo ""
 
 例) リソースグループ名:myCLIgroup、削除するVM名:myWebVM の場合
 
-```
+```shellsession
 sh delete_vm.sh myCLIgroup myWebVM
 ```
 
@@ -585,7 +585,7 @@ sh delete_vm.sh myCLIgroup myWebVM
 
 最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myCLIgroup」の場合は次の通りです。
 
-```
+```shellsession
 az group delete --name myCLIgroup
 ```
 
