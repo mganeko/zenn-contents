@@ -194,7 +194,7 @@ Azureの持つネットワークの保護機能により、このままではhtt
 - 左のメニューから「ネットワーク」をクリック
 - 「受信ポートの規則」タブで[受信ポートの規則を追加する]ボタンをクリック
 
-![ネットワーク](/images/azure_vm_network.png =400x)
+![ネットワーク](/images/azure_vm_network.png)
 
 - 受信セキュリティパネルで内容を選択
   - ソース ... Any（そのまま）
@@ -208,9 +208,9 @@ Azureの持つネットワークの保護機能により、このままではhtt
   - 名前 ... 任意のわかりやすい名前（この例では Port_80）
 - [追加]ボタンをクリック
 
-![受信規則1](/images/azure_port_rule1.png)
+![受信規則1](/images/azure_port_rule1.png =400x)
 
-![受信規則2](/images/azure_port_rule2.png)
+![受信規則2](/images/azure_port_rule2.png =400x)
 
 - しばらく経つと受信ポート規則が追加される（反映されない場合はリロード）
 
