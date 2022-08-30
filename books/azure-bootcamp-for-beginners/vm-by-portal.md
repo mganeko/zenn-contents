@@ -19,7 +19,7 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 - 「リソースグループ」で検索し、リソースグループのページに移動
 - [+新規]をクリック
 
-![新規リソース](/images/azure_resouce_group_head.png)
+![新規リソース](/images/azure_resouce_group_head.png =300px)
 
 - リソースグループの新規作成画面が表示されるので、次の項目を指定
   - サブスクリプションを選択 ... 課金単位をまとめるもの
@@ -48,7 +48,7 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 - [+新規]をクリック
   - 出てきたメニューから[Azure 仮想マシン]をクリック
 
-![新規VMメニュー](/images/azure_vm_menu.png)
+![新規VMメニュー](/images/azure_vm_menu.png = 200px)
 
 ### 基本内容の指定
 
@@ -194,7 +194,7 @@ Azureの持つネットワークの保護機能により、このままではhtt
 - 左のメニューから「ネットワーク」をクリック
 - 「受信ポートの規則」タブで[受信ポートの規則を追加する]ボタンをクリック
 
-![ネットワーク](/images/azure_vm_network.png)
+![ネットワーク](/images/azure_vm_network.png =300px)
 
 - 受信セキュリティパネルで内容を選択
   - ソース ... Any（そのまま）
@@ -246,7 +246,7 @@ sudo vi hello.html
 
 hello.htmlの内容
 
-```html
+```html:hello.html
 <!DOCTYPE html>
 <html>
  <body>
@@ -314,7 +314,7 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
 - リソースグループとその配下のリソースが削除される
   - 数分かかる
 
-![リソースグループの削除](/images/azure_delete_resoucegroup_confirm.png)
+![リソースグループの削除](/images/azure_delete_resoucegroup_confirm.png =300px)
 
 ## まとめ/次回予告
 
