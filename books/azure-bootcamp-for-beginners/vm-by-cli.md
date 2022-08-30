@@ -140,7 +140,7 @@ az vm create \
 
 作成には1分程度かかります。実行すると次のような結果が返ってきます。
 
-```textfile
+```textile
 {
   "fqdns": "",
   "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup/providers/Microsoft.Compute/virtualMachines/myVM",
@@ -317,7 +317,7 @@ az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: na
 
 次のような結果が表示されればOKです。
 
-```textfile
+```textile
 [
   {
     "address": "xxx.xxx.xxx.xxx",
@@ -365,7 +365,7 @@ VMが削除されても、次のリソースが残ります。
 
 エディタを使い、setup_web_vm.sh を次の内容で作成してください。
 
-```shell
+```shell:setup_web_vm.sh
 #!/bin/sh
 #
 # setup_web_vm.sh
@@ -544,7 +544,7 @@ sh setup_web_vm.sh myCLIgroup myWebVM
 
 VMを削除するシェルスクリプトは次の通りです。エディタで　「delete_vm.sh」として作成してください。
 
-```shell
+```shell:delete_vm.sh
 #!/bin/sh
 #
 # delete_vm.sh
