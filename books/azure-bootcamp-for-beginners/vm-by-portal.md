@@ -7,6 +7,11 @@ published: false # 公開設定（falseにすると下書き）
 
 この章では、Azureのポータル（Web画面）を使って、VMを起動してWebサーバーを動かしてみます。（画面操作は2022年8月時点のものです）
 
+こちらの公式サイトの内容をベースにしています。
+
+- [クイック スタート:Azure portal で Linux 仮想マシンを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/quick-create-portal)
+
+
 ## 準備：リソースグループ
 
 AuzreではVMなどの色々なサービスの要素（リソース）をまとめて管理する仕組みとして「リソースグループ」を使います。
@@ -302,6 +307,8 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
 - パブリックIPアドレス
 - ネットワークセキュリティグループ
 - SSHキー
+
+![リソース類](/images/azure_resource_block.png)
 
 一つ一つ削除しても良いですが、リソースグループごと削除することで、いっぺんに片付けることができます。
 
