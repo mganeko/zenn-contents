@@ -8,5 +8,5 @@ chapters:
   - about
   - vm-by-portal
   - vm-by-cli
-  - vm-with-application-gateway
+  - blue-green-deploy-with-application-gateway
   
