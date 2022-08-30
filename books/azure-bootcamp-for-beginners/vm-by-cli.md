@@ -47,13 +47,13 @@ CLIは次の環境で利用できます。
 Cloud Shell上で、次のコマンドを実行し、azコマンドが動くことを確認します。
 
 
-```
+```shellsession
 az version
 ```
 
 実行すると、次のようにバージョン情報が表示されます。
 
-```
+```textile
 {
   "azure-cli": "2.39.0",
   "azure-cli-core": "2.39.0",
@@ -75,7 +75,7 @@ azコマンドの詳細は、公式リファレンスを参照してください
 
 Cloud Shell上で、CLI(azコマンド)を使って、リソースグループを作成します。この例では作成するリソースグループ名を「myCLIgroup」とします。
 
-```
+```shellsession
 az group create --name myCLIgroup --location japaneast
 ```
 
@@ -86,7 +86,7 @@ az group create --name myCLIgroup --location japaneast
 
 作成が完了すると、次のように結果が表示されます。
 
-```
+```textile
 {
   "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myCLIgroup",
   "location": "japaneast",
