@@ -604,3 +604,11 @@ az group delete --name myCLIgroup
 AzureでVMを作る/削除する操作を、コマンドラインインターフェイスの az コマンドを使って実施しました。次はロードバランサーの一種であるApplication Gatewayを使って、簡易的なBlue/Greenデプロイ（サービスを止めずに切り替えるデプロイ方法）をやってみる予定です。
 
 
+## シリーズの記事一覧
+
+- 0. [このシリーズについて](azure-bootcamp-0-about)
+- 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+- 3. ロードバランサー（Application Gateway)を使って、その裏でVMを入れ替える
+  - 簡易的な Blue-Green デプロイを行う
+  

@@ -330,3 +330,13 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
 
 Azureを初めて使う人向けに、ポータル画面からの操作を実施しました。次はクラウドならではのコマンドラインからの操作をやってみる予定です。
 
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+
+## シリーズの記事一覧
+
+- 0. [このシリーズについて](azure-bootcamp-0-about)
+- 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+- 3. ロードバランサー（Application Gateway)を使って、その裏でVMを入れ替える
+  - 簡易的な Blue-Green デプロイを行う
+
