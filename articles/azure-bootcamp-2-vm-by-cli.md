@@ -3,7 +3,7 @@ title: "Azure CLIを使って、コマンドでVMを起動する" # 記事のタ
 emoji: "💻" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # CLIを使ってみよう
@@ -611,4 +611,3 @@ AzureでVMを作る/削除する操作を、コマンドラインインターフ
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
 - 3. ロードバランサー（Application Gateway)を使って、その裏でVMを入れ替える
   - 簡易的な Blue-Green デプロイを行う
-  
