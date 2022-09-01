@@ -56,8 +56,9 @@ az group create --name myAGgroup --location japaneast
   - レベル ... Standard V2を選択
   - 自動スケール ... 今回は実験なので「いいえ」を選択
   - インスタンス数 ... 今回は実験なので「1」を指定
+  - 可用性ゾーン ... 今回は実験なので「なし」を選択
+  - HTTP/2 ... どちらでも良い。ここでは「有効」を選択
+  - 仮想ネットワークの構成で、「新規作成」をクリック
 
 ![新規ゲートウェイ1](/images/azure_new_app_gateway1.png)
-
-- 「基本」タブの続き
-
+![新規ゲートウェイ2](/images/azure_new_app_gateway2.png)
