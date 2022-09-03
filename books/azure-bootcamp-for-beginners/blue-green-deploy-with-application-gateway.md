@@ -143,16 +143,35 @@ az group create --name myAGgroup --location japaneast
 - 「確認および作成」タブが表示される
   - 内容を確認
   - [作成]ボタンをクリック
-- 数分後に、Application Gatwayが作成、デプロイされる
+- 数分後に、Application Gatwayがと関連リソースが作成、デプロイされる
+  - VNet
+  - サブネット×2
+  - パブリックIPアドレス
+  - Appllication Gateway
+  - バックエンドプール
+  - リスナー
+  - ルーティング規則
+  - バックエンド設定
+
+![関連リソース](/images/azure_application_gatway_resources.png)
+
+## VMの切り替え 簡易Blue-Greenデプロイ
+
+### Blue-Greenデプロイとは
+
+Blue-Greenデプロイ（デプロイメント）は、アプリケーションの新バージョンをリリースする際に、できるだけ限りダウンタイムを短くするための方法です。次のような手順を取ります。
+
+- 外部からのアクセスは、ルーター等のゲートウェイを経由する
+- 現在稼働中のサーバーを「Blue系」とする
+- 新バージョンのサーバーを「Green系」にデプロイする
+- 「Green系」は非公開のまな、稼働確認テストを行う
+- テストをパスしたら、ゲートウェイ経由の外部からのアクセスを「Green系」に切り替える
+- 「Blue系」へのアクセスが全て無くなったら、「Blue系」を切り離し、シャットダウンする
+
+![Blue-Green](/images/blue_green_deployment.png)
 
 
 
-
-
-
-
-
-  azure_add_backend_pannel
 
 
   
