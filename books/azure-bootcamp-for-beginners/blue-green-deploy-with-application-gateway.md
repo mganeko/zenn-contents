@@ -47,7 +47,7 @@ az group create --name myAGgroup --location japaneast
 
 - Portalで「Application Gateway」を検索
 - 「負荷分散 | Application Gateway」のページを開く
-- [アプリケーションゲートウェイの作成]ボタンをクリック
+- [アプリケーションゲートウェイの作成]（または単に[作成]）ボタンをクリック
 - 「基本」タブで内容を指定
   - サブスクリプション（課金対象）を選択
   - リソースグループ ... 先ほど用意したもの（この例では myAGgroup）を選択
@@ -73,7 +73,7 @@ az group create --name myAGgroup --location japaneast
     - アドレス範囲は 10.1.1.0/24
   - [OK]ボタンをクリック
 
-![新規ゲートウェイ2](/images/azure_new_vnet_pannel.png)
+![新規VNet](/images/azure_new_vnet_pannel.png)
 
 
 - 「アプリケーション ゲートウェイの作成」画面にもどる
@@ -85,7 +85,7 @@ az group create --name myAGgroup --location japaneast
     - [OK] ボタンをクリック
   - 「フロントエンドの数」タブに戻ったら、[次:バックエンド]ボタンをクリック
 
-![新規ゲートウェイ2](/images/azure_new_app_gateway_frontend.png)
+![フロントエンド](/images/azure_new_app_gateway_frontend.png)
 
 - 「バックエンド」タブが表示される
   - 「バックエンド プールの追加」をクリック
@@ -95,6 +95,9 @@ az group create --name myAGgroup --location japaneast
     - [追加]ボタンをクリック
   - 「バックエンド」タブに戻る
     - [次:構成]ボタンをクリック
+
+![バックエンド](/images/azure_add_backend_pannel.png)
+
 
 - 「構成」タブが表示される
   - 真ん中のルーディング規則の「ルーティング規則の追加」をクリック
@@ -107,9 +110,32 @@ az group create --name myAGgroup --location japaneast
       - プロトコル ... HTTPを指定
       - ポート ... 80を入力
       - 追加指定 ... 変更なし（リスナーの種類:BASIC、エラーページのURL:いいえ）
-    - 「バックエンドターゲット」タブを選択
-      - 
+   - 「ルーティング規則の追加」パネルに戻る
 
+![リスナー](/images/azure_appgateway_routing_listener.png)
+
+- 「構成」タブの中
+  - 「ルーティング規則の追加」パネルに戻った後
+    - 「バックエンドターゲット」タブを選択
+      - ターゲットの種類 ... 「バックエンドプール」を選択
+      - バックエンドターゲット ... 作成済みの「myBackendPool」を指定
+      - バックエンド設定 ... 「新規追加」をクリックして、あたらしく作成
+    - 「バックエンドの設定パネル」が開く
+
+![バックエンドターゲット](/images/azure_appgateway_routing_backend_target.png)
+
+- 「バックエンドの設定パネルが開く」が表示された後
+  - バックエンド設定名 ... 例えば myHttpSetting
+  - バックエンドプロトコル ... HTTPを選択
+  - バックエンドポート ... 80
+  - 追加設定、ホスト名等 ... そのまま
+  - [追加ボタン]をクリック、元の画面に戻る
+
+![リスナー](/images/azure_appgateway_routing_add_backend.png)
+
+- 「ルーティング規則の追加」パネルに戻った後
+  - [追加ボタン]をクリック、「構成」タブに戻る
+-「構成」タブに戻った後
   - [次：タグ]ボタンをクリック
 - 「タグ」タブが表示される
   - 追加指定なし
