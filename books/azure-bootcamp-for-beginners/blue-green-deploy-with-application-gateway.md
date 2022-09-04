@@ -284,6 +284,8 @@ sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
 
 ### cloud-initを用いたVM作成
 
+NIC1を使う場合
+
 ```
 az vm create \
   --resource-group myAGgroup \
@@ -300,12 +302,61 @@ az vm create \
   --custom-data cloud-init-work.txt
 ```
 
+NIC2を使う場合
+
+```
+az vm create \
+  --resource-group myAGgroup \
+  --name myVMgreen \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --storage-sku StandardSSD_LRS \
+  --nics myNic2 \
+  --nic-delete-option Detach \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --custom-data cloud-init-work.txt
+```
+
+VMとNICを作成、public-ip なし、サブネット指定
+
+```
+SERVERNAME=myVMyellow
+
+az vm create \
+  --resource-group myAGgroup \
+  --name $SERVERNAME \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --public-ip-address "" \
+  --subnet myBackendSubnet \
+  --vnet-name myVNet \
+  --nsg "" \
+  --storage-sku StandardSSD_LRS \
+  --nic-delete-option Delete \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --custom-data cloud-init-work.txt
+```
+
+プライベートIPアドレス取得
+
+```
+PRIVATEID=$(az vm show --show-details --resource-group myAGgroup --name $SERVERNAME --query privateIps -o tsv)
+echo $PRIVATEID
+
+```
+
 動作確認
 
 ```shellsession
 az vm run-command invoke \
   --resource-group myAGgroup \
-  --name myVMblue \
+  --name $SERVERNAME \
   --command-id RunShellScript \
   --scripts "ps -ef | grep nodejs | grep index.js"
 ```
@@ -339,7 +390,7 @@ az vm run-command invoke \
 ```
 az network application-gateway address-pool update -g myAGgroup \
   --gateway-name myAppGateway -n myBackendPool \
-  --add backendAddresses ipAddress=$address1
+  --add backendAddresses ipAddress=$PRIVATEID
 ```
 
 一覧
@@ -347,6 +398,15 @@ az network application-gateway address-pool update -g myAGgroup \
 ```
 az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool
 ```
+
+削除
+
+```
+az network application-gateway address-pool update -g myAGgroup \
+--gateway-name myAppGateway -n myBackendPool \
+--remove backendAddresses 0
+```
+
 
 アクセス確認
 
