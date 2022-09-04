@@ -171,9 +171,186 @@ Blue-Greenデプロイ（デプロイメント）は、アプリケーション�
 ![Blue-Green](/images/blue_green_deployment.png)
 
 
+### 今回目指すこと
+
+今回はApplication Gatwayを使って、バックエンドのVMの作成、切り替え、削除を Blue-Greenデプロイします。複数回繰り返せるように、必要な処理を実行するシェルスクリプトを準備します。
+
+またテストと外部からのアクセス有無の確認を省略しているため、「簡易」Blue-Greenデプロイと位置付けています。
+
+### ネットワークインターフェイスの作成
+
+VMの作成に先立ち、ネットワークインターフェイスを2つ作成します。これをVMの世代を跨って利用します。
+
+Cloud Shell上から次のコマンドを実行します。
+
+```shellsession
+az network nic create \
+  --resource-group myAGgroup \
+  --name myNic1 \
+  --vnet-name myVNet \
+  --subnet myBackendSubnet
+
+az network nic create \
+  --resource-group myAGgroup \
+  --name myNic2 \
+  --vnet-name myVNet \
+  --subnet myBackendSubnet
+```
+
+ここでオプション指定は次の通りです。
+
+- --resource-group ... VMの所属するリソーグループ名を指定
+- --name ... ネットワークインターフェイスの名前
+- --vnet-name  ... 対象となる仮想ネットワーク名
+- --subnet ... 対象となるサブネット名
+
+自分が用意したリソースグループ名、仮想ネットワーク名、サブネット名に合わせて指定してください。
+
+
+アドレス取得
+
+```
+address1=$(az network nic show --name myNic1 --resource-group myAGgroup | grep "\"privateIpAddress\":" | grep -oE '[^ ]+$' | tr -d '",')
+address2=$(az network nic show --name myNic2 --resource-group myAGgroup | grep "\"privateIpAddress\":" | grep -oE '[^ ]+$' | tr -d '",')
+
+
+echo $address1 $address2
+```
 
 
 
-  
+### VM作成時の初期化処理：cloud-initの利用
 
+多くのクラウドプラットフォームでは、VM作成時に初期化処理を行う [cloud-init](https://cloudinit.readthedocs.io/en/latest/) をサポートしています。もちろんAzureでも利用できます。
+
+- [Azure での仮想マシンに対する cloud-init のサポート](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/using-cloud-init)
+
+今回はNode.jsを利用したサーバーを起動します。初期化には cloud-initを使いますが、VM作成時に一部変更できるように、テンプレートファイルとシェルスクリプトを併用します。
+
+```yaml:cloud-init-template.txt
+#cloud-config
+package_upgrade: true
+packages:
+  - nodejs
+  - npm
+write_files:
+  - owner: azureuser:azureuser
+    path: /home/azureuser/myapp/index.js
+    content: |
+      const express = require('express')
+      const app = express()
+      const os = require('os');
+      const port = 8080;
+      const helloMessage = 'HELLOMESSAGE';
+      app.get('/', function (req, res) {
+        res.send('Hello, ' + helloMessage);
+      });
+      app.listen(port, function () {
+        console.log('Hello app listening on port ' + port);
+      });
+runcmd:
+  - cd "/home/azureuser/myapp"
+  - npm init
+  - npm install express -y
+  - nodejs index.js
+```
+
+```shell:prepare_cloudinit.sh
+#!/bin/sh
+#
+# prepare_cloudinit.sh
+#
+# usege:
+#   sh prepare_cloudinit.sh message
+
+# --- check args ---
+if [ $# -ne 1 ]; then
+  echo "ERROR: Please specify Message (1 arg)." 1>&2
+  exit 1
+fi
+MESSAGE=$1
+
+# -- copy template-file to work-file --
+cp cloud-init-template.txt cloud-init-work.txt
+
+# -- replate message variable --
+sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
+
+```
+
+
+### 空いているNICを探す
+
+
+### cloud-initを用いたVM作成
+
+```
+az vm create \
+  --resource-group myAGgroup \
+  --name myVMblue \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --storage-sku StandardSSD_LRS \
+  --nics myNic1 \
+  --nic-delete-option Detach \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --custom-data cloud-init-work.txt
+```
+
+動作確認
+
+```shellsession
+az vm run-command invoke \
+  --resource-group myAGgroup \
+  --name myVMblue \
+  --command-id RunShellScript \
+  --scripts "ps -ef | grep nodejs | grep index.js"
+```
+
+```
+az vm run-command invoke \
+  --resource-group myAGgroup \
+  --name myVMblue \
+  --command-id RunShellScript \
+  --scripts "curl http://localhost:8080/"
+```
+
+結果
+
+```
+{
+  "value": [
+    {
+      "code": "ProvisioningState/succeeded",
+      "displayStatus": "Provisioning succeeded",
+      "level": "Info",
+      "message": "Enable succeeded: \n[stdout]\nHello, HELLOMESSAGEVAR\n[stderr]\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    22  100    22    0     0    157      0 --:--:-- --:--:-- --:--:--   157\n",
+      "time": null
+    }
+  ]
+}
+```
+
+バックエンドに追加
+
+```
+az network application-gateway address-pool update -g myAGgroup \
+  --gateway-name myAppGateway -n myBackendPool \
+  --add backendAddresses ipAddress=$address1
+```
+
+一覧
+
+```
+az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool
+```
+
+アクセス確認
+
+```
+curl http://パブリックIPアドレス/
+```
 

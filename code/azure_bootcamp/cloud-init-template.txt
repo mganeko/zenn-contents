@@ -1,0 +1,25 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - nodejs
+  - npm
+write_files:
+  - owner: azureuser:azureuser
+    path: /home/azureuser/myapp/index.js
+    content: |
+      const express = require('express')
+      const app = express()
+      const os = require('os');
+      const port = 8080;
+      const helloMessage = 'HELLOMESSAGEVAR';
+      app.get('/', function (req, res) {
+        res.send('Hello, ' + helloMessage);
+      });
+      app.listen(port, function () {
+        console.log('Hello app listening on port ' + port);
+      });
+runcmd:
+  - cd "/home/azureuser/myapp"
+  - npm init
+  - npm install express -y
+  - nodejs index.js
