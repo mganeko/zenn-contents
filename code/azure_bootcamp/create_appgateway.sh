@@ -21,23 +21,6 @@ SUBNET2="myBackendSubnet"
 SUBNET2RANGE="10.1.1.0/24"
 PUBLICIPNAME="myAGPublicIPAddress"
 
-
-# --- test app gateway ---
-echo "-- test create app-gateway --"
-az network application-gateway create \
-  --name $APPGATEWAY \
-  --location japaneast \
-  --resource-group $RESOUCEGROUP \
-  --capacity 1 \
-  --sku Standard_v2 \
-  --public-ip-address $PUBLICIPNAME \
-  --vnet-name $VNET \
-  --subnet $SUBNET1 \
-  --priority 100
-echo $?
-echo " ---- end ---"
-exit 0
-
 # --- create VNet and gateway subnet ---
 az network vnet create \
   --name $VNET \
@@ -64,7 +47,7 @@ az network public-ip create \
   --allocation-method Static \
   --sku Standard
 
-PUBLICIPADDR=az network public-ip list -g myAGgroup --query "[?name == '$PUBLICIPNAME'].{ip: ipAddress}" -o tsv
+PUBLICIPADDR=$(az network public-ip list -g myAGgroup --query "[?name == '$PUBLICIPNAME'].{ip: ipAddress}" -o tsv)
 echo "-- PublicIP created. address=" $PUBLICIPADDR " --"
 
 
@@ -77,11 +60,27 @@ az network application-gateway create \
   --resource-group $RESOUCEGROUP \
   --capacity 1 \
   --sku Standard_v2 \
+  --frontend-port 80 \
+  --http-settings-port 80 \
+  --http-settings-protocol Http \
   --public-ip-address $PUBLICIPNAME \
   --vnet-name $VNET \
   --subnet $SUBNET1 \
   --priority 100
 
+# listner, bakend pool, rule が自動作成
 
+# appGatewayBackendPool
+#   rule1
+#     listner ... appGatwayHttpListener
+#     backendTarget ... appGatewayBackendPool
+#       appGatewayBakcendHttpSettings 
+# ....    backendPort 80 --> 8080 にしたい
+
+# fontEnd
+#   appGatewayFrontendIP ... myAGPublicIPAdddre
+#     appGatewayHttpListener
+#       port 80
+#       rule .. rule1
 
 
