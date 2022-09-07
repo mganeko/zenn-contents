@@ -96,7 +96,7 @@ az group create --name myAGgroup --location japaneast
   - 「バックエンド」タブに戻る
     - [次:構成]ボタンをクリック
 
-![バックエンド](/images/azure_add_backend_pannel.png)
+![バックエンド](/images/azure_add_backend_pannel.png =400x)
 
 
 - 「構成」タブが表示される
