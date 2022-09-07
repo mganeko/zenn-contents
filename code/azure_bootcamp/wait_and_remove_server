@@ -28,13 +28,26 @@ function checkServerReady() {
     --name $SERVERNAME \
     --command-id RunShellScript \
     --scripts "ps -ef | grep nodejs | grep index.js" | grep index.js
-  RET=$?
-  return $RET
+  return $?
 }
 
 # --- loop for server ready ---
 function waitLoopServerReady() {
-  
+  for COUNT in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+  do
+    echo "- wait 10 sec. count:$COUNT --"
+    sleep 1
+    checkServerReady
+    local RET=$?
+
+    if [ $RET -eq 0 ]; then
+      echo "-- OK: new server is READY --"
+      return 0
+    fi
+  done
+
+  echo "-- ERROR: new server is NOT READY --"
+  return 1
 }
 
 # ============= main ==============
@@ -44,6 +57,13 @@ ARGNUM=$#
 checkArgs $ARGNUM
 
 SERVERNAME=$1
+
+# -- wait for new server --
+waitLoopServerReady
+RET=$?
+
+exit $RET
+
 
 
 
