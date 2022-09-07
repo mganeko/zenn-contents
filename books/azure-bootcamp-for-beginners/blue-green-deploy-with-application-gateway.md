@@ -102,6 +102,7 @@ az group create --name myAGgroup --location japaneast
 - 「構成」タブが表示される
   - 真ん中のルーディング規則の「ルーティング規則の追加」をクリック
   - 「ルーティング規則の追加」パネルが表示される
+    - 「ルーティング」タブが選択されている
     - ルール名を指定。この例では myHttpRule
     - 優先度を指定。例えば 300
     - 「リスナー」タブでリスナーを指定
@@ -115,23 +116,23 @@ az group create --name myAGgroup --location japaneast
 ![リスナー](/images/azure_appgateway_routing_listener.png)
 
 - 「構成」タブの中
-  - 「ルーティング規則の追加」パネルに戻った後
+  - 「ルーティング規則の追加」パネルの中で操作を継続
     - 「バックエンドターゲット」タブを選択
       - ターゲットの種類 ... 「バックエンドプール」を選択
       - バックエンドターゲット ... 作成済みの「myBackendPool」を指定
       - バックエンド設定 ... 「新規追加」をクリックして、あたらしく作成
     - 「バックエンドの設定パネル」が開く
 
-![バックエンドターゲット](/images/azure_appgateway_routing_backend_target.png)
+![バックエンドターゲット](/images/azure_appgateway_routing_backend_target2.png)
 
 - 「バックエンドの設定パネルが開く」が表示された後
   - バックエンド設定名 ... 例えば myHttpSetting
   - バックエンドプロトコル ... HTTPを選択
-  - バックエンドポート ... 80
+  - バックエンドポート ... 8080
   - 追加設定、ホスト名等 ... そのまま
   - [追加ボタン]をクリック、元の画面に戻る
 
-![リスナー](/images/azure_appgateway_routing_add_backend.png)
+![リスナー](/images/azure_appgateway_routing_add_backend2.png)
 
 - 「ルーティング規則の追加」パネルに戻った後
   - [追加ボタン]をクリック、「構成」タブに戻る
@@ -176,48 +177,6 @@ Blue-Greenデプロイ（デプロイメント）は、アプリケーション�
 今回はApplication Gatwayを使って、バックエンドのVMの作成、切り替え、削除を Blue-Greenデプロイします。複数回繰り返せるように、必要な処理を実行するシェルスクリプトを準備します。
 
 またテストと外部からのアクセス有無の確認を省略しているため、「簡易」Blue-Greenデプロイと位置付けています。
-
-### ネットワークインターフェイスの作成
-
-VMの作成に先立ち、ネットワークインターフェイスを2つ作成します。これをVMの世代を跨って利用します。
-
-Cloud Shell上から次のコマンドを実行します。
-
-```shellsession
-az network nic create \
-  --resource-group myAGgroup \
-  --name myNic1 \
-  --vnet-name myVNet \
-  --subnet myBackendSubnet
-
-az network nic create \
-  --resource-group myAGgroup \
-  --name myNic2 \
-  --vnet-name myVNet \
-  --subnet myBackendSubnet
-```
-
-ここでオプション指定は次の通りです。
-
-- --resource-group ... VMの所属するリソーグループ名を指定
-- --name ... ネットワークインターフェイスの名前
-- --vnet-name  ... 対象となる仮想ネットワーク名
-- --subnet ... 対象となるサブネット名
-
-自分が用意したリソースグループ名、仮想ネットワーク名、サブネット名に合わせて指定してください。
-
-
-アドレス取得
-
-```
-address1=$(az network nic show --name myNic1 --resource-group myAGgroup | grep "\"privateIpAddress\":" | grep -oE '[^ ]+$' | tr -d '",')
-address2=$(az network nic show --name myNic2 --resource-group myAGgroup | grep "\"privateIpAddress\":" | grep -oE '[^ ]+$' | tr -d '",')
-
-
-echo $address1 $address2
-```
-
-
 
 ### VM作成時の初期化処理：cloud-initの利用
 
@@ -277,9 +236,6 @@ cp cloud-init-template.txt cloud-init-work.txt
 sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
 
 ```
-
-
-### 空いているNICを探す
 
 
 ### cloud-initを用いたVM作成
