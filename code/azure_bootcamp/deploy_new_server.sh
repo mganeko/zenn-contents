@@ -15,6 +15,7 @@ SERVERNAME=$1
 RGNAME="myAGgroup"
 VNET="myVNet"
 SUBNET="myBackendSubnet"
+BACKENDPOOL="myBackendPool"
 
 # -- create new VM ---
 az vm create \
@@ -41,7 +42,7 @@ echo "VM private IP=" $PRIVATEID
 
 # --- add to backend pool ---
 az network application-gateway address-pool update -g $RGNAME \
-  --gateway-name myAppGateway -n myBackendPool \
+  --gateway-name myAppGateway -n $BACKENDPOOL \
   --add backendAddresses ipAddress=$PRIVATEID
 echo "-- server" $SERVERNAME $PRIVATEID " added to backend pool --"
 

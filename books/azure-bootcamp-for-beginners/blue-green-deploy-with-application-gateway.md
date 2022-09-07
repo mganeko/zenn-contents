@@ -154,7 +154,11 @@ az group create --name myAGgroup --location japaneast
   - ルーティング規則
   - バックエンド設定
 
+Application Gatewayのデプロイが完了すると、関連リソースも含めて次のようなリソースが作成された状態になります。
+
 ![関連リソース](/images/azure_application_gatway_resources.png)
+
+バックエンドプールはまだ何もない空っぽの状態なので、パブリックIPアドレスにブラウザでアクセスすると、「502 Bad Gateway」と表示されます。
 
 ## VMの切り替え 簡易Blue-Greenデプロイ
 
@@ -184,7 +188,7 @@ Blue-Greenデプロイ（デプロイメント）は、アプリケーション�
 
 - [Azure での仮想マシンに対する cloud-init のサポート](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/using-cloud-init)
 
-今回はNode.jsを利用したサーバーを起動します。初期化には cloud-initを使いますが、VM作成時に一部変更できるように、テンプレートファイルとシェルスクリプトを併用します。
+今回はNode.jsを利用したサーバーを起動します。初期化には cloud-initを使いますが、VM作成時に一部を変更できるように、テンプレートファイルとシェルスクリプトを併用します。
 
 ```yaml:cloud-init-template.txt
 #cloud-config

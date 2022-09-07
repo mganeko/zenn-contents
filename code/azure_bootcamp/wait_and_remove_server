@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# check_server_ready.sh
+#
+# usege:
+#   sh wait_new_and_remove_old_server.sh newservername
+
+
+#-- variables --
+RGNAME="myAGgroup"
+SERVERNAME=""
+
+# ============= functions ==============
+
+# -- check args (must be 1) --
+function checkArgs() {
+  if [ $1 -ne 1 ]; then
+    echo "ERROR: Please specify new-servername (1 arg)."
+    exit 1
+  fi
+}
+
+# -- check if server ready --
+function checkServerReady() {
+  # --- check node.js process is running ---
+  az vm run-command invoke \
+    --resource-group myAGgroup \
+    --name $SERVERNAME \
+    --command-id RunShellScript \
+    --scripts "ps -ef | grep nodejs | grep index.js" | grep index.js
+  RET=$?
+  return $RET
+}
+
+# --- loop for server ready ---
+function waitLoopServerReady() {
+  
+}
+
+# ============= main ==============
+
+# -- args --
+ARGNUM=$#
+checkArgs $ARGNUM
+
+SERVERNAME=$1
+
+
+
