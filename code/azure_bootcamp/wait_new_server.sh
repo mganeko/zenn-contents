@@ -35,8 +35,8 @@ function checkServerReady() {
 function waitLoopServerReady() {
   for COUNT in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
   do
-    echo "- wait 10 sec. count:$COUNT --"
-    sleep 1
+    echo "- wait 30 sec. count:$COUNT --"
+    sleep 30
     checkServerReady
     local RET=$?
 
@@ -63,7 +63,3 @@ waitLoopServerReady
 RET=$?
 
 exit $RET
-
-
-
-
