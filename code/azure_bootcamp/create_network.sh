@@ -46,7 +46,7 @@ az network public-ip create \
   --allocation-method Static \
   --sku Standard
 
-PUBLICIPADDR=az network public-ip list -g myAGgroup --query "[?name == '$PUBLICIPNAME'].{ip: ipAddress}" -o tsv
+PUBLICIPADDR=$(az network public-ip list -g myAGgroup --query "[?name == '$PUBLICIPNAME'].{ip: ipAddress}" -o tsv)
 echo "-- PublicIP created. address=" $PUBLICIPADDR " --"
 
 exit 0
