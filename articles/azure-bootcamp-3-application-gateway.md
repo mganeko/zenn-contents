@@ -125,7 +125,7 @@ sh create_network.sh myAGgroup
 初めてなので、Azure Portalから作成します。画面は2022年9月現在のものです。
 
 - Portalで「Application Gateway」を検索
-- 「負荷分散 | Application Gateway」のページを開く
+- 「負荷分散 | Application Gateway」（あるいはアプリケーションゲートウェイ）のページを開く
 - [アプリケーションゲートウェイの作成]（または単に[＋作成]）ボタンをクリック
 - 「基本」タブで内容を指定
   - サブスクリプション（課金対象）を選択
@@ -175,7 +175,6 @@ sh create_network.sh myAGgroup
       - プロトコル ... HTTPを指定
       - ポート ... 80を入力
       - 追加指定 ... 変更なし（リスナーの種類:BASIC、エラーページのURL:いいえ）
-   - 「ルーティング規則の追加」パネルに戻る
 
 ![リスナー](/images/azure_appgateway_routing_listener.png)
 
@@ -200,7 +199,7 @@ sh create_network.sh myAGgroup
 
 - 「ルーティング規則の追加」パネルに戻った後
   - [追加ボタン]をクリック、「構成」タブに戻る
--「構成」タブに戻った後
+- 「構成」タブに戻った後
   - [次：タグ]ボタンをクリック
 - 「タグ」タブが表示される
   - 追加指定なし
