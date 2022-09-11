@@ -149,7 +149,7 @@ sh create_network.sh myAGgroup
   - パブリックIPアドレス ... 作成済みのもの（この例では myAGPublicIPAddress）を選択
   - [次:バックエンド]ボタンをクリック
 
-![フロントエンド](/images/azure_new_app_gateway_frontend.png)
+![フロントエンド](/images/azure_new_app_gateway_front.png)
 
 - 「バックエンド」タブが表示される
   - 「バックエンド プールの追加」をクリック
