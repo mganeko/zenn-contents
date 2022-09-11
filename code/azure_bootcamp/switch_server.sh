@@ -106,8 +106,9 @@ appendToPool
 sleep 5
 
 # --- get count of backend --
-BAKCENDCOUNT=getBackendCount
-if [$BAKCENDCOUNT -eq 1]; then
+getBackendCount
+BAKCENDCOUNT=$?
+if [ $BAKCENDCOUNT -eq 1 ]; then
   echo "only 1 backend. skip removing old server"
   exit 0
 fi

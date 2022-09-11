@@ -5,6 +5,12 @@
 # usege:
 #   sh delete_vm.sh resorucegoupname vmname
 
+# --- check args ---
+if [ $# -ne 2 ]; then
+  echo "ERROR: Please specify resouce-group-name and VM-name (2 args)." 1>&2
+  exit 1
+fi
+
 # -- param --
 RGNAME=$1
 VMNAME=$2

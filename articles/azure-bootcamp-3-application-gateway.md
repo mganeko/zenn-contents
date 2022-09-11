@@ -248,7 +248,7 @@ Blue-Greenデプロイ（デプロイメント）は、アプリケーション�
 
 - [Azure での仮想マシンに対する cloud-init のサポート](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/using-cloud-init)
 
-今回はNode.jsを利用したサーバーを起動します。初期化には cloud-initを使いますが、VM作成時に一部を変更できるように、テンプレートファイルとシェルスクリプトを併用します。
+今回はNode.jsを利用したサーバーを起動します。初期化には cloud-initを使いますが、VM作成時に一部を変更できるように、テンプレートファイルとシェルスクリプトを併用します。次の2つのファイルをCloud Shell上でエディタを使って作成します。
 
 ```yaml:cloud-init-template.txt
 #cloud-config
@@ -301,59 +301,42 @@ sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
 
 ```
 
+このシェルスクリプトでは、テンプレートから cloud-init-work.txt にコピーし、そこに含まれる「HELLOMESSAGE」を引数で与えられたメッセージの文字列に置換します。
 
 ### cloud-initを用いたVM作成
 
-NIC1を使う場合
+新規にVMを作り、先のシェルスクリプトで用意した cloud-init-work.txt を使って初期化するスクリプトを用意します。Cloud Shell上で次のシェルスクリプトを作成します。
 
-```
+```shell:create_new_server.sh
+#!/bin/sh
+#
+# create_new_server.sh
+#
+# usege:
+#   sh create_new_server.sh servername
+
+# --- check args ---
+if [ $# -ne 1 ]; then
+  echo "ERROR: Please specify servername (1 arg)." 1>&2
+  exit 1
+fi
+SERVERNAME=$1
+
+RGNAME="myAGgroup"
+VNET="myVNet"
+SUBNET="myBackendSubnet"
+BACKENDPOOL="myBackendPool"
+
+# -- create new VM ---
 az vm create \
-  --resource-group myAGgroup \
-  --name myVMblue \
-  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
-  --size Standard_B1ls \
-  --public-ip-sku Standard \
-  --storage-sku StandardSSD_LRS \
-  --nics myNic1 \
-  --nic-delete-option Detach \
-  --os-disk-delete-option Delete \
-  --admin-username azureuser \
-  --generate-ssh-keys \
-  --custom-data cloud-init-work.txt
-```
-
-NIC2を使う場合
-
-```
-az vm create \
-  --resource-group myAGgroup \
-  --name myVMgreen \
-  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
-  --size Standard_B1ls \
-  --public-ip-sku Standard \
-  --storage-sku StandardSSD_LRS \
-  --nics myNic2 \
-  --nic-delete-option Detach \
-  --os-disk-delete-option Delete \
-  --admin-username azureuser \
-  --generate-ssh-keys \
-  --custom-data cloud-init-work.txt
-```
-
-VMとNICを作成、public-ip なし、サブネット指定
-
-```
-SERVERNAME=myVMyellow
-
-az vm create \
-  --resource-group myAGgroup \
+  --resource-group $RGNAME \
   --name $SERVERNAME \
   --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
   --size Standard_B1ls \
   --public-ip-sku Standard \
   --public-ip-address "" \
-  --subnet myBackendSubnet \
-  --vnet-name myVNet \
+  --subnet $SUBNET \
+  --vnet-name $VNET \
   --nsg "" \
   --storage-sku StandardSSD_LRS \
   --nic-delete-option Delete \
@@ -361,76 +344,243 @@ az vm create \
   --admin-username azureuser \
   --generate-ssh-keys \
   --custom-data cloud-init-work.txt
+echo "-- server" $SERVERNAME "created --"
+
+# --- get private ip address --
+PRIVATEID=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query privateIps -o tsv)
+echo "VM private IP=" $PRIVATEID
+
+exit 0
+
 ```
 
-プライベートIPアドレス取得
+（リソースグループ名、VNet名、サブネット名など、適宜変更してください）
+
+### サーバーの起動待ちと、バックエンドプールへの追加
+
+新規VMを起動後、実際にNode.jsを使ったサーバアプリが動き出すまでには時間がかかります。そこでサーバーの準備ができるのを待って、古いサーバーから新しいサーバーに切り替えるシェルスクリプトを準備します。これが今回目指す「Blue-Greenデプロイ」のキモになります。
+
+- azコマンド経由で、新VM上で「nodejs index.js」のプロセスが起動していることを確認
+  - 30秒ごとに、10回までチェック
+- プライベートIPアドレスを取得し、バックエンドプールに追加
+- 古いサーバーをバックエンドプールから除外
+  - ※古いサーバーがない場合（バックエンドプールに1つしかサーバーがない場合）は、何もしない
+
+Cloud Shell上で次のシェルスクリプトを作成してください。
+
+```shell:switch_server.sh
+#!/bin/sh
+#
+# swith_server.sh
+#
+# usege:
+#   sh switch_server.sh newservername
+
+#-- variables --
+RGNAME="myAGgroup"
+APPGATEWAY="myAppGateway"
+BACKENDPOOL="myBackendPool"
+SERVERNAME=""
+FISTIP=""
+
+
+# ============= functions ==============
+
+# -- check args (must be 1) --
+function checkArgs() {
+  if [ $1 -ne 1 ]; then
+    echo "ERROR: Please specify new-servername (1 arg)."
+    exit 1
+  fi
+}
+
+# -- check if server ready --
+function checkServerReady() {
+  # --- check node.js process is running ---
+  az vm run-command invoke \
+    --resource-group myAGgroup \
+    --name $SERVERNAME \
+    --command-id RunShellScript \
+    --scripts "ps -ef | grep nodejs | grep index.js" | grep index.js
+  return $?
+}
+
+# --- loop for server ready ---
+function waitLoopServerReady() {
+  for COUNT in 1 2 3 4 5 6 7 8 9 10
+  do
+    echo "- wait 30 sec. count:$COUNT"
+    sleep 30
+    checkServerReady
+    local RET=$?
+
+    if [ $RET -eq 0 ]; then
+      echo "-- OK: new server is READY --"
+      return 0
+    fi
+  done
+
+  echo "-- ERROR: new server is NOT READY --"
+  return 2
+}
+
+# --- get private ip address --
+function getPrivateIP() {
+  PRIVATEID=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query privateIps -o tsv)
+  echo "VM private IP=" $PRIVATEID
+}
+
+# --- add to backend pool ---
+function appendToPool() {
+  az network application-gateway address-pool update -g $RGNAME \
+    --gateway-name $APPGATEWAY -n $BACKENDPOOL \
+    --add backendAddresses ipAddress=$PRIVATEID
+  echo "-- server" $SERVERNAME $PRIVATEID " added to backend pool --"
+}
+
+function getBackendCount() {
+  #az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool --query "backendAddresses"
+  #az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool --query "backendAddresses[].ipAddress" -o tsv
+  local COUNT=$(az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool --query "backendAddresses[].ipAddress" -o tsv | wc -l)
+  return $COUNT
+}
+
+function checkFirstIsOld() {
+  FIRSTIP=$(az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool --query "backendAddresses[].ipAddress" -o tsv)
+}
+
+function removeFirst() {
+  az network application-gateway address-pool update -g myAGgroup \
+  --gateway-name myAppGateway -n myBackendPool \
+  --remove backendAddresses 0
+}
+
+
+# ============= main ==============
+
+# -- args --
+ARGNUM=$#
+checkArgs $ARGNUM
+
+SERVERNAME=$1
+echo "---- wait server:$SERVERNAME ready ---"
+
+# -- wait for new server --
+waitLoopServerReady
+RET=$?
+
+# -- get pivateIP --
+getPrivateIP
+
+# -- append to backend pool --
+appendToPool
+sleep 5
+
+# --- get count of backend --
+getBackendCount
+BAKCENDCOUNT=$?
+if [ $BAKCENDCOUNT -eq 1 ]; then
+  echo "only 1 backend. skip removing old server"
+  exit 0
+fi
+
+# --- remove old server --
+removeFirst
+echo "--- remove old server ---"
+
+# --- exit ---
+exit 0
 
 ```
-PRIVATEID=$(az vm show --show-details --resource-group myAGgroup --name $SERVERNAME --query privateIps -o tsv)
-echo $PRIVATEID
+
+
+### 最初のサーバーのデプロイ手順
+
+いよいよ用意したシェルスクリプトを使って、最初のサーバーをデプロイしてみましょう。Cloud Shell上から一連の操作を実行します。（メッセージや、サーバー名は適宜変更してください）
+
+```:shellsession
+# -- prepare cloud-init file --
+#  ex) message: Blue-Server
+sh prepare_cloudinit.sh Blue-Server
+
+# -- create new server
+#  ex) serveer-name: myVMblue
+sh create_new_server.sh myVMblue
+
+# -- wait and append new server --
+#  ex) serveer-name: myVMblue
+sh switch_server.sh myVMblue
 
 ```
 
-動作確認
+実行には数分かかります。最後に以下のように表示されば完了です。
+
+```
+-- server myVMblue 10.1.1.xxx  added to backend pool --
+only 1 backend. skip removing old server
+```
+
+ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。「Hello, Blue-Server」と表示されば成功です。
+
+
+
+### （簡易）Blue-Greenデプロイの実行
+
+次に別のサーバーを開始し、古いサーバーから切り替える「BLue-Greenデプロイ」を実行します。操作は同じですが、メッセージやサーバー名を変えて実行します。
+
+
+```:shellsession
+# -- prepare cloud-init file --
+#  ex) message: GREEN-Server
+sh prepare_cloudinit.sh GREEN-Server
+
+# -- create new server
+#  ex) serveer-name: myVMgreen
+sh create_new_server.sh myVMgreen
+
+# -- wait and append new server --
+#  ex) serveer-name: myVMgreen
+sh switch_server.sh myVMgreen
+
+```
+
+実行には数分かかります。最後に以下のように表示されば完了です。
+
+```
+--- remove old server ---
+```
+
+もう一度ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
+
+### 古いサーバーの削除
+
+今回のスクリプトでは、古いサーバーの削除は行っていません。次のようにCloud Shell上でazコマンドで削除してください。
+
+```:shellsession
+az vm delete --resource-group myAGgroup --name myVMblue
+```
+
+
+## 全てのリソースの削除
+
+最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myCLIgroup」の場合は次の通りです。
 
 ```shellsession
-az vm run-command invoke \
-  --resource-group myAGgroup \
-  --name $SERVERNAME \
-  --command-id RunShellScript \
-  --scripts "ps -ef | grep nodejs | grep index.js"
+az group delete --name myCLIgroup
 ```
 
-```
-az vm run-command invoke \
-  --resource-group myAGgroup \
-  --name myVMblue \
-  --command-id RunShellScript \
-  --scripts "curl http://localhost:8080/"
-```
-
-結果
-
-```
-{
-  "value": [
-    {
-      "code": "ProvisioningState/succeeded",
-      "displayStatus": "Provisioning succeeded",
-      "level": "Info",
-      "message": "Enable succeeded: \n[stdout]\nHello, HELLOMESSAGEVAR\n[stderr]\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    22  100    22    0     0    157      0 --:--:-- --:--:-- --:--:--   157\n",
-      "time": null
-    }
-  ]
-}
-```
-
-バックエンドに追加
-
-```
-az network application-gateway address-pool update -g myAGgroup \
-  --gateway-name myAppGateway -n myBackendPool \
-  --add backendAddresses ipAddress=$PRIVATEID
-```
-
-一覧
-
-```
-az network application-gateway address-pool show -g myAGgroup --gateway-name myAppGateway -n myBackendPool
-```
-
-削除
-
-```
-az network application-gateway address-pool update -g myAGgroup \
---gateway-name myAppGateway -n myBackendPool \
---remove backendAddresses 0
-```
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除実行してください。
 
 
-アクセス確認
+## まとめ
 
-```
-curl http://パブリックIPアドレス/
-```
+ロードバランサーの一種であるApplication Gatewayを使って、簡易的なBlue-Greenデプロイを行ってみました。Application Gatewayを使うことで、クライアント（ブラウザ）から見てサービスを止めずに新しいサーバーに切り替えることができました。
+
+
+## シリーズの記事一覧
+
+- 0. [このシリーズについて](azure-bootcamp-0-about)
+- 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+- 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
 

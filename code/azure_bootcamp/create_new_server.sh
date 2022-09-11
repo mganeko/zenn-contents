@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# deploy_new_server.sh
+# create_new_server.sh
 #
 # usege:
-#   sh deploy_new_server.sh servername
+#   sh create_new_server.sh servername
 
 # --- check args ---
 if [ $# -ne 1 ]; then
@@ -40,9 +40,4 @@ echo "-- server" $SERVERNAME "created --"
 PRIVATEID=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query privateIps -o tsv)
 echo "VM private IP=" $PRIVATEID
 
-# --- add to backend pool ---
-az network application-gateway address-pool update -g $RGNAME \
-  --gateway-name myAppGateway -n $BACKENDPOOL \
-  --add backendAddresses ipAddress=$PRIVATEID
-echo "-- server" $SERVERNAME $PRIVATEID " added to backend pool --"
-
+exit 0
