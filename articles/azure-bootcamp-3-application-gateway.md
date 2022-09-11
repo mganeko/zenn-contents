@@ -561,15 +561,24 @@ az vm delete --resource-group myAGgroup --name myVMblue
 ```
 
 
-## 全てのリソースの削除
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除を実行してください。
 
-最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myCLIgroup」の場合は次の通りです。
+あるいは[前回](azure-bootcamp-2-vm-by-cli)用意したシェルスクリプトを使うこともできます。
 
 ```shellsession
-az group delete --name myCLIgroup
+sh delete_vm.sh myAGgroup myWebVM
 ```
 
-「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除実行してください。
+
+## 全てのリソースの削除
+
+最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myAGgroup」の場合は次の通りです。
+
+```shellsession
+az group delete --name myAGgroup
+```
+
+「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除を実行してください。
 
 
 ## まとめ
