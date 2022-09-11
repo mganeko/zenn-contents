@@ -10,7 +10,7 @@ published: false # 公開設定（falseにすると下書き）
 
 ## Appllication Gatewayとは
 
-Application GatewayはAzureが提供するロードバランサーサービスの1つです。Azureには複数のロードバランサーがあります。
+Application GatewayはAzureが提供するロードバランサーサービスの1つです。Azureには複数のロードバランサーがあります。（※ロードバランサーは、同じIPアドレスへのアクセスを複数のサーバーに負荷分散させる仕組みです）
 
 - Azure Load Balancer
   - https://docs.microsoft.com/ja-jp/azure/load-balancer/load-balancer-overview
@@ -209,16 +209,13 @@ sh create_network.sh myAGgroup
   - 内容を確認
   - [作成]ボタンをクリック
 - 数分後に、Application Gatwayがと関連リソースが作成、デプロイされる
-  - VNet
-  - サブネット×2
-  - パブリックIPアドレス
   - Appllication Gateway
   - バックエンドプール
   - リスナー
   - ルーティング規則
   - バックエンド設定
 
-Application Gatewayのデプロイが完了すると、関連リソースも含めて次のようなリソースが作成された状態になります。
+Application Gatewayのデプロイが完了すると、関連リソースも含めて次のようなリソースが作成された状態になります。（インターネットからパブリックIPアドレスへの 80/TCP ポートへのHTTPアクセスを受けて、バックエンドプールの 8080/TCP ポートに繋げる）
 
 ![関連リソース](/images/azure_application_gatway_resources.png)
 
