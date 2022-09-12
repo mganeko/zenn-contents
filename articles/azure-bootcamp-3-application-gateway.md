@@ -6,9 +6,9 @@ topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: true # 公開設定（falseにすると下書き）
 ---
 
-# Appllication Gatewayを使った、簡易Blue-Greenデプロイ
+# Application Gatewayを使った、簡易Blue-Greenデプロイ
 
-## Appllication Gatewayとは
+## Application Gatewayとは
 
 Application GatewayはAzureが提供するロードバランサーサービスの1つです。Azureには複数のロードバランサーがあります。（※ロードバランサーは、同じIPアドレスへのアクセスを複数のサーバーに負荷分散させる仕組みです）
 
@@ -208,7 +208,7 @@ sh create_network.sh myAGgroup
   - 内容を確認
   - [作成]ボタンをクリック
 - 数分後に、Application Gatwayがと関連リソースが作成、デプロイされる
-  - Appllication Gateway
+  - Application Gateway
   - バックエンドプール
   - リスナー
   - ルーティング規則
