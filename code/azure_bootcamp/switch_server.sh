@@ -97,6 +97,10 @@ echo "---- wait server:$SERVERNAME ready ---"
 # -- wait for new server --
 waitLoopServerReady
 RET=$?
+if [ $RET -ne 0 ]; then
+  echo "ERROR: Server $SERVERNAME NOT READY."
+  exit $RET
+fi
 
 # -- get pivateIP --
 getPrivateIP
@@ -110,12 +114,14 @@ getBackendCount
 BAKCENDCOUNT=$?
 if [ $BAKCENDCOUNT -eq 1 ]; then
   echo "only 1 backend. skip removing old server"
+  echo "New Server:$SERVERNAME OK"
   exit 0
 fi
 
 # --- remove old server --
 removeFirst
 echo "--- remove old server ---"
+echo "New Server:$SERVERNAME OK"
 
 # --- exit ---
 exit 0

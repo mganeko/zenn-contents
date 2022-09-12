@@ -122,7 +122,7 @@ sh create_network.sh myAGgroup
 
 ## Application Gateway の作成　
 
-初めてなので、Azure Portalから作成します。画面は2022年9月現在のものです。
+初めてなのでAzure Portalから作成します。画面は2022年9月現在のものです。
 
 - Portalで「Application Gateway」を検索
 - 「負荷分散 | Application Gateway」（あるいはアプリケーションゲートウェイ）のページを開く
