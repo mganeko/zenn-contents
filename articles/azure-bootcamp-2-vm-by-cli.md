@@ -562,8 +562,8 @@ VMを削除するシェルスクリプトは次の通りです。エディタで
 # -- param --
 RGNAME=$1
 VMNAME=$2
-echo "ResourceGroup Name=" + $RGNAME
-echo "VM Name=" + $VMNAME
+echo "ResourceGroup Name=" $RGNAME
+echo "VM Name=" $VMNAME
 echo ""
 
 # -- delete VM ---
