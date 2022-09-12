@@ -337,6 +337,5 @@ Azureを初めて使う人向けに、ポータル画面からの操作を実施
 - 0. [このシリーズについて](azure-bootcamp-0-about)
 - 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
-- 3. ロードバランサー（Application Gateway)を使って、その裏でVMを入れ替える
-  - 簡易的な Blue-Green デプロイを行う
+- 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
 
