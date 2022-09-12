@@ -17,7 +17,6 @@ MESSAGE=$2
 sh prepare_cloudinit.sh $MESSAGE
 
 # -- create new server
-#  ex) serveer-name: myVMgreen
 sh create_new_server.sh $SEREVERNAME
 RET=$?
 if [ $RET -ne 0 ]; then
@@ -26,7 +25,6 @@ if [ $RET -ne 0 ]; then
 fi
 
 # -- wait and append new server --
-#  ex) serveer-name: myVMgreen
 sh switch_server.sh $SEREVERNAME
 exit $?
 

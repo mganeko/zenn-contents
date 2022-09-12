@@ -552,6 +552,50 @@ sh switch_server.sh myVMgreen
 
 もう一度ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
 
+### Blue-Greenデプロイのスクリプト化
+
+参考までに、一連の処理をシェルスクリプトにした例です。
+
+```shell:deploy_new_server.sh
+#!/bin/sh
+#
+# deploy_new_server.sh
+#
+# usege:
+#   sh deploy_new_server.sh new-servername message
+
+# --- check args ---
+if [ $# -ne 2 ]; then
+  echo "ERROR: Please specify New-Servername and Message (2 args)." 1>&2
+  exit 1
+fi
+SEREVERNAME=$1
+MESSAGE=$2
+
+# -- prepare cloud-init file --
+sh prepare_cloudinit.sh $MESSAGE
+
+# -- create new server
+sh create_new_server.sh $SEREVERNAME
+RET=$?
+if [ $RET -ne 0 ]; then
+  echo "ERROR: CANNNOT create Server:$SEREVERNAME"
+  exit $RET
+fi
+
+# -- wait and append new server --
+sh switch_server.sh $SEREVERNAME
+exit $?
+
+```
+
+実行する場合は、サーバー名(VM名)とメッセージを指定します。
+
+```shellsession:example
+sh deploy_new_server.sh myVMred Hello-RedServer
+```
+
+
 ### 古いサーバーの削除
 
 今回のスクリプトでは、古いサーバーの削除は行っていません。次のようにCloud Shell上でazコマンドで削除してください。
