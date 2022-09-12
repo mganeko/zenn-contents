@@ -2,7 +2,7 @@
 #
 # setup_web_vm.sh
 #
-# usege:
+# usage:
 #   sh setup_web_vm.sh resorucegoupname vmname
 
 # ============= functions ==============

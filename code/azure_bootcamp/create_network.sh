@@ -2,7 +2,7 @@
 #
 # create_network.sh
 #
-# usege:
+# usage:
 #   sh create_network.sh resorucegoupname
 
 # --- check args ---

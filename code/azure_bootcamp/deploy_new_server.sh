@@ -2,7 +2,7 @@
 #
 # deploy_new_server.sh
 #
-# usege:
+# usage:
 #   sh deploy_new_server.sh new-servername message
 
 # --- check args ---

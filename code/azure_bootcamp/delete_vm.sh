@@ -2,7 +2,7 @@
 #
 # delete_vm.sh
 #
-# usege:
+# usage:
 #   sh delete_vm.sh resorucegoupname vmname
 
 # --- check args ---

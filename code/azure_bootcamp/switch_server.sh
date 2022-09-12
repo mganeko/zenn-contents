@@ -2,7 +2,7 @@
 #
 # swith_server.sh
 #
-# usege:
+# usage:
 #   sh switch_server.sh newservername
 
 #-- variables --

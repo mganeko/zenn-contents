@@ -2,7 +2,7 @@
 #
 # create_new_server.sh
 #
-# usege:
+# usage:
 #   sh create_new_server.sh servername
 
 # --- check args ---

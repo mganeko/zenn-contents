@@ -2,7 +2,7 @@
 #
 # delete_appgateway.sh
 #
-# usege:
+# usage:
 #   sh delete_appgateway.sh resorucegoupname appgateway-name
 
 # --- check args ---

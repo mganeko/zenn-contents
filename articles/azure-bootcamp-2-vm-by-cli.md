@@ -377,7 +377,7 @@ VMが削除されても、次のリソースが残ります。
 #
 # setup_web_vm.sh
 #
-# usege:
+# usage:
 #   sh setup_web_vm.sh resorucegoupname vmname
 
 # ============= functions ==============
@@ -556,7 +556,7 @@ VMを削除するシェルスクリプトは次の通りです。エディタで
 #
 # delete_vm.sh
 #
-# usege:
+# usage:
 #   sh delete_vm.sh resorucegoupname vmname
 
 # -- param --

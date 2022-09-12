@@ -2,7 +2,7 @@
 #
 # prepare_cloudinit.sh
 #
-# usege:
+# usage:
 #   sh prepare_cloudinit.sh message
 
 # --- check args ---

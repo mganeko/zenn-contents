@@ -61,7 +61,7 @@ az group create --name myAGgroup --location japaneast
 #
 # create_network.sh
 #
-# usege:
+# usage:
 #   sh create_network.sh resorucegoupname
 
 # --- check args ---
@@ -283,7 +283,7 @@ runcmd:
 #
 # prepare_cloudinit.sh
 #
-# usege:
+# usage:
 #   sh prepare_cloudinit.sh message
 
 # --- check args ---
@@ -312,7 +312,7 @@ sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
 #
 # create_new_server.sh
 #
-# usege:
+# usage:
 #   sh create_new_server.sh servername
 
 # --- check args ---
@@ -373,7 +373,7 @@ Cloud Shell上で次のシェルスクリプトを作成してください。
 #
 # swith_server.sh
 #
-# usege:
+# usage:
 #   sh switch_server.sh newservername
 
 #-- variables --
@@ -537,11 +537,11 @@ only 1 backend. skip removing old server
 sh prepare_cloudinit.sh GREEN-Server
 
 # -- create new server
-#  ex) serveer-name: myVMgreen
+#  ex) server-name: myVMgreen
 sh create_new_server.sh myVMgreen
 
 # -- wait and append new server --
-#  ex) serveer-name: myVMgreen
+#  ex) server-name: myVMgreen
 sh switch_server.sh myVMgreen
 
 ```
@@ -563,7 +563,7 @@ sh switch_server.sh myVMgreen
 #
 # deploy_new_server.sh
 #
-# usege:
+# usage:
 #   sh deploy_new_server.sh new-servername message
 
 # --- check args ---
