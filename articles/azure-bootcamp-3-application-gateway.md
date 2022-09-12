@@ -3,7 +3,7 @@ title: "Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Green�
 emoji: "💻" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # Appllication Gatewayを使った、簡易Blue-Greenデプロイ
@@ -481,12 +481,14 @@ getBackendCount
 BAKCENDCOUNT=$?
 if [ $BAKCENDCOUNT -eq 1 ]; then
   echo "only 1 backend. skip removing old server"
+  echo "New Server:$SERVERNAME OK"
   exit 0
 fi
 
 # --- remove old server --
 removeFirst
 echo "--- remove old server ---"
+echo "New Server:$SERVERNAME OK"
 
 # --- exit ---
 exit 0
@@ -500,7 +502,7 @@ exit 0
 
 いよいよ用意したシェルスクリプトを使って、最初のサーバーをデプロイしてみましょう。Cloud Shell上から一連の操作を実行します。（メッセージや、サーバー名は適宜変更してください）
 
-```:shellsession
+```shellsession
 # -- prepare cloud-init file --
 #  ex) message: Blue-Server
 sh prepare_cloudinit.sh Blue-Server
@@ -520,6 +522,7 @@ sh switch_server.sh myVMblue
 ```
 -- server myVMblue 10.1.1.xxx  added to backend pool --
 only 1 backend. skip removing old server
+New Server:myVMblue OK
 ```
 
 ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。「Hello, Blue-Server」と表示されば成功です。
@@ -531,7 +534,7 @@ only 1 backend. skip removing old server
 次に別のサーバーを開始し、古いサーバーから切り替える「BLue-Greenデプロイ」を実行します。操作は同じですが、メッセージやサーバー名を変えて実行します。
 
 
-```:shellsession
+```shellsession
 # -- prepare cloud-init file --
 #  ex) message: GREEN-Server
 sh prepare_cloudinit.sh GREEN-Server
@@ -550,6 +553,7 @@ sh switch_server.sh myVMgreen
 
 ```
 --- remove old server ---
+New Server:myVMgreen OK
 ```
 
 もう一度ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
