@@ -8,6 +8,13 @@ published: true # 公開設定（falseにすると下書き）
 
 # Application Gatewayを使った、簡易Blue-Greenデプロイ
 
+この記事では、Azureもつネットワーク機能であるApplication Gatewayを使うことで、サーバーを動的に切り替えるデプロイを行います。
+
+こちらの公式サイトの内容をベースにしています。
+
+- [クイック スタート:Azure Application Gateway による Web トラフィックのルーティング - Azure portal](https://docs.microsoft.com/ja-jp/azure/application-gateway/quick-create-portal)
+- [クイック スタート:Azure Application Gateway による Web トラフィックの転送 - Azure CLI](https://docs.microsoft.com/ja-jp/azure/application-gateway/quick-create-cli)
+
 ## Application Gatewayとは
 
 Application GatewayはAzureが提供するロードバランサーサービスの1つです。Azureには複数のロードバランサーがあります。（※ロードバランサーは、同じIPアドレスへのアクセスを複数のサーバーに負荷分散させる仕組みです）

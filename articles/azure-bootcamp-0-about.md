@@ -12,10 +12,10 @@ published: true # 公開設定（falseにすると下書き）
 
 # 目次
 
+- 0. [このシリーズについて](azure-bootcamp-0-about)
 - 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
-- 3. ロードバランサー（Application Gateway)を使って、その裏でVMを入れ替える
-  - 簡易的な Blue-Green デプロイを行う
+- 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
 
 クラウド(Azure)の本領を発揮するストレージやPaasといったマネージドサービスを使う前に、インフラをコマンドやコードで操る感覚を身につけるにの役立てられたら、嬉しいです。
 
@@ -25,5 +25,3 @@ published: true # 公開設定（falseにすると下書き）
 
 - Linuxの基本操作
 - ターミナルから操作できるエディタ（vi/vm, emacs, nano等)の使い方
-
-
