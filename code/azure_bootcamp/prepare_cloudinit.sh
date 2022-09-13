@@ -15,5 +15,5 @@ MESSAGE=$1
 # -- copy template-file to work-file --
 cp cloud-init-template.txt cloud-init-work.txt
 
-# -- replate message variable --
+# -- replace message variable --
 sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
