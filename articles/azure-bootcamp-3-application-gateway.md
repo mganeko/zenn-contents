@@ -532,7 +532,7 @@ only 1 backend. skip removing old server
 New Server:myVMblue OK
 ```
 
-ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。「Hello, Blue-Server」と表示されば成功です。
+ブラウザで「http://_パブリックIPアドレス_/」にアクセスして確認します。「Hello, Blue-Server」と表示されば成功です。
 
 
 
@@ -563,7 +563,7 @@ sh switch_server.sh myVMgreen
 New Server:myVMgreen OK
 ```
 
-もう一度ブラウザで「http://_パブリックIPアドレス/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
+もう一度ブラウザで「http://_パブリックIPアドレス_/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
 
 ### Blue-Greenデプロイのスクリプト化
 
