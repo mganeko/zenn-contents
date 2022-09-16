@@ -625,7 +625,7 @@ az vm delete --resource-group myAGgroup --name myVMblue
 あるいは[前回](azure-bootcamp-2-vm-by-cli)用意したシェルスクリプトを使うこともできます。
 
 ```shellsession
-sh delete_vm.sh myAGgroup myWebVM
+sh delete_vm.sh myAGgroup myVMblue
 ```
 
 
