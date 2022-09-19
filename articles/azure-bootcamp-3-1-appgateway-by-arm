@@ -6,6 +6,7 @@ topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: false # 公開設定（falseにすると下書き）
 ---
 
+# はじめに
 
 前回の記事「[Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」では、Azure Portalの画面からApplication Gatewayを構築しました。これから何度も繰り返し構築と削除を繰り返すことを考えると、毎回Portalの画面から操作するのは手間がかかりすぎます。そこで自動化する方法を2種類試してみます。
 
