@@ -14,7 +14,7 @@ SEREVERNAME=$1
 MESSAGE=$2
 
 # -- prepare cloud-init file --
-sh prepare_cloudinit.sh $MESSAGE
+sh prepare_cloudinit.sh "$MESSAGE"
 
 # -- create new server
 sh create_new_server.sh $SEREVERNAME
