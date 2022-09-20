@@ -73,4 +73,46 @@ AzureではApplication GatewayやVMといった様々なリソースの構築を
 
 ARMテンプレートは複雑なため、1から手書きするのは現実的ではありません。代わりにPortal画面を使って、すでに作成済みのリソースから出力（エクスポート）します。
 
+### Application Gatewayの構築
+
+まず「Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」の「[Application Gateway の作成](https://zenn.dev/mganeko/articles/azure-bootcamp-3-application-gateway#application-gateway-の作成)」に従って、Potal画面からApplication Gatewayを構築します。すでに構築済みのものがある場合は、それを利用します。
+
+### ARMテンプレートのエクスポート
+
+- Potalの画面で対象となるApplication Gatewayの内容を表示
+- 左のメニューの「テンプレートのエクスポート」をクリック
+- [ダウンロード]ボタンをクリック
+- zip圧縮されたファイルがダウンロードされる。内容は次の2つのファイル
+  - template.json ... リソースの定義ファイル
+  - parameters.json ... 一部可変なパラメータを指定するファイル
+
+![テンプレートのダウンロード](/images/azure_appgateway_export_template.png)
+
+テンプレートの次のようなJSONファイルです。
+
+```json:template.json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applicationGateways_myAppGateway_name": {
+            "defaultValue": "myAppGateway",
+            "type": "String"
+        },
+        "virtualNetworks_myVNet_externalid": {
+            ... 略 ...
+            "type": "String"
+        },
+        "publicIPAddresses_myAGPublicIPAddress_externalid": {
+            ... 略 ...
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+      ... 略 ...
+    ],
+    ... 略 ...
+}
+```
 
