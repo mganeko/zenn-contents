@@ -110,9 +110,68 @@ ARMテンプレートは複雑なため、1から手書きするのは現実的�
     },
     "variables": {},
     "resources": [
-      ... 略 ...
-    ],
-    ... 略 ...
+        ... 略 ...
+    ]
 }
 ```
+
+###  ARMテンプレートの編集
+
+前回の記事ですでに構築済みのApplication Gatewayを使ってARMテンプレートを出力した場合は、バックエンドにVMが追加された状態になっています。テンプレートではバックエンドに何もない状態を作りたいので、その情報を手動で編集します。（Portalから新規に作ったApplication Gatewayからテンプレートを出力した場合には空になっているはずなので、編集は不要です）
+
+resources - backendAddressPools - properties - backendAddresses の配列の中身を削除し、からの配列にします。
+
+
+```json:before
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion":
+    ... 略 ...
+    "resources": [
+      {
+        ... 略 ...
+        "backendAddressPools": [
+          {
+            "name": "appGatewayBackendPool",
+            "properties": {
+              "backendAddresses": [
+                {
+                  "ipAddress": "10.1.1.xxx"
+                }
+              ]
+            }
+          }
+        ],
+        ... 略 ...
+      }
+    ]
+}
+```
+
+```json:after
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion":
+    ... 略 ...
+    "resources": [
+      {
+        ... 略 ...
+        "backendAddressPools": [
+          {
+            "name": "appGatewayBackendPool",
+            "properties": {
+              "backendAddresses": []
+            }
+          }
+        ],
+        ... 略 ...
+      }
+    ]
+```
+
+
+###  ARMテンプレートのアップロード
+
+準備したARMテンプレートをCloud Shellで利用できるようにアップロードしておきます。
+
 
