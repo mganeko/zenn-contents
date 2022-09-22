@@ -82,7 +82,7 @@ ARMテンプレートは複雑なため、1から手書きするのは現実的�
 - Potalの画面で対象となるApplication Gatewayの内容を表示
 - 左のメニューの「テンプレートのエクスポート」をクリック
 - [ダウンロード]ボタンをクリック
-- zip圧縮されたファイルがダウンロードされる。内容は次の2つのファイル
+- zip圧縮されたファイルがダウンロードされる。解凍すると中身は次の2つのファイル
   - template.json ... リソースの定義ファイル
   - parameters.json ... 一部可変なパラメータを指定するファイル
 
@@ -173,5 +173,46 @@ resources - backendAddressPools - properties - backendAddresses の配列の中�
 ###  ARMテンプレートのアップロード
 
 準備したARMテンプレートをCloud Shellで利用できるようにアップロードしておきます。
+
+- PotalでCloud Shellを起動
+- [アップロード]ボタンをクリック
+
+![アップロード](/images/azure_cloudshell_upload.png)
+
+ホームディレクトリにアップロードされるので、適切なディレクトリ（フォルダ）に移動、必要に応じてファイル名を変更してください。
+
+## ARMテンプレートを利用したApplication Gatewayの構築
+
+### 既存のApplication Gatewayを削除
+
+まず、テンプレートを出力する際に使ったApplication Gatewayがあるはずなので、Potalから削除しておきます。
+
+### テンプレートを使った構築
+
+テンプレートをアップロード後、Cloud Shell上でazコマンドを使って構築します。この例では次の値を想定しています。
+
+- テンプレートファイル名 ... arm/template.json
+- リソースグループ名 ... myAGgroup
+
+```shellsession
+az deployment group create --resource-group myAGgroup --template-file arm/template.json 
+```
+
+数分経つと、Application Gatwayが構築されます。Potal画面で内容を確認してください。Application Gatewayが構築できたら、前回（[Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway#blue-greenデプロイのスクリプト化)）のようにサーバーをBlue-Greenデプロイすることができます。
+
+
+# まとめ
+
+Application Gatewayのように複雑な設定を持つリソースは、毎回手動で構築するのは手間がかかります。ARMテンプレートを用意することで、手軽に再構築することができます。
+
+## シリーズの記事一覧
+
+- 0. [このシリーズについて](azure-bootcamp-0-about)
+- 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+- 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
+- 3.1. [Azure Bootcamp 3.1 - ARMテンプレートを使ったApplication Gatewayのデプロイ](azure-bootcamp-3-1-appgateway-by-arm)
+
+
 
 
