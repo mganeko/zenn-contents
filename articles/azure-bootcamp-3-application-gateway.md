@@ -43,7 +43,7 @@ Application GatewayはAzureが提供するロードバランサーサービス�
 
 今回は HTTPS ←→ HTTP 変換（TLS終端）も意識して、Application Gatway を利用します。
 
-## リソースグループの作成
+# リソースグループの作成
 
 まずはリソースをまとめて管理するリソースグループを作成します。Azure Potralからでも、CLIからでもどちらでもOKです。ここでは Cloud Shell上からCLI(azコマンド)で作成しておきます。（名前は例えば myAGgroup とします）
 
@@ -51,7 +51,7 @@ Application GatewayはAzureが提供するロードバランサーサービス�
 az group create --name myAGgroup --location japaneast
 ```
 
-## ネットワーク関連リソースの作成
+# ネットワーク関連リソースの作成
 
 リソースグループができたら、ネットワーク関連のリソースを作成します。
 
@@ -127,7 +127,7 @@ sh create_network.sh myAGgroup
 成功するとパブリックIPアドレスが表示されます。あとでブラウザでアクセスするために記録しておきます。
 
 
-## Application Gateway の作成　
+# Application Gateway の作成　
 
 初めてなのでAzure Portalから作成します。画面は2022年9月現在のものです。
 
@@ -227,9 +227,9 @@ Application Gatewayのデプロイが完了すると、関連リソースも含�
 
 バックエンドプールはまだ何もない空っぽの状態なので、パブリックIPアドレスにブラウザでアクセスすると、「502 Bad Gateway」と表示されます。
 
-## VMの切り替え 簡易Blue-Greenデプロイ
+# VMの切り替え 簡易Blue-Greenデプロイ
 
-### Blue-Greenデプロイとは
+## Blue-Greenデプロイとは
 
 Blue-Greenデプロイ（デプロイメント）は、アプリケーションの新バージョンをリリースする際に、できるだけ限りダウンタイムを短くするための方法です。次のような手順を取ります。
 
@@ -243,13 +243,13 @@ Blue-Greenデプロイ（デプロイメント）は、アプリケーション�
 ![Blue-Green](/images/blue_green_deployment.png)
 
 
-### 今回目指すこと
+## 今回目指すこと
 
 今回はApplication Gatwayを使って、バックエンドのVMの作成、切り替え、削除を Blue-Greenデプロイします。複数回繰り返せるように、必要な処理を実行するシェルスクリプトを準備します。
 
 またテストと外部からのアクセス有無の確認を省略しているため、「簡易」Blue-Greenデプロイと位置付けています。
 
-### VM作成時の初期化処理：cloud-initの利用
+## VM作成時の初期化処理：cloud-initの利用
 
 多くのクラウドプラットフォームでは、VM作成時に初期化処理を行う [cloud-init](https://cloudinit.readthedocs.io/en/latest/) をサポートしています。もちろんAzureでも利用できます。
 
@@ -310,7 +310,7 @@ sed -i.bak "s/HELLOMESSAGE/$MESSAGE/" cloud-init-work.txt
 
 このシェルスクリプトでは、テンプレートから cloud-init-work.txt にコピーし、そこに含まれる「HELLOMESSAGE」を引数で与えられたメッセージの文字列に置換します。
 
-### cloud-initを用いたVM作成
+## cloud-initを用いたVM作成
 
 新規にVMを作り、先のシェルスクリプトで用意した cloud-init-work.txt を使って初期化するスクリプトを用意します。Cloud Shell上で次のシェルスクリプトを作成します。
 
@@ -363,7 +363,7 @@ exit 0
 
 （リソースグループ名、VNet名、サブネット名など、適宜変更してください）
 
-### サーバーの起動待ちと、バックエンドプールへの追加
+## サーバーの起動待ちと、バックエンドプールへの追加
 
 新規VMを起動後、実際にNode.jsを使ったサーバアプリが動き出すまでには時間がかかります。そこでサーバーの準備ができるのを待って、古いサーバーから新しいサーバーに切り替えるシェルスクリプトを準備します。これが今回目指す「Blue-Greenデプロイ」のキモになります。
 
@@ -505,7 +505,7 @@ exit 0
 ※グローバル変数を多用した行儀のわるスクリプトですが、ご容赦ください。
 
 
-### 最初のサーバーのデプロイ手順
+## 最初のサーバーのデプロイ手順
 
 いよいよ用意したシェルスクリプトを使って、最初のサーバーをデプロイしてみましょう。Cloud Shell上から一連の操作を実行します。（メッセージや、サーバー名は適宜変更してください）
 
@@ -536,7 +536,7 @@ New Server:myVMblue OK
 
 
 
-### （簡易）Blue-Greenデプロイの実行
+## （簡易）Blue-Greenデプロイの実行
 
 次に別のサーバーを開始し、古いサーバーから切り替える「BLue-Greenデプロイ」を実行します。操作は同じですが、メッセージやサーバー名を変えて実行します。
 
@@ -565,7 +565,7 @@ New Server:myVMgreen OK
 
 もう一度ブラウザで「http://_パブリックIPアドレス_/」にアクセスして確認します。今度は「Hello, GREEN-Server」と表示されば成功です。
 
-### Blue-Greenデプロイのスクリプト化
+## Blue-Greenデプロイのスクリプト化
 
 参考までに、一連の処理をシェルスクリプトにした例です。
 
@@ -611,7 +611,7 @@ sh deploy_new_server.sh myVMred Hello-RedServer
 ※本来は途中で失敗した時に簡単に残りの処理を再実行できるような工夫が求められます（冪等性と言います）。それはシェルスクリプトではなく各種デプロイ/プロビジョニングツールを利用するのが現実的です。
 
 
-### 古いサーバーの削除
+## 古いサーバーの削除
 
 今回のスクリプトでは、古いサーバーの削除は行っていません。次のようにCloud Shell上でazコマンドで削除してください。
 
@@ -629,7 +629,7 @@ sh delete_vm.sh myAGgroup myVMblue
 ```
 
 
-## 全てのリソースの削除
+# 全てのリソースの削除
 
 最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myAGgroup」の場合は次の通りです。
 
@@ -640,14 +640,14 @@ az group delete --name myAGgroup
 「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除を実行してください。
 
 
-## まとめ
+# まとめ
 
 ロードバランサーの一種であるApplication Gatewayを使って、簡易的なBlue-Greenデプロイを行ってみました。Application Gatewayを使うことで、クライアント（ブラウザ）から見てサービスを止めずに新しいサーバーに切り替えることができました。
 
-一連の記事は一旦終了です。今後はApp Serviceを使った例を試してみたいと考えています。
+一連の記事は一旦終了です。いくつかおまけ記事を書いた後に、今後はApp Serviceを使った例を試してみたいと考えています。
 
 
-## シリーズの記事一覧
+# シリーズの記事一覧
 
 - 0. [このシリーズについて](azure-bootcamp-0-about)
 - 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
