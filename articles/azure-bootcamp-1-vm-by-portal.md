@@ -6,7 +6,7 @@ topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: true # 公開設定（falseにすると下書き）
 ---
 
-# VMを起動しよう
+# はじめに：VMを起動しよう
 
 この記事では、Azureのポータル（Web画面）を使って、VMを起動してWebサーバーを動かしてみます。（画面操作は2022年8月時点のものです）
 
@@ -15,13 +15,13 @@ published: true # 公開設定（falseにすると下書き）
 - [クイック スタート:Azure portal で Linux 仮想マシンを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/quick-create-portal)
 
 
-## 準備：リソースグループ
+# 準備：リソースグループの作成
 
 AuzreではVMなどの色々なサービスの要素（リソース）をまとめて管理する仕組みとして「リソースグループ」を使います。
 
 今回の実験のために、まずリソースグループを作りましょう。
 
-### ポータルからリソースグループを作成
+## ポータルからリソースグループを作成
 
 - [Azure Potarl](https://portal.azure.com/) にサインイン
 - 「リソースグループ」で検索し、リソースグループのページに移動
@@ -46,11 +46,11 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 
 この後のリソース(VM等)は、今回用意したリソースグループ「_myVMgroup_」に作ります。
 
-## VMの起動
+# VMの起動
 
 次にポータルからVMを作成します。
 
-### ポータルからVMの作成
+## ポータルからVMの作成
 
 - ポータルで「Virtual Machines」を検索し、Virtual Machinesのページに移動
 - [+新規]をクリック
@@ -122,11 +122,11 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 
 ![VM情報](/images/azure_vm_basic_info.png)
 
-## VMに接続
+# VMに接続
 
 起動したVMに、sshやターミナルエミュレーターで接続します。
 
-### MacやLinuxの場合
+## MacやLinuxの場合
 
 ターミナルを開き、次のように秘密キーのパーミッション（アクセス権限）を変更してから、sshで接続します。
 
@@ -141,7 +141,7 @@ ssh -i ~/.ssh/firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 - 初回に接続する際には、「接続を続行するか(Are you sure you want to continue connecting?) 」等の確認メッセージが出るので、Yes/OKして進む
 
 
-### Windowsの場合
+## Windowsの場合
 
 コマンドプロンプト、またはPower Shellを開き、次の様にsshで接続します。
 
@@ -156,12 +156,14 @@ ssh -i C:\Users\username\.ssh\firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 あるいは、「[RLogin](https://kmiya-culti.github.io/RLogin/)」等のターミナルエミュレーターを利用してもOKです。（秘密キーのファイルを指定して接続）
 
 
-## Webサーバー(nginx)のインストール
+# Webサーバー(nginx)のインストール
 
 VMに接続できたら、その状態でWebサーバ([nginx](https://www.nginx.com/resources/wiki/))をインストールして動かします。
 ※手物とのマシン(Mac/Linux/Windows)ではなく、先ほど接続したVMに対して操作します。
 
-### nginxとは
+## nginxとは
+
+nginxは次の特徴をもったWeサーバー/プロキシーソフトです。
 
 - オープンソースのWebサーバー
 - リバースプロキシ、ロードバランサ機能を持つ
@@ -169,13 +171,17 @@ VMに接続できたら、その状態でWebサーバ([nginx](https://www.nginx.
 - Apacheを超えるシェア
 
 
-### VMのパッケージを更新
+## VMのパッケージを更新
+
+sshでVMに接続した状態で、次のコマンドを実行します。
 
 ```
 sudo apt update && sudo apt upgrade -y
 ```
 
-### nginxのインストール
+## nginxのインストール
+
+sshでVMに接続した状態で、次のコマンドを実行します。
 
 ```
 sudo apt install nginx -y
@@ -194,7 +200,7 @@ ps -ef | grep nginx
 - HTMLファイル ... /var/www/html/
 
 
-### httpポートの公開
+## httpポートの公開
 
 Azureの持つネットワークの保護機能により、このままではhttpポート(80/tcp)は外部からアクセスアクセスできません。そこで、ポータル画面がから明示的にアクセスを許可します。
 
@@ -222,7 +228,7 @@ Azureの持つネットワークの保護機能により、このままではhtt
 
 - しばらく経つと受信ポート規則が追加される（反映されない場合はリロード）
 
-### ブラウザでのアクセス確認
+## ブラウザでのアクセス確認
 
 - ブラウザでアクセス
   - http://_作成したVMのIPアドレス_/
@@ -233,7 +239,7 @@ Azureの持つネットワークの保護機能により、このままではhtt
 ![nginxデフォルト](/images/azure_nginx_default_page.png)
 
 
-### HTMLファイルを追加
+## HTMLファイルを追加
 次に、HTMLファイルを追加してみましょう。
 VMのターミナルで操作してください。
 
@@ -280,7 +286,7 @@ hello.htmlの内容
 
 ![helloページ](/images/azure_hello_page.png)
 
-### DNSの利用
+## DNSの利用
 
 AzureのパブリックIPアドレスには、DNS機能があります。こちらも使ってみましょう。
 
@@ -299,7 +305,7 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
   - http://_firstvm77_.japaneast.cloudapp.azure.com/hello.html (※今回の例)
 
 
-## 後片付け
+# 後片付け
 
 今回VMを作成しましたが、関連して複数のリソースが作成されています。Azureのポータル画面で今回作成したリソースグループ（例では myVMgroup）を見てみると、次のようなリソースが存在していることが分かります。
 
@@ -326,13 +332,13 @@ AzureのパブリックIPアドレスには、DNS機能があります。こち�
 
 ![リソースグループの削除](/images/azure_delete_resoucegroup_confirm.png =300x)
 
-## まとめ/次回予告
+# まとめ/次回予告
 
 Azureを初めて使う人向けに、ポータル画面からの操作を実施しました。次はクラウドならではのコマンドラインからの操作をやってみる予定です。
 
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
 
-## シリーズの記事一覧
+# シリーズの記事一覧
 
 - 0. [このシリーズについて](azure-bootcamp-0-about)
 - 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
