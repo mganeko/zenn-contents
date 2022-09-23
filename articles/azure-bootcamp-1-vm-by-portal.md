@@ -173,7 +173,7 @@ nginxは次の特徴をもったWeサーバー/プロキシーソフトです。
 
 ## VMのパッケージを更新
 
-sshでVMに接続した状態で、次のコマンドを実行します。
+VMのターミナルに接続した状態で、次のコマンドを実行します。
 
 ```
 sudo apt update && sudo apt upgrade -y
@@ -181,7 +181,7 @@ sudo apt update && sudo apt upgrade -y
 
 ## nginxのインストール
 
-sshでVMに接続した状態で、次のコマンドを実行します。
+VMのターミナルに接続した状態で、次のコマンドを実行します。
 
 ```
 sudo apt install nginx -y
