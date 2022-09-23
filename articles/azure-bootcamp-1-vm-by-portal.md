@@ -130,7 +130,7 @@ AuzreではVMなどの色々なサービスの要素（リソース）をまと�
 
 ターミナルを開き、次のように秘密キーのパーミッション（アクセス権限）を変更してから、sshで接続します。
 
-```
+```shellsession
 chmod 600  ~/.ssh/firstVM_key.pem
 
 ssh -i ~/.ssh/firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
@@ -145,7 +145,7 @@ ssh -i ~/.ssh/firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 
 コマンドプロンプト、またはPower Shellを開き、次の様にsshで接続します。
 
-```
+```shellsession
 ssh -i C:\Users\username\.ssh\firstVM_key.pem azureuser@xxx.xxx.xxx.xxx
 ```
 
@@ -175,7 +175,7 @@ nginxは次の特徴をもったWeサーバー/プロキシーソフトです。
 
 VMのターミナルに接続した状態で、次のコマンドを実行します。
 
-```
+```shellsession
 sudo apt update && sudo apt upgrade -y
 ```
 
@@ -183,7 +183,7 @@ sudo apt update && sudo apt upgrade -y
 
 VMのターミナルに接続した状態で、次のコマンドを実行します。
 
-```
+```shellsession
 sudo apt install nginx -y
 ps -ef | grep nginx
 ```
@@ -245,14 +245,14 @@ VMのターミナルで操作してください。
 
 htmlのディレクトリに移動
 
-```
+```shellsession
 cd /var/www/html
 ```
 
 
 エディターでファイルを編集(vi/vim, emacs, nano等で好きなものを利用してください）
 
-```
+```shellsession
 sudo vi hello.html
 ```
 

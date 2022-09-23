@@ -6,7 +6,7 @@ topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: true # 公開設定（falseにすると下書き）
 ---
 
-# CLIを使ってみよう
+# はじめに：CLIを使ってみよう
 
 この記事では、AzureのCLI（コマンドラインインターフェイス）を使って、VMの起動とWebサーバーのセットアップを行います。（コマンドの使い方は2022年8月時点のものです）
 
@@ -16,7 +16,7 @@ published: true # 公開設定（falseにすると下書き）
 
 - [クイック スタート:Azure CLI で Linux 仮想マシンを作成する](https://docs.microsoft.com/ja-jp/azure/virtual-machines/linux/quick-create-cli)
 
-## azコマンド: Auzre の CLI
+# azコマンド: Auzre の CLI
 
 Azureのコマンドラインインターフェイス(CLI)は「az」コマンドです。インストール方法は公式サイトを参照するのが確実です。
 
@@ -30,7 +30,7 @@ CLIは次の環境で利用できます。
 
 今回は一番手軽な「Azure Cloud Shell」を使います。（CLIのインストール不要）
 
-## Cloud Shellの開始
+# Cloud Shellの開始
 
 - [Azure Potarl](https://portal.azure.com/) にサインイン
 - ポータル画面の一番上、検索エリアのすぐ右の「Cloud Shell」ボタンをクリック
@@ -45,7 +45,7 @@ CLIは次の環境で利用できます。
 
 ![新規リソース](/images/azure_cloud_shell.png)
 
-### CLI コマンドの確認
+## CLI コマンドの確認
 
 Cloud Shell上で、次のコマンドを実行し、azコマンドが動くことを確認します。
 
@@ -74,7 +74,7 @@ azコマンドの詳細は、公式リファレンスを参照してください
 - https://docs.microsoft.com/ja-jp/cli/azure/reference-index?view=azure-cli-latest
 
 
-## CLIでリソースグループを作成
+# CLIでリソースグループを作成
 
 Cloud Shell上で、CLI(azコマンド)を使って、リソースグループを作成します。この例では作成するリソースグループ名を「myCLIgroup」とします。
 
@@ -105,9 +105,9 @@ az group create --name myCLIgroup --location japaneast
 
 実行したら、リソースグループが作成されたことをポータル画面でも確認してください。
 
-## CLIでVMを起動
+# CLIでVMを起動
 
-### VMの作成
+## VMの作成
 
 次はVMを作成して起動します。Cloud Shellからazコマンドを実行します。
 
@@ -159,7 +159,7 @@ az vm create \
 
 「publicIpAddress」がインターネット側に公開されるパブリックIPアドレスです。後で使うのでこれを記録しておきます。
 
-### VMのパブリックIPアドレスの確認
+## VMのパブリックIPアドレスの確認
 
 次のコマンドでVMのIPアドレスを確認することができます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
@@ -178,7 +178,7 @@ echo $VMIP
 時間があいて Cloud Shellのセッションが切断されると、環境変数はクリアされます。その場合は再度設定してから後続の手順に進んでください。
 :::
 
-### VMに接続確認
+## VMに接続確認
 
 作成したVMに接続できることを確認します。Cloud ShellからVMを作成した場合、SSHの秘密鍵は自動的に保存されるので、すぐに接続することができます。
 
@@ -191,11 +191,11 @@ ssh azureuser@$VMIP
 接続できたら「exit」とコマンドを打って、Cloud Shellに戻ります。
 
 
-## Webサーバー(nginx)のセットアップ
+# Webサーバー(nginx)のセットアップ
 
 リソースグループ名が「myCLIgroup」、VM名が「myVM」とします。
 
-### nginxのインストール
+## nginxのインストール
 
 次にVMのアップデートと、Webサーバー(nginx)のインストールを行います。実行には数分かかります。
 
@@ -216,7 +216,7 @@ az vm run-command invoke \
   - ここでは、パッケージの更新とnginxのインストールを実行
 
 
-### httpポートの公開
+## httpポートの公開
 
 インターネットからアクセスできるように、Cloud Shellからhttp(80)ポートを公開します。
 
@@ -260,7 +260,7 @@ working. Further configuration is required.</p>
 </html>
 ```
 
-### ブラウザから確認
+## ブラウザから確認
 
 ブラウザでもアクセスできるか確認してみましょう。
 
@@ -271,7 +271,7 @@ working. Further configuration is required.</p>
 ![nginxデフォルト](/images/azure_nginx_default_page.png)
 
 
-### ページの追加
+## ページの追加
 
 ページ追加も試してみましょう。Cloud Shellから次のコマンドを実行します。
 
@@ -291,11 +291,11 @@ az vm run-command invoke \
 「Hello Azure」と表示されればOKです。
 
 
-## DNSの設定
+# DNSの設定
 
 パブリックIPアドレスに対して、DNS名を設定してみましょう
 
-### パブリックIPの名前を取得
+## パブリックIPの名前を取得
 
 まずパブリックIPの名前を取得し環境変数にセットします。
 
@@ -304,7 +304,7 @@ IPNAME=$(az network public-ip list --resource-group myCLIgroup --query "[?ipAddr
 echo $IPNAME
 ```
 
-### DNS名を指定
+## DNS名を指定
 
 次にDNS名を指定します。例えば「_my-dns-name-2022_」を指定する場合は次のコマンドを実行します。
 
@@ -314,7 +314,7 @@ az network public-ip update --resource-group myCLIgroup -n $IPNAME --dns-name my
 
 ここで「_my-dns-name-2022_」の部分はその地域（リージョン）で一意となる（他のユーザーのつける名前と重ならない）ように、名前を選んでください。
 
-### DNSの指定を確認
+## DNSの指定を確認
 
 Cloud Shellから次のコマンドを実行します。
 
@@ -334,7 +334,7 @@ az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: na
 ]
 ```
 
-### ブラウザでアクセス
+## ブラウザでアクセス
 
 次のURLにブラウザでアクセスし、デフォルトページが表示されればOKです。
 
@@ -342,7 +342,7 @@ az network public-ip list -g myCLIgroup --query "[?ipAddress=='$VMIP'].{name: na
 
 
 
-## VM削除
+# VM削除
 
 VMの削除もコマンドで実行できます。リソースグループ名が「myCLIgroup」、VM名が「myVM」の場合は次の通りです。
 
@@ -359,7 +359,7 @@ VMが削除されても、次のリソースが残ります。
 - 仮想ネットワーク(VNET)
 
 
-## シェルスクリプトでVM再作成
+# シェルスクリプトでVM再作成
 
 次の前提のもと、シェルスクリプトで一連の処理（VMの作成〜Webサーバーのインストールまで）を実行します。
 
@@ -368,7 +368,7 @@ VMが削除されても、次のリソースが残ります。
 - 仮想ネットワーク(VNET)がある
 - ネットワークセキュリティグループで、HTTP(80)ポートを許可済み
 
-### シェルスクリプトの内容
+## シェルスクリプトの内容
 
 エディタを使い、setup_web_vm.sh を次の内容で作成してください。（グルーバル変数を使っていて行儀が悪いコードですが、ご容赦ください）
 
@@ -531,7 +531,7 @@ exit 0
 
 ```
 
-### シェルスクリプトの実行
+## シェルスクリプトの実行
 
 用意したリソースグループ名、今回作成するVM名を引数に指定して起動します。実行には数分かかります。
 
@@ -547,7 +547,9 @@ sh setup_web_vm.sh myCLIgroup myWebVM
 
 
 
-## シェルスクリプトでVM削除
+# シェルスクリプトでVM削除
+
+## 削除用スクリプト
 
 VMを削除するシェルスクリプトは次の通りです。エディタで　「delete_vm.sh」として作成してください。
 
@@ -574,7 +576,7 @@ echo ""
 
 ```
 
-### シェルスクリプトの実行
+## シェルスクリプトの実行
 
 対象のリソースグループ名、削除するするVM名を引数に指定して起動します。
 
@@ -588,7 +590,7 @@ sh delete_vm.sh myCLIgroup myWebVM
 
 
 
-## 全てのリソースの削除
+# 全てのリソースの削除
 
 最後に後片付けとして、リソースグループごと全てのリソースを削除します。リソースグループ名が「myCLIgroup」の場合は次の通りです。
 
@@ -599,12 +601,12 @@ az group delete --name myCLIgroup
 「Are you sure you want to perform this operation? (y/n):」と確認を求められるので、「y」と答えて削除実行してください。
 
 
-## まとめ/次回予告
+# まとめ/次回予告
 
 AzureでVMを作る/削除する操作を、コマンドラインインターフェイスの az コマンドを使って実施しました。次はロードバランサーの一種であるApplication Gatewayを使って、簡易的なBlue/Greenデプロイ（サービスを止めずに切り替えるデプロイ方法）をやってみる予定です。
 
 
-## シリーズの記事一覧
+# シリーズの記事一覧
 
 - 0. [このシリーズについて](azure-bootcamp-0-about)
 - 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
