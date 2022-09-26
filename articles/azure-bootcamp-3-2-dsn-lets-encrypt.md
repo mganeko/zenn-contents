@@ -187,52 +187,57 @@ Certbotの公式説明([certbot instructions](https://certbot.eff.org/instructio
 
 ```shellsession:VM上
 sudo snap install core; sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
 ```
 
+次にインストールしたcertbotコマンドを利用して証明書を発行するのですが、その前に Application Gatewayに指定したDNS名(FQDN)を使って、このVMに接続できるように準備が必要です。
 
-
-
+sshをexitで抜けて、Cloud Shellに戻ってから、続行してください。
 
 
 ## Application Gatewayの複数バックエンドプール指定
 
-certbot用のサブネットを作成
+Application Gatewayには複数のバックエンドプールを指定できます。Cloud Shell上から、azコマンドでバックエンドプール（address-pool)を追加します。
 
-```
+```shellsession:CloudShell上
 RGNAME="myAGgroup"
-VNET="myVNet"
-SUBNET="myCertbotSubnet"
-SUBNETRANGE="10.1.2.0/24"
+APPGATEWAY="myAppGateway"
+BACKENDPOOL="myCertbotPool"
 
-az network vnet subnet create \
-  --name $SUBNET \
-  --resource-group $RGNAME \
-  --vnet-name $VNET   \
-  --address-prefix $SUBNETRANGE
+az network application-gateway address-pool create \
+--resource-group $RGNAME \
+--gateway-name $APPGATEWAY \
+--name $BACKENDPOOL
 ```
 
-VMの作成
+作成したバックエンドプールの一覧は、次のコマンドで取得できます。
 
-```
-RGNAME="myAGgroup"
-VNET="myVNet"
-SUBNET="myCertbotSubnet"
-SERVERNAME="myVMcertbot"
-
-az vm create \
-  --resource-group $RGNAME \
-  --name $SERVERNAME \
-  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
-  --size Standard_B1ls \
-  --public-ip-sku Standard \
-  --public-ip-address "" \
-  --subnet $SUBNET \
-  --vnet-name $VNET \
-  --storage-sku StandardSSD_LRS \
-  --nic-delete-option Delete \
-  --os-disk-delete-option Delete \
-  --admin-username azureuser \
-  --generate-ssh-keys \
+```shellsession:CloudShell上
+az network application-gateway address-pool list --gateway-name $APPGATEWAY \
+  --resource-group $RGNAME --query "[].{name: name}" -o tsvmyBackendPool
 ```
 
+## Potalからバックエンドプールを追加
 
+Azure Portal上で、作成済みのApplication Gatewayを表示します。
+
+- 左のメニューから「バックエンドプール」をクリック
+- [+追加]ボタンをクリック
+
+![新規ゲートウェイ1](/images/azure_appgateway_backendpool.png)
+
+
+- 「バックエンドプール」パネルが表示される
+  - 名前を指定 ... 例） myCertbotPool
+  - ターゲットの種類で「仮想マシン」を選択
+  - ターゲットで、certbot用に作成したVMのNiv（例：myVMcertbotNic）を選択
+  - [追加]ボタンをクリック
+
+
+![新規ゲートウェイ1](/images/azure_appgateway_add_backendpool.png)
+
+
+
+
+ポータル上から
