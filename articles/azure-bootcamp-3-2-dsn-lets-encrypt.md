@@ -46,7 +46,7 @@ az network public-ip update --resource-group $RGNAME -n $IPNAME --dns-name $DNSN
 az network public-ip list -g $RGNAME --query "[].{ fqdn: dnsSettings.fqdn }"
 ```
 
-```json:実行結果の例
+```textile:実行結果の例
 [
   {
     "fqdn": "my-dns-name-2022.japaneast.cloudapp.azure.com"
@@ -82,9 +82,112 @@ SSL証明書はIPアドレスではなくドメインを使ったサーバー名
 
 ## Certbotの利用
 
-Let's EncrpytでSSL証明書を発行するために、Linux VM上で[certbot](https://certbot.eff.org) というツールを利用します。
+Let's EncrpytでSSL証明書を発行するために、Linux VM上で[certbot](https://certbot.eff.org) というツールを利用します。VMはこれまでのは別の、第3のサブネットに配置します。
+
+## サブネットの作成
+
+certbot用に新たなサブネットを作成します。PotalのCloud Shell上でazコマンドを用いて作成します。
+
+```shellsession
+RGNAME="myAGgroup"
+VNET="myVNet"
+SUBNET="myCertbotSubnet"
+SUBNETRANGE="10.1.2.0/24"
+
+az network vnet subnet create \
+  --name $SUBNET \
+  --resource-group $RGNAME \
+  --vnet-name $VNET   \
+  --address-prefix $SUBNETRANGE
+```
+
+この例では、次を想定しています。
+
+- 仮想ネットワーク(VNet) ... myVnet
+- サブネット名 ... myCertbotSubnet
+- サブネットのアドレス範囲 ... 10.1.2.0/24"
+
+## VMの作成
+
+次に用意したサブネットにVMを作ります。Cloud Shell上で次のコマンドを実行します。
+
+```
+RGNAME="myAGgroup"
+VNET="myVNet"
+SUBNET="myCertbotSubnet"
+SERVERNAME="myVMcertbot"
+
+az vm create \
+  --resource-group $RGNAME \
+  --name $SERVERNAME \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --subnet $SUBNET \
+  --vnet-name $VNET \
+  --storage-sku StandardSSD_LRS \
+  --nic-delete-option Delete \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys
+```
+
+作成に成功したら、次のようなメッセージが返ってきます。
+
+```textile
+{
+  "fqdns": "",
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourceGroups/myAGgroup/providers/Microsoft.Compute/virtualMachines/myVMcertbot",
+  "location": "japaneast",
+  "macAddress": "xx-xx-xx-xx-xx-xx",
+  "powerState": "VM running",
+  "privateIpAddress": "10.1.2.x",
+  "publicIpAddress": "xxx.xxx.xxx.xxx",
+  "resourceGroup": "myAGgroup",
+  "zones": ""
+}
+```
+
+作成したVMには新たにパブリックIPアドレス(publicIpAddress)が割り振られているので、それを記録しておいてください。
+また次のようにコマンドで取得し、環境変数に設定しておくと便利です。
+
+```shellsession
+VMIP=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query publicIps -o tsv)
+echo $VMIP
+```
 
 
+## VMのセットアップ
+
+### VMへの接続
+
+Cloud Shell上から、sshを用いて接続します。初回は接続を確認されるので、yesと答えてください
+
+```shellsession:CloudShell上
+ssh azureuser@$VMIP
+```
+
+### Nginxのインストール
+
+VMに接続できたら、パッケージのアップデートと、Webサーバー(Nginx)のインストールを行います。
+
+```shellsession:VM上
+sudo apt update && sudo apt upgrade -y && sudo apt-get install -y nginx
+```
+
+インストール終了後、次のコマンドでHTMLが返って来ればNginxのインストールはは成功です。
+
+```shellsession:VM上
+curl http://localhost/
+```
+
+### Certbotのインストール
+
+Certbotの公式説明([certbot instructions](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal))に従い、次のコマンドでインストールを行います。
+
+```shellsession:VM上
+sudo snap install core; sudo snap refresh core
+```
 
 
 
@@ -92,5 +195,44 @@ Let's EncrpytでSSL証明書を発行するために、Linux VM上で[certbot](h
 
 
 ## Application Gatewayの複数バックエンドプール指定
+
+certbot用のサブネットを作成
+
+```
+RGNAME="myAGgroup"
+VNET="myVNet"
+SUBNET="myCertbotSubnet"
+SUBNETRANGE="10.1.2.0/24"
+
+az network vnet subnet create \
+  --name $SUBNET \
+  --resource-group $RGNAME \
+  --vnet-name $VNET   \
+  --address-prefix $SUBNETRANGE
+```
+
+VMの作成
+
+```
+RGNAME="myAGgroup"
+VNET="myVNet"
+SUBNET="myCertbotSubnet"
+SERVERNAME="myVMcertbot"
+
+az vm create \
+  --resource-group $RGNAME \
+  --name $SERVERNAME \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest \
+  --size Standard_B1ls \
+  --public-ip-sku Standard \
+  --public-ip-address "" \
+  --subnet $SUBNET \
+  --vnet-name $VNET \
+  --storage-sku StandardSSD_LRS \
+  --nic-delete-option Delete \
+  --os-disk-delete-option Delete \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+```
 
 
