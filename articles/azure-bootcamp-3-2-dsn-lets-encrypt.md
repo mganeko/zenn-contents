@@ -225,19 +225,78 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 - 左のメニューから「バックエンドプール」をクリック
 - [+追加]ボタンをクリック
 
-![新規ゲートウェイ1](/images/azure_appgateway_backendpool.png)
+![バックエンドプール](/images/azure_appgateway_backendpool.png)
 
 
 - 「バックエンドプール」パネルが表示される
   - 名前を指定 ... 例） myCertbotPool
   - ターゲットの種類で「仮想マシン」を選択
-  - ターゲットで、certbot用に作成したVMのNiv（例：myVMcertbotNic）を選択
+  - ターゲットで、certbot用に作成したVMのネットワークインターフェイス（例：myVMcertbotVMNic）を選択
   - [追加]ボタンをクリック
 
+![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png)
 
-![新規ゲートウェイ1](/images/azure_appgateway_add_backendpool.png)
+- Application Gatewayの画面に戻る
+- 左のメニューから「バックエンド設定」をクリック
+- [+追加]ボタンをクリック
+- 「バックエンド設定の追加」パネルが表示される
+  - 名前 ... certbotSetting
+  - プロトコル ... HTTP
+  - ポートは ... 80
+  - 他はそのまま
+  - [保存]ボタンをクリック
+
+![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png)
+
+
+- Application Gatewayの画面に戻る
+- 左のメニューから「リスナー」をクリック
+- [+リスナーの追加]ボタンをクリック
+- 「リスナーの追加」パネルが表示される
+  - 名前 ... dummyListener
+  - プロントエンドIP ... パブリック
+  - プロトコル ... HTTP
+  - ポート ... 8080 (80以外のポートを指定)
+  - 他はデフォルトのまま
+  - [追加]ボタンをクリック
+
+![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png)
+
+
+--
+
+- Application Gatewayの画面に戻る
+- 左のメニューから「ルール」をクリック
+- 今あるルール (myHttpRule) を削除
+- [+ルーティング規則]ボタンをクリック
 
 
 
 
-ポータル上から
+/.well-known/*
+
+
+
+
+
+
+VM上で
+
+
+sudo certbot certonly --nginx
+--> emailアドレスを入力
+
+Please read the Terms of Service a
+-> y
+
+emailアドレスをシェアするか？
+--> n
+
+domain name
+--> my-dns-name-2022.japaneast.cloudapp.azure.com
+
+
+-->
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/privkey.pem
