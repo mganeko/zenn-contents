@@ -262,6 +262,42 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png)
 
+- Application Gatewayの画面に戻る
+- 左のメニューから「ルール」をクリック
+- [+ルーティング規則]ボタンをクリック
+- 「ルーティング規則の追加」パネルが表示される
+  - ルール名 ... myCertbotRule
+  - 優先度 ... 100
+  - 「リスナー」タブをクリック
+    -　リスナー ... 先ほど作った「dummyListener」を選択
+  - 「バックエンドターゲット」タブをクリック
+    - ターゲットの種類 ... 「バックエンドプール」を選択
+    - バックエンドターゲット ... 元々作ってあった「myBackendPool」を指定
+    - バックエンド設定 ... 元々作ってあった「myHttpSetting」を指定
+    - パスベースの規則
+      - 「パス ベースの規則を作成するには複数のターゲットを追加します」をクリック
+      - パスの指定画面が表示される
+        - パス ... /.well-known/*
+        - ターゲット名 ... certbot
+        - バックエンド設定 ... 今回作った「certbotSetting」を指定
+        - バックエンドターゲット ... 今回作った「myCertbotPool」を指定
+        - [追加]ボタンをクリック
+      - パスベースの規則の表示に戻る
+    - [追加]ボタンをクリック
+  - 「ルーティング規則」の一覧に戻る
+    - ※この段階で、 http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/ にアクセスできるはず
+    - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
+      - 元の「myHttpRule」が削除され、元々あった「myHttpListner」が使えるようになる
+    - ルールの一覧から、今回作った「certbotRule」をクリック
+    - ルール内容のパネルが表示される
+      - リスナーで「myHttpRule」を選択
+      - [保存]ボタンをクリック
+
+![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png)
+
+これで一旦ルール設定は終了です。
+
+
 
 --
 
