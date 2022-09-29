@@ -366,12 +366,45 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 
 ## certbotの実行
 
+改めてcertbot用のVM上で操作します。Cloud Shell上から次のコマンドでssh接続してください。（各名称は自分の環境に合わせて設定してください）
+
+```shellsession:CloudShell上
+RGNAME="myAGgroup"
+SERVERNAME="myVMcertbot"
+VMIP=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query publicIps -o tsv)
+ssh azureuser@$VMIP
+```
+
+接続したら、certbotを実行します。
+
+```shellsession:certbot用VM上
+sudo certbot certonly --nginx
+```
+
+- emailアドレスを尋ねられるので入力
+- 利用条件を了承するか聞かれるので、（読んでから）「y」と入力
+- emailアドレスを共有して良いか聞かれるので、「y]か「n」を入力
+- domain nameを聞かれるので、dns名 + リージョンが入ったドメイン名（FQDN)を入力
+  - この例では「my-dns-name-2022.japaneast.cloudapp.azure.com」
+- 次のように表示さればSSL証明書の発行に成功
+
+```textile:証明書発行結果
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/privkey.pem
+```
+
+メッセージにあるように、「/etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/」に証明書ファイルが保存されます
+
 
 ## HTTPSの設定
 
+HTTPSを利用するには、Application GatewayのリスナーにSSL証明書を設定する必要があります。
 
 
---
+
+### --- メモ ---
+
 
 - Application Gatewayの画面に戻る
 - 左のメニューから「ルール」をクリック
