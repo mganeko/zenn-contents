@@ -198,6 +198,39 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 それを実現するために、Application Gateway経由でこのVM上のWebサーバー(Nginx)に接続できるように準備が必要です。
 （sshをexitで抜けて Cloud Shellに戻ってから、続行してください。）
 
+## Application Gatewayへのバックエンドプールの追加
+
+Application Gatewayにバックエンドプールを追加し、certbot用に作ったVMを配置します。
+
+
+Azure Portal上で、作成済みのApplication Gatewayを表示します。
+
+- 左のメニューから「バックエンドプール」をクリック
+- [+追加]ボタンをクリック
+
+![バックエンドプール](/images/azure_appgateway_backendpool.png =400x)
+
+
+- 「バックエンドプール」パネルが表示される
+  - 名前を指定 ... 例） myCertbotPool
+  - ターゲットの種類で「仮想マシン」を選択
+  - ターゲットで、certbot用に作成したVMのネットワークインターフェイス（例：myVMcertbotVMNic）を選択
+  - [追加]ボタンをクリック
+
+![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png)
+
+- Application Gatewayの画面に戻る
+- 左のメニューから「バックエンド設定」をクリック
+- [+追加]ボタンをクリック
+- 「バックエンド設定の追加」パネルが表示される
+  - 名前 ... certbotSetting
+  - プロトコル ... HTTP
+  - ポートは ... 80
+  - 他はそのまま
+  - [保存]ボタンをクリック
+
+![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png)
+
 
 ## Application Gatewayを使ったパスによるルーティング
 
@@ -237,35 +270,9 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
 
 
-## Potalからバックエンドプールを追加
+## 新しいルーティング規則の追加
 
-Azure Portal上で、作成済みのApplication Gatewayを表示します。
-
-- 左のメニューから「バックエンドプール」をクリック
-- [+追加]ボタンをクリック
-
-![バックエンドプール](/images/azure_appgateway_backendpool.png)
-
-
-- 「バックエンドプール」パネルが表示される
-  - 名前を指定 ... 例） myCertbotPool
-  - ターゲットの種類で「仮想マシン」を選択
-  - ターゲットで、certbot用に作成したVMのネットワークインターフェイス（例：myVMcertbotVMNic）を選択
-  - [追加]ボタンをクリック
-
-![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png)
-
-- Application Gatewayの画面に戻る
-- 左のメニューから「バックエンド設定」をクリック
-- [+追加]ボタンをクリック
-- 「バックエンド設定の追加」パネルが表示される
-  - 名前 ... certbotSetting
-  - プロトコル ... HTTP
-  - ポートは ... 80
-  - 他はそのまま
-  - [保存]ボタンをクリック
-
-![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png)
+### ダミーのリスナーを追加
 
 
 - Application Gatewayの画面に戻る
