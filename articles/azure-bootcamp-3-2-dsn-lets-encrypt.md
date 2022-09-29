@@ -199,27 +199,43 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 （sshをexitで抜けて Cloud Shellに戻ってから、続行してください。）
 
 
-## Application Gatewayの複数バックエンドプール指定
+## Application Gatewayを使ったパスによるルーティング
 
-Application Gatewayには複数のバックエンドプールを指定できます。Cloud Shell上から、azコマンドでバックエンドプール（address-pool)を追加します。
+### 実現したい姿
 
-```shellsession:CloudShell上
-RGNAME="myAGgroup"
-APPGATEWAY="myAppGateway"
-BACKENDPOOL="myCertbotPool"
+次のように、パスによって異なるバックエンドに分岐させることを目指します。
 
-az network application-gateway address-pool create \
---resource-group $RGNAME \
---gateway-name $APPGATEWAY \
---name $BACKENDPOOL
-```
+- http://_FQDN名_/.well-known/* ... certbot用に作ったVM（Nginx）
+- それ以外の http://_FQDN名_/* ... 元々あるバックエンドプール（Node.jsを使ったサーバー）
 
-作成したバックエンドプールの一覧は、次のコマンドで取得できます。
+図にすると次のような形です。
 
-```shellsession:CloudShell上
-az network application-gateway address-pool list --gateway-name $APPGATEWAY \
-  --resource-group $RGNAME --query "[].{name: name}" -o tsvmyBackendPool
-```
+![パス別ルーティング](/images/azure_appgateway_routing_goal.png)
+
+### 経由する姿
+
+ところが、Appplication Gatewayの設定変更には下記の制約があり、ストレートに上記の形を実現できません。
+
+- すでに作ってあるルーティング規則（たBASICルーティング）に、パスのルールを追加することはできない
+  - パスルールを追加するには、新たにルールを作ってそこに追加する
+- ルーティング規則を全て削除することはできない
+  - 最低1つはルーティング規則が存在している必要あり
+  - 新しいルーティング規則を追加後、古いルーティング規則を削除する
+- リスナーは、複数のルールで使うことはできない
+  - 新しいルーティング規則用に、新しいリスナーを用意する必要がある
+  - 古いリーティング規則の削除後は、元々あったリスナーを再利用できる
+
+従って、一旦次の形を作ります。
+
+![暫定ルーティング](/images/azure_appgateway_routing_step1.png)
+
+
+
+
+
+
+
+
 
 ## Potalからバックエンドプールを追加
 
