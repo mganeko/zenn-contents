@@ -352,7 +352,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
     - リスナーで「myHttpListner」を選択
     - [保存]ボタンをクリック
 
-![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png　=400x)
+![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png =400x)
 
 これで一旦ルーティング規則の設定は終了です。
 
