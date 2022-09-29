@@ -322,7 +322,6 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
       - パスベースの規則の表示に戻る
     - [追加]ボタンをクリック
   - 「ルーティング規則」の一覧に戻る
-    - ※この段階で、 http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/ にアクセスできるはず
 
 ![パス指定](/images/azure_appgateway_add_rule_panel3_addpath.png =400x)
 
@@ -345,14 +344,17 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 
 ### 新しいルーティング規則を変更
 
-    - ルールの一覧から、今回作った「certbotRule」をクリック
-    - ルール内容のパネルが表示される
-      - リスナーで「myHttpRule」を選択
-      - [保存]ボタンをクリック
+もう少しAzure Portal上でApplication Gatewayの設定を続けます。
+
+- 左のメニューから「ルール」をクリック
+  - ルールの一覧から、今回作った「certbotRule」をクリック
+  - ルール内容のパネルが表示される
+    - リスナーで「myHttpListner」を選択
+    - [保存]ボタンをクリック
 
 ![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png　=400x)
 
-これで一旦ルール設定は終了です。
+これで一旦ルーティング規則の設定は終了です。
 
 ## certbotの実行
 
