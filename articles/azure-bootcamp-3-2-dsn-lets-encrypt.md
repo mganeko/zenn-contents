@@ -330,6 +330,10 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 - http://_FQDN名_:8080/ あるいは
 - http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/
 
+ルーティングの状態は次のようになっています。
+
+![暫定ルーティング](/images/azure_appgateway_routing_step1.png)
+
 
 ### 元のルーティング規則を削除
 
@@ -355,6 +359,10 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 ![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png =400x)
 
 これで一旦ルーティング規則の設定は終了です。
+ルーティングの状態は次のようになっています。
+
+![新ルーティング](/images/azure_appgateway_routing_step2.png)
+
 
 ## certbotの実行
 
