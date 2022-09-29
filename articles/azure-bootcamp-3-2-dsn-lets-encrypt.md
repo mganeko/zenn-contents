@@ -401,6 +401,10 @@ Key is saved at:         /etc/letsencrypt/live/my-dns-name-2022.japaneast.clouda
 
 HTTPSを利用するには、Application GatewayのリスナーにSSL証明書を設定する必要があります。
 
+- (a) 証明書をローカルのダウンロード後、Portal画面からアップロード
+- (b) Key Vault経由で設定
+
+今回は(b)のKey Valut経由を使ってみます。
 
 
 ### --- メモ ---
