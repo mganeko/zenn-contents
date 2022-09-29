@@ -288,6 +288,9 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 引き続きAzure Portal上でApplication Gatewayの設定を行います。
 
+![ルール](/images/azure_appgateway_rule.png =400x)
+
+
 - 左のメニューから「ルール」をクリック
 - [+ルーティング規則]ボタンをクリック
 - 「ルーティング規則の追加」パネルが表示される
@@ -295,10 +298,19 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 優先度 ... 100
   - 「リスナー」タブをクリック
     -　リスナー ... 先ほど作った「dummyListener」を選択
+
+![ルール](/images/azure_appgateway_add_rule_panel1.png =400x)
+
+- 「ルーティング規則の追加」パネルでの操作を継続
   - 「バックエンドターゲット」タブをクリック
     - ターゲットの種類 ... 「バックエンドプール」を選択
     - バックエンドターゲット ... 元々作ってあった「myBackendPool」を指定
     - バックエンド設定 ... 元々作ってあった「myHttpSetting」を指定
+
+![ルール](/images/azure_appgateway_add_rule_panel2_backend.png =400x)
+
+- 「ルーティング規則の追加」パネルでの操作を継続
+  - 「バックエンドターゲット」タブでの操作を継続
     - パスベースの規則
       - 「パス ベースの規則を作成するには複数のターゲットを追加します」をクリック
       - パスの指定画面が表示される
@@ -312,11 +324,24 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 「ルーティング規則」の一覧に戻る
     - ※この段階で、 http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/ にアクセスできるはず
 
+![パス指定](/images/azure_appgateway_add_rule_panel3_addpath.png =400x)
+
+ここまでの設定が終わるとブラウザで次のURLにアクセスできるようになっています。
+
+- http://_FQDN名_:8080/ あるいは
+- http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/
+
+
 ### 元のルーティング規則を削除
 
+Azure Portal上でApplication Gatewayの設定を続けます。
 
-    - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
-      - 元の「myHttpRule」が削除され、元々あった「myHttpListner」が使えるようになる
+- 左のメニューから「ルール」をクリック
+  - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
+  - 元の「myHttpRule」が削除され、元々あった「myHttpListner」が使えるようになる
+
+![ルールの削除](/images/azure_appgateway_rule_list_delete.png =400x)
+
 
 ### 新しいルーティング規則を変更
 
