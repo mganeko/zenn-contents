@@ -82,7 +82,7 @@ SSL証明書はIPアドレスではなくドメインを使ったサーバー名
 
 ## Certbotの利用
 
-Let's EncrpytでSSL証明書を発行するために、Linux VM上で[certbot](https://certbot.eff.org) というツールを利用します。VMはこれまでのは別の、第3のサブネットに配置します。
+Let's EncrpytでSSL証明書を発行するために、Linux VM上で[certbot](https://certbot.eff.org) というツールを利用します。VMはこれまでとは別の、第3のサブネットに配置します。
 
 ## サブネットの作成
 
@@ -191,9 +191,12 @@ sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 ```
 
-次にインストールしたcertbotコマンドを利用して証明書を発行するのですが、その前に Application Gatewayに指定したDNS名(FQDN)を使って、このVMに接続できるように準備が必要です。
+次にインストールしたcertbotコマンドを利用して証明書を発行します。発行する際には次のURLでcertbotが生成する特殊なファイルにアクセスできる必要があります。
 
-sshをexitで抜けて、Cloud Shellに戻ってから、続行してください。
+- http://_FQDN名_/.well-known/acme-challenge/_xxxxxxxxxxxxxxxx_
+
+それを実現するために、Application Gateway経由でこのVM上のWebサーバー(Nginx)に接続できるように準備が必要です。
+（sshをexitで抜けて Cloud Shellに戻ってから、続行してください。）
 
 
 ## Application Gatewayの複数バックエンドプール指定
@@ -296,6 +299,11 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 ![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png)
 
 これで一旦ルール設定は終了です。
+
+## certbotの実行
+
+
+## HTTPSの設定
 
 
 
