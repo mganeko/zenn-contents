@@ -217,7 +217,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - ターゲットで、certbot用に作成したVMのネットワークインターフェイス（例：myVMcertbotVMNic）を選択
   - [追加]ボタンをクリック
 
-![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png)
+![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png =400x)
 
 - Application Gatewayの画面に戻る
 - 左のメニューから「バックエンド設定」をクリック
@@ -229,14 +229,14 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 他はそのまま
   - [保存]ボタンをクリック
 
-![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png)
+![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png =400x)
 
 
-## Application Gatewayを使ったパスによるルーティング
+## Application Gatewayによるパス別のルーティング
 
 ### 実現したい姿
 
-次のように、パスによって異なるバックエンドに分岐させることを目指します。
+次のように、パス別に異なるバックエンドに分岐させることを目指します。
 
 - http://_FQDN名_/.well-known/* ... certbot用に作ったVM（Nginx）
 - それ以外の http://_FQDN名_/* ... 元々あるバックエンドプール（Node.jsを使ったサーバー）
@@ -247,7 +247,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ### 経由する姿
 
-ところが、Appplication Gatewayの設定変更には下記の制約があり、ストレートに上記の形を実現できません。
+ところがAppplication Gatewayの設定変更には下記の制約があり、ストレートに上記の形を実現できません。
 
 - すでに作ってあるルーティング規則（たBASICルーティング）に、パスのルールを追加することはできない
   - パスルールを追加するには、新たにルールを作ってそこに追加する
@@ -258,19 +258,12 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 新しいルーティング規則用に、新しいリスナーを用意する必要がある
   - 古いリーティング規則の削除後は、元々あったリスナーを再利用できる
 
-従って、一旦次の形を作ります。
+従って一旦次の形を作ります。
 
 ![暫定ルーティング](/images/azure_appgateway_routing_step1.png)
 
 
-
-
-
-
-
-
-
-## 新しいルーティング規則の追加
+## Application Gatewayへの新しいルーティング規則の追加
 
 ### ダミーのリスナーを追加
 
