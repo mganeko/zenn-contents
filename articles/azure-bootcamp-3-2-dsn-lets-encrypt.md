@@ -267,8 +267,10 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ### ダミーのリスナーを追加
 
+Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
-- Application Gatewayの画面に戻る
+![リスナー](/images/azure_appgateway_add_listener.png =400x)
+
 - 左のメニューから「リスナー」をクリック
 - [+リスナーの追加]ボタンをクリック
 - 「リスナーの追加」パネルが表示される
@@ -278,10 +280,14 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - ポート ... 8080 (80以外のポートを指定)
   - 他はデフォルトのまま
   - [追加]ボタンをクリック
-
-![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png)
-
 - Application Gatewayの画面に戻る
+
+![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png =400x)
+
+### ルーティング規則を追加
+
+引き続きAzure Portal上でApplication Gatewayの設定を行います。
+
 - 左のメニューから「ルール」をクリック
 - [+ルーティング規則]ボタンをクリック
 - 「ルーティング規則の追加」パネルが表示される
@@ -305,14 +311,21 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
     - [追加]ボタンをクリック
   - 「ルーティング規則」の一覧に戻る
     - ※この段階で、 http://_指定したDNS名_.japaneast.cloudapp.azure.com:8080/ にアクセスできるはず
+
+### 元のルーティング規則を削除
+
+
     - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
       - 元の「myHttpRule」が削除され、元々あった「myHttpListner」が使えるようになる
+
+### 新しいルーティング規則を変更
+
     - ルールの一覧から、今回作った「certbotRule」をクリック
     - ルール内容のパネルが表示される
       - リスナーで「myHttpRule」を選択
       - [保存]ボタンをクリック
 
-![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png)
+![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png　=400x)
 
 これで一旦ルール設定は終了です。
 
