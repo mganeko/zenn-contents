@@ -473,42 +473,44 @@ IDNAME="myCertId"
 az identity create --resource-group $RGNAME --name $IDNAME
 ```
 
+成功すると次のような結果が返ってきます。
 
-### --- メモ ---
+```textile
+{
+  "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx",
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/resourcegroups/myAGgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myCertId",
+  "location": "japaneast",
+  "name": "myCertId",
+  "principalId": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyy",
+  "resourceGroup": "myAGgroup",
+  "tags": {},
+  "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx",
+  "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+}
+
+```
+
+この中の「principalId」を使って、さらに次のように権限を付与します。（シークレットの読み取りと、証明書の一覧/読み取りを許可）
+
+```shellsession:CloudShell上
+VAULTNAME="my-ag-vault"
+ID="yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyy"
+
+az keyvault set-policy -n $VAULTNAME --secret-permissions get \
+--certificate-permissions get list --object-id $ID
+```
+
+※IDの値は先ほど結果の「principalId」の値を指定してください。
+
+### 証明書の登録
+
+VMからコピー
+
+key-vaultに登録
+
+### リスナーの作成
+
+### ルールの変更
 
 
-- Application Gatewayの画面に戻る
-- 左のメニューから「ルール」をクリック
-- 今あるルール (myHttpRule) を削除
-- [+ルーティング規則]ボタンをクリック
 
-
-
-
-/.well-known/*
-
-
-
-
-
-
-VM上で
-
-
-sudo certbot certonly --nginx
---> emailアドレスを入力
-
-Please read the Terms of Service a
--> y
-
-emailアドレスをシェアするか？
---> n
-
-domain name
---> my-dns-name-2022.japaneast.cloudapp.azure.com
-
-
--->
-Successfully received certificate.
-Certificate is saved at: /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/fullchain.pem
-Key is saved at:         /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/privkey.pem
