@@ -364,7 +364,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 ![新ルーティング](/images/azure_appgateway_routing_step2.png)
 
 
-## certbotの実行
+## certbotによるSSL証明書発行
 
 改めてcertbot用のVM上で操作します。Cloud Shell上から次のコマンドでssh接続してください。（各名称は自分の環境に合わせて設定してください）
 
@@ -374,6 +374,8 @@ SERVERNAME="myVMcertbot"
 VMIP=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query publicIps -o tsv)
 ssh azureuser@$VMIP
 ```
+
+### 証明書を発行
 
 接続したら、certbotを実行します。
 
@@ -396,6 +398,33 @@ Key is saved at:         /etc/letsencrypt/live/my-dns-name-2022.japaneast.clouda
 
 メッセージにあるように、「/etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/」に証明書ファイルが保存されます
 
+### 証明書の連結
+
+あとで利用するために、作った2つの証明書を連結します。引き続きcertbot用のVM上で操作します。
+
+```shellsession:certbot用VM上
+# 作業用ディレクトリ作成
+mkdir ~/cert
+
+# 連結
+sudo openssl pkcs12 -export \
+ -in /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/fullchain.pem \
+ -inkey  /etc/letsencrypt/live/my-dns-name-2022.japaneast.cloudapp.azure.com/privkey.pem \
+ -out ~/cert/combined.pfx
+```
+
+※ _my-dns-name-2022.japaneast.cloudapp.azure.com_ の部分は、自分の環境に合わせて変更してください。
+
+実行するとパスワードを2回聞かれるので、同じ値を指定してください。（※あとで使うので記録しておいてください。
+
+### アクセス権の変更
+
+このあとCloud Shell上にコピーするために、アクセス権を変更します。
+
+```shellsession:certbot用VM上
+sudo chmod +r ~/cert/combined.pfx
+```
+
 
 ## HTTPSの設定
 
@@ -404,7 +433,45 @@ HTTPSを利用するには、Application GatewayのリスナーにSSL証明書�
 - (a) 証明書をローカルのダウンロード後、Portal画面からアップロード
 - (b) Key Vault経由で設定
 
-今回は(b)のKey Valut経由を使ってみます。
+今回は(b)のKey Vault経由を使ってみます。
+
+### Key Vaultとは
+
+Key Vault は機密情報を格納する器のサービスです。
+公式ページ [Azure Key Vault について](https://learn.microsoft.com/ja-jp/azure/key-vault/general/overview) によると、Key Vaultを使うと次のことが可能です。
+
+- シークレットの管理 
+- キー管理 
+- 証明書の管理
+  - Azure および内部の接続されているリソースで使用するためのパブリックおよびプライベートの Transport Layer Security/Secure Sockets Layer (TLS/SSL) 証明書を簡単にプロビジョニング、管理、デプロイできます
+
+今回のようにSSL証明書の管理にぴったりです。
+
+### azコマンドによるKey Vault作成
+
+certbot用のVMから抜けてCloud Shellに戻り、次のように操作します。（各名称は自分の環境に合わせて変更してください）
+
+```shellsession:CloudShell上
+RGNAME="myAGgroup"
+VAULTNAME="my-ag-vault"
+
+az keyvault create --name $VAULTNAME --resource-group $RGNAME --location "japaneast"
+
+```
+
+"my-ag-vault" という名前の Key Vault （機密情報を格納する器）ができました。
+
+### ユーザー割り当てマネージド IDの作成
+
+Applicatin GatewayからKey Vaultを利用するために、アクセス権限を付与する仕組みである「ユーザー割り当てマネージド ID（User-assigned managed identity）を利用します。
+
+
+```shellsession:CloudShell上
+RGNAME="myAGgroup"
+IDNAME="myCertId"
+
+az identity create --resource-group $RGNAME --name $IDNAME
+```
 
 
 ### --- メモ ---
