@@ -1,6 +1,6 @@
 ---
 title: "PostDev(2022)セッションメモ-フロントエンド開発テスト最前線 " # 記事のタイトル
-emoji: "📹" # アイキャッチとして使われる絵文字（1文字だけ）
+emoji: "📄" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "idea" # tech: 技術記事 / idea: アイデア記事
 topics: ["frontend", "test"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: true # 公開設定（falseにすると下書き）
