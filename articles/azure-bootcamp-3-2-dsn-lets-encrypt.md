@@ -542,6 +542,31 @@ We could not parse the provided certificate as .pem or .pfx. Please verify the c
 
 ### リスナーの作成
 
+azコマンドでの指定方法が理解できていないので、Portalの画面からHTTPS(ポート443)用のリスナーを新たに作ります。
+
+Azure Portal上で、作成済みのApplication Gatewayを表示します。
+
+![リスナー](/images/azure_appgateway_add_listener.png =400x)
+
+- 左のメニューから「リスナー」をクリック
+- [+リスナーの追加]ボタンをクリック
+- 「リスナーの追加」パネルが表示される
+  - リスナー名 ... 「myHttpsListner」など（もっと区別しやすい名前が良いかもしれません）
+  - フロントエンドIP ... パブリックを選択
+  - プロトコル ... HTTPSを選択
+  - ポート ... 443
+  - HTTPS設定 ... 「キーコンテナから証明書を選択する」
+  - 証明書名 ...  「certbotCert」など、好みの名前を指定
+  - マネージドID ... [ユーザー割り当てマネージド IDの作成]で作成したID名
+  - キーコンテナ名 ... 作成たKey Vaultの名前
+  - 証明書 ... 「証明書の登録」で指定した証明書の名前（CERTNAMEの値）
+  - その他 ... デフォルトのまま
+  - [追加]ボタンをクリック
+- Application Gatewayの画面に戻る
+
+![HTTPSリスナー](/images/azure_appgateway_https_listener_concat.png =400x)
+
+
 ### ルールの変更
 
 
