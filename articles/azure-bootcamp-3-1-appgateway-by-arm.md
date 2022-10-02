@@ -1,5 +1,5 @@
 ---
-title: "Azure Bootcamp 3.1 - ARMテンプレートを使ったApplication Gatewayのデプロイ" # 記事のタイトル
+title: "Azure Self-Study 3.1 - ARMテンプレートを使ったApplication Gatewayのデプロイ" # 記事のタイトル
 emoji: "🌩️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # はじめに
 
-前回の記事「[Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」では、Azure Portalの画面からApplication Gatewayを構築しました。これから何度も繰り返し構築と削除を繰り返すことを考えると、毎回Portalの画面から操作するのは手間がかかりすぎます。そこで自動化する方法を2種類試してみます。
+前回の記事「[Azure Self-Study 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」では、Azure Portalの画面からApplication Gatewayを構築しました。これから何度も繰り返し構築と削除を繰り返すことを考えると、毎回Portalの画面から操作するのは手間がかかりすぎます。そこで自動化する方法を2種類試してみます。
 
 # Azure CLIを使ったApplication Gatewayの構築
 
@@ -75,7 +75,7 @@ ARMテンプレートは複雑なため、1から手書きするのは現実的�
 
 ### Application Gatewayの構築
 
-まず「Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」の「[Application Gateway の作成](https://zenn.dev/mganeko/articles/azure-bootcamp-3-application-gateway#application-gateway-の作成)」に従って、Potal画面からApplication Gatewayを構築します。すでに構築済みのものがある場合は、それを利用します。
+まず「Azure Self-Study 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」の「[Application Gateway の作成](https://zenn.dev/mganeko/articles/azure-bootcamp-3-application-gateway#application-gateway-の作成)」に従って、Potal画面からApplication Gatewayを構築します。すでに構築済みのものがある場合は、それを利用します。
 
 ### ARMテンプレートのエクスポート
 
@@ -198,7 +198,7 @@ resources - backendAddressPools - properties - backendAddresses の配列の中�
 az deployment group create --resource-group myAGgroup --template-file arm/template.json 
 ```
 
-数分経つと、Application Gatwayが構築されます。Potal画面で内容を確認してください。Application Gatewayが構築できたら、前回（[Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway#blue-greenデプロイのスクリプト化)）のようにサーバーをBlue-Greenデプロイすることができます。
+数分経つと、Application Gatwayが構築されます。Potal画面で内容を確認してください。Application Gatewayが構築できたら、前回（[Azure Self-Study 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway#blue-greenデプロイのスクリプト化)）のようにサーバーをBlue-Greenデプロイすることができます。
 
 
 # まとめ
@@ -212,6 +212,7 @@ Application Gatewayのように複雑な設定を持つリソースは、毎回�
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
 - 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
 - 3.1. [ARMテンプレートを使ったApplication Gatewayのデプロイ](azure-bootcamp-3-1-appgateway-by-arm)
+- 3.2. [Application GatewayのDNSの指定とHTTPS化](azure-bootcamp-3-2-dsn-lets-encrypt)
 
 
 

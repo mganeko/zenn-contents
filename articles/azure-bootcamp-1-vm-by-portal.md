@@ -1,5 +1,5 @@
 ---
-title: "Azure Bootcamp 1 - Azure Portalを使って、ブラウザからVMを起動する" # 記事のタイトル
+title: "Azure Self-Study 1 - Azure Portalを使って、ブラウザからVMを起動する" # 記事のタイトル
 emoji: "🌩️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -345,5 +345,6 @@ Azureを初めて使う人向けに、ポータル画面からの操作を実施
 - 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
 - 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
 - 3.1. [ARMテンプレートを使ったApplication Gatewayのデプロイ](azure-bootcamp-3-1-appgateway-by-arm)
+- 3.2. [Application GatewayのDNSの指定とHTTPS化](azure-bootcamp-3-2-dsn-lets-encrypt)
 
 

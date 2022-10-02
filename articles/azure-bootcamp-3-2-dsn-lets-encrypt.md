@@ -526,7 +526,7 @@ scp azureuser@$VMIP:~/cert/combined.pfx ~/cert
 
 次に、azコマンドでKey Vaultに登録します。
 
-```
+```shellsession:CloudShell上
 VAULTNAME="my-ag-vault"
 CERTNAME="myAGcert"
 PASSWORD="連結に使ったパスワード"
@@ -576,24 +576,23 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - [追加]ボタンをクリック
 - Application Gatewayの画面に戻る
 
-![HTTPSリスナー](/azure_appgateway_https_listener_concat.png =500x)
+![HTTPSリスナー](/images/azure_appgateway_https_listener_concat.png =500x)
 
 
 ### ルーティング規則の変更
 
 最後にルーティング規則を変更し、HTTPS用のリスナーを利用します。引き続きAzure Portal上でApplication Gatewayの設定を行います。
 
-![ルール](/images/azure_appgateway_rule.png =500x)
-
 - 左のメニューから「ルール」をクリック
-- 「リスナー」タブを選択
-  - リスナー ... 先ほど作った「myHttpsListener」を選択
-- [保存]ボタンをクリック
-
+- ルーティング規則の一覧から、利用中のルール（myCertbotRule）をクリック
+- 内容編集パネルが表示される
+  - 「リスナー」タブを選択
+    - リスナー ... 先ほど作った「myHttpsListener」を選択
+  - [保存]ボタンをクリック
 
 ![ルール](/images/azure_appgateway_https_rule_https.png =500x)
 
-しばらく待つと（数十秒？）設定が反映され、次の状態になります。これでHTTPSの設定は完了です。
+しばらく待つと（数十秒？）設定が反映され、ルーティングが次の状態になります。これでHTTPSの設定は完了です。
 
 ![ルール](/images/azure_appgateway_routing_step3.png)
 
