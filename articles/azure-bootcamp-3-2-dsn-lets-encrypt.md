@@ -2,7 +2,7 @@
 title: "Azure Self-Study 3.2 - Application GatewayのDNSの指定とHTTPS化" # 記事のタイトル
 emoji: "🌩️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
-topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
+topics: ["azure", "certbot"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: true # 公開設定（falseにすると下書き）
 ---
 
@@ -430,7 +430,7 @@ sudo chmod +r ~/cert/combined.pfx
 Let's Encryptで発行したSSL証明書の期限は90日です。期限が切れる前に更新する必要がありますが、その方法は別の機会に整理したいと思います。
 
 
-## HTTPSの設定方法
+# HTTPSの設定方法
 
 HTTPSを利用するには、Application GatewayのリスナーにSSL証明書を設定する必要があります。
 
@@ -439,7 +439,7 @@ HTTPSを利用するには、Application GatewayのリスナーにSSL証明書�
 
 今回は(b)のKey Vault経由を使ってみます。
 
-### Key Vaultとは
+## Key Vaultとは
 
 Key Vault は機密情報を格納する器のサービスです。
 公式ページ [Azure Key Vault について](https://learn.microsoft.com/ja-jp/azure/key-vault/general/overview) によると、Key Vaultを使うと次のことが可能です。
@@ -451,7 +451,7 @@ Key Vault は機密情報を格納する器のサービスです。
 
 今回のようにSSL証明書の管理にぴったりです。
 
-### azコマンドによるKey Vault作成
+## azコマンドによるKey Vault作成
 
 certbot用のVMから抜けてCloud Shellに戻り、次のように操作します。（各名称は自分の環境に合わせて変更してください）
 
@@ -465,7 +465,7 @@ az keyvault create --name $VAULTNAME --resource-group $RGNAME --location "japane
 
 "my-ag-vault" という名前の Key Vault （機密情報を格納する器）ができました。
 
-### ユーザー割り当てマネージド IDの作成
+## ユーザー割り当てマネージド IDの作成
 
 Applicatin GatewayからKey Vaultを利用するために、アクセス権限を付与する仕組みである「ユーザー割り当てマネージド ID（User-assigned managed identity）を利用します。
 
@@ -506,7 +506,7 @@ az keyvault set-policy -n $VAULTNAME --secret-permissions get \
 
 ※IDの値は先ほど結果の「principalId」の値を指定してください。
 
-### 証明書の登録
+## 証明書の登録
 
 次はKey Vaultに証明書を登録します。あまりスマートではありませんが、今回はいったんCloud Shell上にコピーしてくることにします。
 （リソースグループ名、VM名は自分の環境に合わせて設定してください）
@@ -540,7 +540,7 @@ az keyvault certificate import --vault-name $VAULTNAME --name $CERTNAME --passwo
 We could not parse the provided certificate as .pem or .pfx. Please verify the certificate with OpenSSL
 ```
 
-### 作業用証明書の削除
+## 作業用証明書の削除
 
 作業用に一時的に作成した証明書 ~/cert/combined.pfx は安全のために削除してください。Cloud Shell上、certbot用VM上それぞれで次のように削除してください。
 
@@ -597,7 +597,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ![ルール](/images/azure_appgateway_routing_step3.png)
 
-### ブラウザからの確認
+## ブラウザからの確認
 
 ブラウザからHTTPSでアクセスできるようになったはずです。
 
