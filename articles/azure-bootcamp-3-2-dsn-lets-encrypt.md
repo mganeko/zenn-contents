@@ -3,7 +3,7 @@ title: "Azure Self-Study 3.2 - Application GatewayのDNSの指定とHTTPS化" # 
 emoji: "🌩️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # はじめに
@@ -208,7 +208,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 - 左のメニューから「バックエンドプール」をクリック
 - [+追加]ボタンをクリック
 
-![バックエンドプール](/images/azure_appgateway_backendpool.png =400x)
+![バックエンドプール](/images/azure_appgateway_backendpool.png =500x)
 
 
 - 「バックエンドプール」パネルが表示される
@@ -217,7 +217,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - ターゲットで、certbot用に作成したVMのネットワークインターフェイス（例：myVMcertbotVMNic）を選択
   - [追加]ボタンをクリック
 
-![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png =400x)
+![バックエンドプールパネル](/images/azure_appgateway_add_backendpool.png =500x)
 
 - Application Gatewayの画面に戻る
 - 左のメニューから「バックエンド設定」をクリック
@@ -229,7 +229,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 他はそのまま
   - [保存]ボタンをクリック
 
-![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png =400x)
+![バックエンド設定](/images/azure_appgateway_backend_certbot_setting.png =500x)
 
 
 ## Application Gatewayによるパス別のルーティング
@@ -249,8 +249,8 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ところがAppplication Gatewayの設定変更には下記の制約があり、ストレートに上記の形を実現できません。
 
-- すでに作ってあるルーティング規則（たBASICルーティング）に、パスのルールを追加することはできない
-  - パスルールを追加するには、新たにルールを作ってそこに追加する
+- すでに作ってあるルーティング規則（BASICルーティング）に、パスのルールを追加することはできない
+  - パスのルールを追加するには、新たにルーティング規則を作ってそこに追加する
 - ルーティング規則を全て削除することはできない
   - 最低1つはルーティング規則が存在している必要あり
   - 新しいルーティング規則を追加後、古いルーティング規則を削除する
@@ -269,7 +269,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
-![リスナー](/images/azure_appgateway_add_listener.png =400x)
+![リスナー](/images/azure_appgateway_add_listener.png =500x)
 
 - 左のメニューから「リスナー」をクリック
 - [+リスナーの追加]ボタンをクリック
@@ -282,13 +282,13 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - [追加]ボタンをクリック
 - Application Gatewayの画面に戻る
 
-![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png =400x)
+![リスナー追加パネル](/images/azure_appgateway_add_listner_panel.png =500x)
 
 ### ルーティング規則を追加
 
 引き続きAzure Portal上でApplication Gatewayの設定を行います。
 
-![ルール](/images/azure_appgateway_rule.png =400x)
+![ルール](/images/azure_appgateway_rule.png =500x)
 
 
 - 左のメニューから「ルール」をクリック
@@ -299,7 +299,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 「リスナー」タブをクリック
     -　リスナー ... 先ほど作った「dummyListener」を選択
 
-![ルール](/images/azure_appgateway_add_rule_panel1.png =400x)
+![ルール](/images/azure_appgateway_add_rule_panel1.png =500x)
 
 - 「ルーティング規則の追加」パネルでの操作を継続
   - 「バックエンドターゲット」タブをクリック
@@ -307,7 +307,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
     - バックエンドターゲット ... 元々作ってあった「myBackendPool」を指定
     - バックエンド設定 ... 元々作ってあった「myHttpSetting」を指定
 
-![ルール](/images/azure_appgateway_add_rule_panel2_backend.png =400x)
+![ルール](/images/azure_appgateway_add_rule_panel2_backend.png =500x)
 
 - 「ルーティング規則の追加」パネルでの操作を継続
   - 「バックエンドターゲット」タブでの操作を継続
@@ -323,7 +323,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
     - [追加]ボタンをクリック
   - 「ルーティング規則」の一覧に戻る
 
-![パス指定](/images/azure_appgateway_add_rule_panel3_addpath.png =400x)
+![パス指定](/images/azure_appgateway_add_rule_panel3_addpath.png =500x)
 
 ここまでの設定が終わるとブラウザで次のURLにアクセスできるようになっています。
 
@@ -343,7 +343,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
   - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
   - 元の「myHttpRule」が削除され、元々あった「myHttpListner」が使えるようになる
 
-![ルールの削除](/images/azure_appgateway_rule_list_delete.png =400x)
+![ルールの削除](/images/azure_appgateway_rule_list_delete.png =500x)
 
 
 ### 新しいルーティング規則を変更
@@ -356,7 +356,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
     - リスナーで「myHttpListner」を選択
     - [保存]ボタンをクリック
 
-![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png =400x)
+![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png =500x)
 
 これで一旦ルーティング規則の設定は終了です。
 ルーティングの状態は次のようになっています。
@@ -534,10 +534,18 @@ PASSWORD="連結に使ったパスワード"
 az keyvault certificate import --vault-name $VAULTNAME --name $CERTNAME --password $PASSWORD -f ~/cert/combined.pfx
 ```
 
-[証明書の連結]()で使ったパスワードを指定してください。もし次のようにエラーが表示されたら、パスワードが間違っている可能性があります。
+[証明書の連結](https://zenn.dev/mganeko/articles/azure-bootcamp-3-2-dsn-lets-encrypt#証明書の連結)で使ったパスワードを指定してください。もし次のようにエラーが表示されたら、パスワードが間違っている可能性があります。
 
 ```textile:エラーメッセージ
 We could not parse the provided certificate as .pem or .pfx. Please verify the certificate with OpenSSL
+```
+
+### 作業用証明書の削除
+
+作業用に一時的に作成した証明書 ~/cert/combined.pfx は安全のために削除してください。Cloud Shell上、certbot用VM上それぞれで次のように削除してください。
+
+```shellsession
+rm ~/cert/combined.pfx
 ```
 
 ## Application GatewayのHTTPS設定
@@ -550,7 +558,7 @@ azコマンドでの指定方法が理解できていないので、Portalの画
 
 Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
-![リスナー](/images/azure_appgateway_add_listener.png =400x)
+![リスナー](/images/azure_appgateway_add_listener.png =500x)
 
 - 左のメニューから「リスナー」をクリック
 - [+リスナーの追加]ボタンをクリック
@@ -563,19 +571,19 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
   - 証明書名 ...  「certbotCert」など、好みの名前を指定
   - マネージドID ... [ユーザー割り当てマネージド IDの作成]で作成したID名
   - キーコンテナ名 ... 作成たKey Vaultの名前
-  - 証明書 ... 「証明書の登録」で指定した証明書の名前（CERTNAMEの値）
+  - 証明書 ... 「[証明書の登録](azure-bootcamp-3-2-dsn-lets-encrypt#証明書の登録)」で指定した証明書の名前（CERTNAMEの値）
   - その他 ... デフォルトのまま
   - [追加]ボタンをクリック
 - Application Gatewayの画面に戻る
 
-![HTTPSリスナー](/images/azure_appgateway_https_listener_concat.png =400x)
+![HTTPSリスナー](/azure_appgateway_https_listener_concat.png =500x)
 
 
 ### ルーティング規則の変更
 
 最後にルーティング規則を変更し、HTTPS用のリスナーを利用します。引き続きAzure Portal上でApplication Gatewayの設定を行います。
 
-![ルール](/images/azure_appgateway_rule.png =400x)
+![ルール](/images/azure_appgateway_rule.png =500x)
 
 - 左のメニューから「ルール」をクリック
 - 「リスナー」タブを選択
@@ -583,7 +591,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 - [保存]ボタンをクリック
 
 
-![ルール](/images/azure_appgateway_https_rule_https.png =400x)
+![ルール](/images/azure_appgateway_https_rule_https.png =500x)
 
 しばらく待つと（数十秒？）設定が反映され、次の状態になります。これでHTTPSの設定は完了です。
 
