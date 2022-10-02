@@ -426,7 +426,7 @@ sudo chmod +r ~/cert/combined.pfx
 ```
 
 
-## HTTPSの設定
+## HTTPSの設定方法
 
 HTTPSを利用するには、Application GatewayのリスナーにSSL証明書を設定する必要があります。
 
@@ -504,9 +504,41 @@ az keyvault set-policy -n $VAULTNAME --secret-permissions get \
 
 ### 証明書の登録
 
-VMからコピー
+次はKey Vaultに証明書を登録します。あまりスマートではありませんが、今回はいったんCloud Shell上にコピーしてくることにします。
+（リソースグループ名、VM名は自分の環境に合わせて設定してください）
 
-key-vaultに登録
+```shellsession:CloudShell上
+# 作業用ディレクトリの作成
+mkdir ~/cert
+
+# VMのIPアドレスを取得
+RGNAME="myAGgroup"
+SERVERNAME="myVMcertbot"
+VMIP=$(az vm show --show-details --resource-group $RGNAME --name $SERVERNAME --query publicIps -o tsv)
+
+# コピーしてくる
+scp azureuser@$VMIP:~/cert/combined.pfx ~/cert
+```
+
+次に、azコマンドでKey Vaultに登録します。
+
+```
+VAULTNAME="my-ag-vault"
+CERTNAME="myAGcert"
+PASSWORD="連結に使ったパスワード"
+
+az keyvault certificate import --vault-name $VAULTNAME --name $CERTNAME --password $PASSWORD -f ~/cert/combined.pfx
+```
+
+[証明書の連結]()で使ったパスワードを指定してください。もし次のようにエラーが表示されたら、パスワードが間違っている可能性があります。
+
+```textile:エラーメッセージ
+We could not parse the provided certificate as .pem or .pfx. Please verify the certificate with OpenSSL
+```
+
+## Application GatewayのHTTPS設定
+
+ようやく準備が整いました。Application Gatewayの設定を行い、HTTPS通信ができるようにします。
 
 ### リスナーの作成
 
