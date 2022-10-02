@@ -1,5 +1,5 @@
 ---
-title: "Azure Bootcamp 3.2 - Application GatewayのDNSの指定とHTTPS化" # 記事のタイトル
+title: "Azure Self-Study 3.2 - Application GatewayのDNSの指定とHTTPS化" # 記事のタイトル
 emoji: "🌩️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["azure"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -8,7 +8,7 @@ published: false # 公開設定（falseにすると下書き）
 
 # はじめに
 
-以前の記事「[Azure Bootcamp 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」で構築したApplication GatewayにDNS名の指定を行い、HTTPS化してみましょう。SSL(TLS)の証明書にはLets's Encrpytを利用します。
+以前の記事「[Azure Self-Study 3 - Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)」で構築したApplication GatewayにDNS名の指定を行い、HTTPS化してみましょう。SSL(TLS)の証明書にはLets's Encrpytを利用します。
 
 ## Aplication Gatewayを再構築する場合
 
@@ -425,6 +425,10 @@ sudo openssl pkcs12 -export \
 sudo chmod +r ~/cert/combined.pfx
 ```
 
+### 証明書の期限
+
+Let's Encryptで発行したSSL証明書の期限は90日です。期限が切れる前に更新する必要がありますが、その方法は別の機会に整理したいと思います。
+
 
 ## HTTPSの設定方法
 
@@ -542,7 +546,7 @@ We could not parse the provided certificate as .pem or .pfx. Please verify the c
 
 ### リスナーの作成
 
-azコマンドでの指定方法が理解できていないので、Portalの画面からHTTPS(ポート443)用のリスナーを新たに作ります。
+azコマンドでの指定方法が理解できていないので、Portalの画面からHTTPS(ポート443)用のリスナーを新たに作ります。SSL証明書は先ほどKey Vaultに登録したもの利用します。
 
 Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
@@ -567,7 +571,40 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 ![HTTPSリスナー](/images/azure_appgateway_https_listener_concat.png =400x)
 
 
-### ルールの変更
+### ルーティング規則の変更
+
+最後にルーティング規則を変更し、HTTPS用のリスナーを利用します。引き続きAzure Portal上でApplication Gatewayの設定を行います。
+
+![ルール](/images/azure_appgateway_rule.png =400x)
+
+- 左のメニューから「ルール」をクリック
+- 「リスナー」タブを選択
+  - リスナー ... 先ほど作った「myHttpsListener」を選択
+- [保存]ボタンをクリック
 
 
+![ルール](/images/azure_appgateway_https_rule_https.png =400x)
 
+しばらく待つと（数十秒？）設定が反映され、次の状態になります。これでHTTPSの設定は完了です。
+
+![ルール](/images/azure_appgateway_routing_step3.png)
+
+### ブラウザからの確認
+
+ブラウザからHTTPSでアクセスできるようになったはずです。
+
+- https://_指定したDNS名_.japaneast.cloudapp.azure.com/
+
+
+# まとめ
+
+Let's Encrypt を使って Application Gateway をHTTPSで通信できるようになりました。一方、証明書の更新処理が課題として残っていますが、それは別の記事で整理する予定です。
+
+# シリーズの記事一覧
+
+- 0. [このシリーズについて](azure-bootcamp-0-about)
+- 1. [Azure Portalを使って、ブラウザからVMを起動する](azure-bootcamp-1-vm-by-portal)
+- 2. [CLIを使って、コマンドでVMを起動する](azure-bootcamp-2-vm-by-cli)
+- 3. [Application Gatewayを使ったVMの簡易Blue-Greenデプロイ](azure-bootcamp-3-application-gateway)
+- 3.1. [ARMテンプレートを使ったApplication Gatewayのデプロイ](azure-bootcamp-3-1-appgateway-by-arm)
+- 3.2. [Application GatewayのDNSの指定とHTTPS化](azure-bootcamp-3-2-dsn-lets-encrypt)
