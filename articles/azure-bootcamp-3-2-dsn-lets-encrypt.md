@@ -20,7 +20,7 @@ published: true # 公開設定（falseにすると下書き）
 # DNS名の指定
 
 
-以前の記事「[dnsの設定](azure-bootcamp-2-vm-by-cli#dnsの設定)」の中で書いたように、パブリックIPアドレスに対してazコマンドを利用してDNS名を指定できます。この例では次の環境、名前を使っています（自分の環境に合わせた名前に置き換えてください）
+以前の記事「[DNSの設定](azure-bootcamp-2-vm-by-cli#dnsの設定)」の中で書いたように、パブリックIPアドレスに対してazコマンドを利用してDNS名を指定できます。この例では次の環境、名前を使っています（自分の環境に合わせた名前に置き換えてください）
 
 - リソースグループ名　... myAGgroup
 - パブリックIPアドレス名 ... myAGPublicIPAddress
@@ -286,7 +286,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ### ルーティング規則を追加
 
-引き続きAzure Portal上でApplication Gatewayの設定を行います。
+Application Gatewayの変更が完了するのを待ってから、引き続きAzure Portal上でApplication Gatewayの設定を行います。
 
 ![ルール](/images/azure_appgateway_rule.png =500x)
 
@@ -337,7 +337,7 @@ Azure Portal上で、作成済みのApplication Gatewayを表示します。
 
 ### 元のルーティング規則を削除
 
-Azure Portal上でApplication Gatewayの設定を続けます。
+変更が完了するのを待ってから、Azure Portal上でApplication Gatewayの設定を続けます。
 
 - 左のメニューから「ルール」をクリック
   - ルールの一覧から、元々あった「myHttpRule」の右端の「…」のメニューから、「削除」をクリック
@@ -348,7 +348,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 
 ### 新しいルーティング規則を変更
 
-もう少しAzure Portal上でApplication Gatewayの設定を続けます。
+変更が完了するのを待ってから、もう少しAzure Portal上でApplication Gatewayの設定を続けます。
 
 - 左のメニューから「ルール」をクリック
   - ルールの一覧から、今回作った「certbotRule」をクリック
@@ -359,7 +359,7 @@ Azure Portal上でApplication Gatewayの設定を続けます。
 ![ルール編集パネル](/images/azure_appgateway_rule_edit_panel.png =500x)
 
 これで一旦ルーティング規則の設定は終了です。
-ルーティングの状態は次のようになっています。
+変更が完了すると、ルーティングの状態は次のようになっています。
 
 ![新ルーティング](/images/azure_appgateway_routing_step2.png)
 
@@ -383,10 +383,11 @@ ssh azureuser@$VMIP
 sudo certbot certonly --nginx
 ```
 
-- emailアドレスを尋ねられるので入力
-- 利用条件を了承するか聞かれるので、（読んでから）「y」と入力
-- emailアドレスを共有して良いか聞かれるので、「y]か「n」を入力
-- domain nameを聞かれるので、dns名 + リージョンが入ったドメイン名（FQDN)を入力
+- 初回のみ
+  - emailアドレスを尋ねられるので入力
+  - 利用条件を了承するか聞かれるので、（読んでから）「y」と入力
+  - emailアドレスを共有して良いか聞かれるので、「y]か「n」を入力
+- domain nameを聞かれるので、DNS名 + リージョンが入ったドメイン名（FQDN)を入力
   - この例では「my-dns-name-2022.japaneast.cloudapp.azure.com」
 - 次のように表示さればSSL証明書の発行に成功
 
