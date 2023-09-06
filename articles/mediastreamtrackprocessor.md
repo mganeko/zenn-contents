@@ -76,7 +76,7 @@ MediaStreamTrackProcessorを作成したWritableStreamに接続することで�
 
 ## MediaStreamTrackGeneratorを使う場合
 
-MediaStreamTrackProcessorを使うとMediaStreamTrackからAudioFrameを取り出すことができますが、MediaStreamTrackGeneratorを使うことで反対にAudioFrameをMediaStreamTrackを作り出すことができます。
+MediaStreamTrackProcessorを使うとMediaStreamTrackからAudioFrameを取り出すことができますが、MediaStreamTrackGeneratorを使うことで反対にAudioFrameからMediaStreamTrackを作り出すことができます。
 
 ```js
   // --- Generatorを用意 ---
