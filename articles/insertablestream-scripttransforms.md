@@ -6,14 +6,14 @@ topics: ["webrtc"] # タグ。["markdown", "rust", "aws"]のように指定す�
 published: false # 公開設定（falseにすると下書き）
 ---
 
-# Insertable Stream とは
+# WebRTC Insertable Stream とは
 
 WebRTCで映像や音声のエンコード済みのデータを取得、加工できる仕組み。エンコード後、パケット分割前のデータを操作することができるため、主にEnd-to-End Encryptionの用途で使われる。
 
 非標準の(旧)Insertabe Streamと、現在標準化プロセスに乗っている(現)Insertable Streamである「WebRTC Encoded Transform」がある。
 
 
-# WebRTC (旧)Insertable Stream のおさらい
+# (旧)Insertable Stream のおさらい
 
 Chromeでサポートされている。
 
@@ -180,14 +180,37 @@ peer.ontrack = function (evt) {
 }
 ```
 
-# サンプル
+# 相互通信のテスト
 
-- example
+新旧Insertable StreamはAPIは違うものの、やっていることは同等なので、通信の互換性はあるはず。そこで相互通信のテストを実施。
+
+## 概要
+
+- 通信方式 ... P2P
+- シグナリング ... [Ayame-Labo]()を利用
+- sender ... 送信側。カメラ映像を取得して送信
+- receiver ... 受信側。映像を受信して送信
+- 簡易暗号化 ... データをXORでビット反転
+  - チェックボックスで、ビット反転をon/offする
+  - sender/receiverの双方がon、または双方がoffの場合に正常に通信できる
+
+## GitHub Pagesで試す
+
+## GitHub でコードを見る
+
+- sender.html
+- receiver.html
+- worker.js
+
+
+# 参考
+
+- E2EE Example
   - Page https://webrtc.github.io/samples/src/content/insertable-streams/endtoend-encryption/
   - Code https://github.com/webrtc/samples/tree/gh-pages/src/content/insertable-streams/endtoend-encryption
 
-
 - 経緯
   - https://groups.google.com/a/mozilla.org/g/dev-platform/c/Gowr5Fx5jng
+
 
 
