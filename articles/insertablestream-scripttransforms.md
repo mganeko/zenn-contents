@@ -6,10 +6,16 @@ topics: ["webrtc"] # タグ。["markdown", "rust", "aws"]のように指定す�
 published: false # 公開設定（falseにすると下書き）
 ---
 
+# Insertable Stream とは
+
+WebRTCで映像や音声のエンコード済みのデータを取得、加工できる仕組み。エンコード後、パケット分割前のデータを操作することができるため、主にEnd-to-End Encryptionの用途で使われる。
+
+非標準の(旧)Insertabe Streamと、現在標準化プロセスに乗っている(現)Insertable Streamである「WebRTC Encoded Transform」がある。
+
 
 # WebRTC (旧)Insertable Stream のおさらい
 
-Chromeでサポートされている映像や音声のエンコード済み、かつパケット分割前のデータを取得できる仕組みで、主にEnd-to-End Encryptionの用途で使われる。
+Chromeでサポートされている。
 
 - 2023年9月現在この仕様は標準化のプロセスから外れていて、Chrome独自機能として残っている
   - 仕様のドラフトや、Explainerは残っていない
@@ -90,9 +96,7 @@ peer.ontrack = function (evt) {
 
 # ScriptTransform とは
 
-2023年9月現在、WebRTCの仕様の標準化検討中の仕様で、映像や音声のエンコード済み、かつパケット分割前のデータを取得できる。主にEnd-to-End Encryptionの用途で使われる。
-
-Safari 15.4〜、Firefox 117〜 でサポート。
+2023年9月現在、WebRTCの仕様の標準化検討中の仕様で、Safari 15.4〜、Firefox 117〜 でサポート。
 
 - Explainer - WebRTC Insertable Streams
   - https://github.com/w3c/webrtc-encoded-transform/blob/main/explainer.md
