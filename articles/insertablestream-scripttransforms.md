@@ -104,7 +104,7 @@ peer.ontrack = function (evt) {
   - どちらも加工しない、あるいは加工する場合のみ、正常に右の映像が表示できる
   - ※映像の乱れや回復が反映されるまで、時間がかかることがあります
 
-![共有中](/images/insertable_streams_demo.gif)
+![demo画像](https://mganeko.github.io/webrtc_insertable_demo/img/insertable_streams_demo.gif)
 
 ## 参考
 
