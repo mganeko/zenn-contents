@@ -198,6 +198,23 @@ peer.ontrack = function (evt) {
 }
 ```
 
+## GitHub Pagesで試す
+
+- Safari 16.xか、Firefox117以上で https://mganeko.github.io/webrtc_insertable_demo/script_transform.html にアクセス
+- [Start Video]ボタンをクリックし、カメラから映像を取得
+  - 左に映像が表示される
+  - [use Audio]がチェックされていると、マイクの音声も取得
+- [Connect]ボタンをクリック
+  - ブラウザの単一タブ内で2つのPeerConnectionの通信が確立
+  - 右に受信した映像が表示される
+- ストリームデータの加工
+  - 左の[XOR Sender data]をチェックすると、送信側でストリームのデータを加工
+  - 右の[XOR Receiver data]をチェックすると、受信側でストリームのデータを逆加工
+  - どちらも加工しない、あるいは加工する場合のみ、正常に右の映像が表示できる
+  - ※映像の乱れや回復が反映されるまで、時間がかかることがあります
+
+![demo画像2](https://mganeko.github.io/webrtc_insertable_demo/img/script_transform_demo.gif)
+
 # 相互通信のテスト
 
 新旧Insertable StreamはAPIは違うものの、やっていることは同等なので、通信の互換性はあるはず。そこで相互通信のテストを実施。
