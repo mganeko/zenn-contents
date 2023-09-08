@@ -187,7 +187,7 @@ peer.ontrack = function (evt) {
 ## 概要
 
 - 通信方式 ... P2P
-- シグナリング ... [Ayame-Labo]()を利用
+- シグナリング ... [Ayame-Labo](https://ayame-labo.shiguredo.app)を利用
 - sender ... 送信側。カメラ映像を取得して送信
 - receiver ... 受信側。映像を受信して送信
 - 簡易暗号化 ... データをXORでビット反転
@@ -196,11 +196,31 @@ peer.ontrack = function (evt) {
 
 ## GitHub Pagesで試す
 
+- 送信側 [sender](https://mganeko.github.io/webrtc_insertable_demo/sender.html)
+  - RoomID を指定
+  - [Start Video]ボタンをクリックし、カメラから映像を取得
+映像が表示される
+    - [use Audio]がチェックされていると、マイクの音声も取得
+  - [Connect]ボタンをクリック
+    - Ayame-Laboに接続、シグナリング待ち
+- 受信側 [receiver](https://mganeko.github.io/webrtc_insertable_demo/receiver.html)
+  - RoomID を指定
+  - [Connect]ボタンをクリック
+    - Ayame-Laboに接続、シグナリング開始
+  - P2P通信が確立し、受信した映像が表示される
+- ストリームデータの加工
+  - 送信側の[Sender XOR Simple Encryption]をチェックすると、送信側でストリームのデータを加工
+  - 受信側の[Receiver XOR Simple Decryption]をチェックすると、受信側でストリームのデータを逆加工
+  - どちらも加工しない、あるいは加工する場合のみ、正常に受信映像が表示できる
+
+
 ## GitHub でコードを見る
 
-- sender.html
-- receiver.html
-- worker.js
+リポジトリ [mganeko/webrtc_insertable_demo](https://github.com/mganeko/webrtc_insertable_demo)
+
+- [sender.html](https://github.com/mganeko/webrtc_insertable_demo/blob/master/sender.html)
+- [receiver.html](https://github.com/mganeko/webrtc_insertable_demo/blob/master/receiver.html)
+- [worker.js](https://github.com/mganeko/webrtc_insertable_demo/blob/master/js/worker.js)
 
 
 # 参考
