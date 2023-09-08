@@ -87,6 +87,24 @@ peer.ontrack = function (evt) {
 - 変換処理をメインスレッドで行うことも可能
 - 変換処理をWorkerスレッドで行うことも可能
   - 重い処理の場合は、Workerスレッドで行うことが推奨
+  - メインスレッドで readableStream, writableStreamを取得し、workerスレッドに渡して利用する
+
+## GitHub Pagesで試す
+
+- Chrome m86以上で、https://mganeko.github.io/webrtc_insertable_demo/insertable_stream.html にアクセス
+- [Start Video]ボタンをクリックし、カメラから映像を取得
+  - 左に映像が表示される
+  - [use Audio]がチェックされていると、マイクの音声も取得
+- [Connect]ボタンをクリック
+  - ブラウザの単一タブ内で2つのPeerConnectionの通信が確立
+  - 右に受信した映像が表示される
+- ストリームデータの加工
+  - 左の[XOR Sender data]をチェックすると、送信側でストリームのデータを加工
+  - 右の[XOR Receiver data]をチェックすると、受信側でストリームのデータを逆加工
+  - どちらも加工しない、あるいは加工する場合のみ、正常に右の映像が表示できる
+  - ※映像の乱れや回復が反映されるまで、時間がかかることがあります
+
+![共有中](/images/insertable_streams_demo.gif)
 
 ## 参考
 
@@ -196,7 +214,9 @@ peer.ontrack = function (evt) {
 
 ## GitHub Pagesで試す
 
-- 送信側 [sender](https://mganeko.github.io/webrtc_insertable_demo/sender.html)
+Chromeの場合は(旧)Insertable Streamを利用し、Safari/Firefoxの場合はScriptTransformを利用する。
+
+- 送信側 [sender](https://mganeko.github.io/webrtc_insertable_demo/sender.html) をブラウザで開く
   - RoomID を指定
   - [Start Video]ボタンをクリックし、カメラから映像を取得
 映像が表示される
