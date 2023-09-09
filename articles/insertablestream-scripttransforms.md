@@ -250,6 +250,7 @@ Chromeの場合は(旧)Insertable Streamを利用し、Safari/Firefoxの場合�
   - 受信側の[Receiver XOR Simple Decryption]をチェックすると、受信側でストリームのデータを逆加工
   - どちらも加工しない、あるいは加工する場合のみ、正常に受信映像が表示できる
 
+![demo画像3](https://mganeko.github.io/webrtc_insertable_demo/img/sender-receiver_trim.gif)
 
 ## GitHub でコードを見る
 
