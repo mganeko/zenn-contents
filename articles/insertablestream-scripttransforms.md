@@ -104,6 +104,8 @@ peer.ontrack = function (evt) {
   - どちらも加工しない、あるいは加工する場合のみ、正常に右の映像が表示できる
   - ※映像の乱れや回復が反映されるまで、時間がかかることがあります
 
+**Chromeの例**
+
 ![demo画像](https://mganeko.github.io/webrtc_insertable_demo/img/insertable_streams_demo.gif)
 
 ## 参考
@@ -213,6 +215,8 @@ peer.ontrack = function (evt) {
   - どちらも加工しない、あるいは加工する場合のみ、正常に右の映像が表示できる
   - ※映像の乱れや回復が反映されるまで、時間がかかることがあります
 
+**Safariの例**
+
 ![demo画像2](https://mganeko.github.io/webrtc_insertable_demo/img/script_transform_demo.gif)
 
 # 相互通信のテスト
@@ -249,6 +253,8 @@ Chromeの場合は(旧)Insertable Streamを利用し、Safari/Firefoxの場合�
   - 送信側の[Sender XOR Simple Encryption]をチェックすると、送信側でストリームのデータを加工
   - 受信側の[Receiver XOR Simple Decryption]をチェックすると、受信側でストリームのデータを逆加工
   - どちらも加工しない、あるいは加工する場合のみ、正常に受信映像が表示できる
+
+**Sender:Safari → Reciever:Chrome の例**
 
 ![demo画像3](https://mganeko.github.io/webrtc_insertable_demo/img/sender-receiver_trim.gif)
 
