@@ -147,6 +147,8 @@ function setupSenderTransform(sender) {
   return;
 }
 
+// RTCRtpSenderを取得し、変換関数をセットアップする
+peer.getSenders().forEach(setupSenderTransform);
 ```
 
 workerの例
