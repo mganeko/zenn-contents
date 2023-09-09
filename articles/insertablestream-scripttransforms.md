@@ -237,7 +237,7 @@ peer.ontrack = function (evt) {
 
 ## GitHub Pagesで試す
 
-Chromeの場合は(旧)Insertable Streamを利用し、Safari/Firefoxの場合はScriptTransformを利用する。
+ScriptTransformがサポートされている場合はそちらを利用（Safari/Firefoxの場合）、createEncodedStreams（旧Insertable Stream）がサポートされている場合はそれを利用する（Chromeの場合）。
 
 - 送信側 [sender](https://mganeko.github.io/webrtc_insertable_demo/sender.html) をブラウザで開く
   - RoomID を指定
