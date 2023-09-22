@@ -12,6 +12,11 @@ WebRTCで映像や音声のエンコード済みのデータを取得、加工�
 
 非標準の(旧)Insertabe Streamと、現在標準化プロセスに乗っている(現)Insertable Streamである「WebRTC Encoded Transform」がある。
 
+参考 webrtcHacks [True End-to-End Encryption with WebRTC Insertable Streams](https://webrtchacks.com/true-end-to-end-encryption-with-webrtc-insertable-streams/) から引用
+
+![webrtchacks](https://mganeko.github.io/webrtc_insertable_demo/img/webrtchacks_insertablestream.png)
+
+
 
 # (旧)Insertable Stream のおさらい
 
