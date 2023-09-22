@@ -21,7 +21,7 @@ Chromeでサポートされている。
 
 - 2023年9月現在この仕様は標準化のプロセスから外れていて、Chrome独自機能として残っている
   - 仕様のドラフトや、Explainerは残っていない
-  - W3C WebRTC WG Meeting の資料が残っている
+  - W3C WebRTC WG Meeting の資料が残っている(2021年2月)
     - https://www.w3.org/2011/04/webrtc/wiki/images/8/86/WebRTCWG-2020-02-27.pdf P.29〜
 
 ## 使い方
