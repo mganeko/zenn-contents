@@ -10,9 +10,9 @@ published: true # 公開設定（falseにすると下書き）
 
 WebRTCで映像や音声のエンコード済みのデータを取得、加工できる仕組み。エンコード後、パケット分割前のデータを操作することができるため、主にEnd-to-End Encryptionの用途で使われる。
 
-非標準の(旧)Insertabe Streamと、現在標準化プロセスに乗っている(現)Insertable Streamである「WebRTC Encoded Transform」がある。
-
 - 参考： webrtcHacks [True End-to-End Encryption with WebRTC Insertable Streams](https://webrtchacks.com/true-end-to-end-encryption-with-webrtc-insertable-streams/) 
+
+非標準の(旧)Insertabe Streamと、現在標準化プロセスに乗っている(現)Insertable Streamである「WebRTC Encoded Transform」がある。
 
 
 # (旧)Insertable Stream のおさらい
