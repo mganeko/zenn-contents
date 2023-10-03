@@ -81,11 +81,20 @@ WHIPの前提
 
 ### メディアの順を固定
 
+- MediaStream から MediaStreamTrackを取得し、PeerConnectionに追加(addTrack)する際に
+  - 明示的に Audioトラックを取得＆追加、その後にVideoトラックを取得＆追加する
+    - peer.addTrack(mediastream.getAudioTracks()[0]);
+    - peer.addTrack(mediastream.getVideoTracks()[0]);
+  - トラックを順不同に取り出すと、逆順になることがある
+    - mediastream.getTracks().forEach(track => peer.addTrack(track))
+
 
 ### コーデックを限定
 
 ### ヘッダー指定
 
+- リクエストヘッダーでAuthenticationを指定
+- レスポンスヘッダーから、Location情報を取得
 
 ### CORS回避
 
