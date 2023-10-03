@@ -28,9 +28,9 @@ WHIPの前提
 - P2Pではなく、サーバー経由の配信を行う
 - WHIPサーバー(WHIPエンドポイント)はグローバルなIPアドレスを持ち、配信クライアントから直接アクセスできる
 - 配信に特化しているため、映像/音声は配信クライアント→サーバの片方向のみ
-- 配信デバイスや、配信用ソフトウェアから使うことを想定（ブラウザは想定クライアントではない）
+- 配信デバイスや、配信用ソフトウェアから使うことを想定
 - 1回のHTTP POSTリクエストの往復で、必要な情報を交換できるシンプルな設計
-
+- Bearer Tokenを使った認証あり
 
 2023年10月現在のドラフト
 - [WebRTC-HTTP ingestion protocol (WHIP)](https://www.ietf.org/archive/id/draft-ietf-wish-whip-09.html)
@@ -38,20 +38,43 @@ WHIPの前提
 
 # WHIP対応状況
 
-## WHIP対応のソフトウェア
+## WHIP 対応のソフトウェア
 
+- OBS Studio 30.0 (現在はBeta 3)
+  - [Beta 3のアセット](https://github.com/obsproject/obs-studio/releases/tag/30.0.0-beta3)からビルド版を取得可能
+- GStreamer 1.22 ～
+  - [downloadページ](https://gstreamer.freedesktop.org/download/)
+- simple-whip-client
+  - [GitHub meetecho/simple-whip-client](https://github.com/meetecho/simple-whip-client)
 
 
 ## WHIP対応のサーバー
 
+- Cloudflare Stream
+  - [WebRTC Beta](https://developers.cloudflare.com/stream/webrtc-beta/)
+- 時雨堂 Sora
+  - [Sora Labo](https://sora-labo.shiguredo.app/)
+    - [OBSのWHIPに限定して対応](https://github.com/shiguredo/sora-labo-doc#obs-webrtc-%E5%AF%BE%E5%BF%9C)
+- simple-whip-server
+  - [GitHub meetecho/simple-whip-server ](https://github.com/meetecho/simple-whip-server)
+
 
 # OBSのWHIP対応
 
-## 使われるSDPの特長
+## WHIPのプロトコル対応
+
+- POSTでの配信開始
+  - AuthenticationヘッダーでBearer Tokenによる認証対応
+  - 応答ヘッダーのLocationからWHIPリソースのURLを取得
+- DELETEによる配信終了
+  - WHIPリソースのURLに対してDELETEリクエストを発行
+
+## OBSのSDPの特長
 
 - メディアが audio → video の順
 - videoのコーデック: H.264のみ
 - audioのコーデック: Opusのみ
+
 
 ## ブラウザでOBSの振りをする
 
@@ -60,6 +83,9 @@ WHIPの前提
 
 
 ### コーデックを限定
+
+### ヘッダー指定
+
 
 ### CORS回避
 
