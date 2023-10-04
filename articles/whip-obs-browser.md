@@ -78,23 +78,96 @@ WHIPの前提
 
 ## ブラウザでOBSの振りをする
 
+WHIP対応のサーバーを利用する場合、ブラウザでもそのまま接続できるケースもありますが、接続できない場合もあります。OBS対応を歌っているサーバーの場合は、ブラウザでOBSのフリをすることで接続できるケースもあります。（※OBSのフリをして接続することが利用規約に反する場合もあるので、ご注意ください）
 
 ### メディアの順を固定
 
-- MediaStream から MediaStreamTrackを取得し、PeerConnectionに追加(addTrack)する際に
-  - 明示的に Audioトラックを取得＆追加、その後にVideoトラックを取得＆追加する
-    - peer.addTrack(mediastream.getAudioTracks()[0]);
-    - peer.addTrack(mediastream.getVideoTracks()[0]);
-  - トラックを順不同に取り出すと、逆順になることがある
-    - mediastream.getTracks().forEach(track => peer.addTrack(track))
+MediaStream から MediaStreamTrackを取得し、PeerConnectionに追加(addTrack)する際に、その順番を固定することでSDPに出現するメディアの順番をコントロールすることができる。
 
+コードでは次のように明示的に Audioトラックを取得＆追加、その後にVideoトラックを取得＆追加する。
+
+```js
+  // -- set auido track --
+  mediastream.getAudioTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+
+  // -- set video track --
+  mediastream.getVideoTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+```
+
+audio, video を区別しないで取り出した場合、順不同になることがある。この場合はSDPでのメディアの登場順も順不同になる。
+
+```js
+  mediastream.getTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+```
 
 ### コーデックを限定
 
+VideoコーデックではH.264のみ、AudioコーデックではOpusのみを利用する。
+
+```js
+
+const tranceivers = peer.getTransceivers();
+tranceivers.forEach(transceiver => {
+  transceiver.direction = 'sendonly'; // 通信方向を送信専用に設定する
+  if (transceiver.sender.track.kind === 'video') {
+    setupVideoCodecs(transceiver);
+  }
+  else if(transceiver.sender.track.kind === 'audio') {
+    setupAudioCodecs(transceiver);
+  }
+})
+  
+function setupVideoCodecs(transceiver) {
+  if (transceiver.sender.track.kind === 'video') {
+    const codecs = RTCRtpSender.getCapabilities('video').codecs;
+    
+    // コーデックをH.264でフィルタし、最初のものだけ残す
+    const h264Codecs = codecs.filter(codec => codec.mimeType == "video/H264");
+    const h264Codec1 = [];
+    h264Codec1.push(h264Codecs[0]); 
+    transceiver.setCodecPreferences(h264Codec1);  // NOT supported in Firefox
+  }
+}
+
+function setupAudioCodecs(transceiver) {
+  if (transceiver.sender.track.kind === 'audio') {
+    const codecs = RTCRtpSender.getCapabilities('audio').codecs;
+
+    // コーデックをOPUSでフィルタし、最初のものだけ残す
+    const opusCodecs = codecs.filter(codec => codec.mimeType == "audio/opus");
+    const opusCodecs1 = [];
+    opusCodecs1.push(opusCodecs[0]);
+    transceiver.setCodecPreferences(opusCodecs1);
+  }
+}
+```
+
 ### ヘッダー指定
 
-- リクエストヘッダーでAuthenticationを指定
-- レスポンスヘッダーから、Location情報を取得
+これはOBSのフリとは無関係に、WHIPの仕様に従います。
+
+(1) 認証が必要な場合は、リクエストヘッダーでAuthenticationを指定
+
+```js
+  // --- ヘッダー指定例 --
+  const token = getAuthToken(); // トークンを取得する処理を用意
+  const headers = new Headers();
+  headers.set("Content-Type", "application/sdp");
+  headers.set("Authorization", 'Bearer ' + token); // トークンを指定
+```
+
+(2) 切断処理に備えて、レスポンスヘッダーから、Location情報を取得
+
+```js
+  // fetch() の応答のヘッダーからLocationを取得する
+  let whipResource = res.headers.get("Location");
+```
 
 ### CORS回避
 
