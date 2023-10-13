@@ -90,16 +90,13 @@ cloudflare提供のWHIPクライアントのサンプルもありますが、今
 
 ```js:SDP送信の例
   // --- sdpを送信する ---
-  async function sendWHIP(sdp) {
-    const endpoint = getWhipEndpoint(); // エンドポイントを取得する
-    const token = getAuthToken(); // Bearer Tokenを取得する
-
+  async function sendWHIP(sdp, endpoint, token) {
     // -- ヘッダーを組み立てる --
     const headers = new Headers();
     const opt = {};
     headers.set("Content-Type", "application/sdp");
     if (token && token.length > 0) {
-      headers.set("Authorization", 'Bearer ' + token); // Cloudflareではtokenは使わない
+      headers.set("Authorization", 'Bearer ' + token); // ※Cloudflareではtokenは使わない
     }
 
     opt.method = 'POST';
@@ -107,16 +104,15 @@ cloudflare提供のWHIPクライアントのサンプルもありますが、今
     opt.body = sdp;
     opt.keepalive = true;
 
-    const res = await fetch(endpoint, opt)
+    const res = await fetch(endpoint, opt);
     if (res.status === 201) {
       // --- WHIPリソースを取得し、覚える --
       whipResource = res.headers.get("Location");
-      setWhipResouce(whipResource);
+      setWhipResouce(whipResource); // 覚える
 
-      // -- answerを返す ---
-      let sdp = await res.text();
-      let answer = new RTCSessionDescription({ type: "answer", sdp: sdp });
-      return answer;
+      // -- answer SDPを返す ---
+      const sdp = await res.text();
+      return sdp;
     }
 
     // --- 何らかのエラーが発生 ---
@@ -136,7 +132,7 @@ WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側
 ちなみにこちらのサンプルコードを読んでいて、WHEPのvideoとaudioは別々のMediaStreamに分かれているケースがあることが分かりました。自作のWHEPクライアントで接続する場合にはその配慮が必要です。
 
 
-
-
 ## Sora LaboへのWHIP接続
+
+もう一つWHIPに対応したサービスとして、時雨堂のSora Laboへの接続も試してみました。Sora/Sora LaboはWHIP対応を謳っているのではなく、OBSからのWHIP接続のみサポートしていると明記されています。今回のようにブラウザからの接続は対象外となるので、ご注意ください。
 
