@@ -56,7 +56,85 @@ WHIP対応のサービスには、次のようなものがあります。
   - [Sora Labo](https://sora-labo.shiguredo.app/)
     - [OBSのWHIPに限定して対応](https://github.com/shiguredo/sora-labo-doc#obs-webrtc-%E5%AF%BE%E5%BF%9C)
 
+それぞれに対して、ブラウザからWHIP接続を試してみました。
+
 ## Cloudflare StreamへのWHIP接続
+
+Cloudflare StreamへのWHIP接続では、次の制限があります。
+
+- WHIP接続による映像は、同じくWebRTC経由で視聴するためのWHEP接続とセットで利用することが前提
+  - WHIP接続 → HLS配信 はまだサポートされない
+- WHIP接続による映像は、CloudflareのダッシュボードやHLS配信視聴ページでは見ることができない
+  - ※これに気が付かず、WHIP接続がうまく動作しないと無駄に悩んでしまった
+
+### WHIP接続の手順
+
+- Cloudflare StreamのLive Inputを作成
+  - 今回はダッシュボードから作成
+  - webRTC - url の値がWHIPのエンドポイント（POST先）
+    - "https://xxxxxxx.cloudflarestream.com/xxxxxxxxxx/webRTC/publish" の形式
+- ブラウザからOfferを送る
+  - RTCPeerConnectionのオブジェクトを生成
+    - 映像トラック、音声トラックを追加
+    - Transceiverをsendonlyに設定
+  - Offer SDPを生成
+  - 上記で生成したエンドポイントに対して、Offer SDPをPOST
+    - Bearer Tokenによる認証は無し
+  - WHIPリソースは相対パスで戻ってくる
+    - 切断のDELETEリクエスト送信時は、https://xxxxxxx.cloudflarestream.com/WHIPリソース の形式でURLを組み立ててリクエストを送る必要がある
+
+cloudflare提供のWHIPクライアントのサンプルもありますが、今回は仕組みの確認のため自分でコードを書いて動作を確認しました。
+
+- cloudflare社のサンプル(ブラウザ用)
+  - https://github.com/cloudflare/workers-sdk/tree/main/templates/stream/webrtc
+
+```js:SDP送信の例
+  // --- sdpを送信する ---
+  async function sendWHIP(sdp) {
+    const endpoint = getWhipEndpoint(); // エンドポイントを取得する
+    const token = getAuthToken(); // Bearer Tokenを取得する
+
+    // -- ヘッダーを組み立てる --
+    const headers = new Headers();
+    const opt = {};
+    headers.set("Content-Type", "application/sdp");
+    if (token && token.length > 0) {
+      headers.set("Authorization", 'Bearer ' + token); // Cloudflareではtokenは使わない
+    }
+
+    opt.method = 'POST';
+    opt.headers = headers;
+    opt.body = sdp;
+    opt.keepalive = true;
+
+    const res = await fetch(endpoint, opt)
+    if (res.status === 201) {
+      // --- WHIPリソースを取得し、覚える --
+      whipResource = res.headers.get("Location");
+      setWhipResouce(whipResource);
+
+      // -- answerを返す ---
+      let sdp = await res.text();
+      let answer = new RTCSessionDescription({ type: "answer", sdp: sdp });
+      return answer;
+    }
+
+    // --- 何らかのエラーが発生 ---
+    // ... 省略 ...
+  }
+
+```
+
+### WHEPクライアント
+
+WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側のプロトコルのWebRTC-HTTP egress protocol (WHEP)が規定されています。上記cloudflare社のサンプルにはWHIPクライアントも含まれているので、それを使って自作WHIPクライアントで配信した映像が見られることを確認しました、
+
+- cloudflare社のサンプル WHEPクライアント
+  - https://github.com/cloudflare/workers-sdk/blob/main/templates/stream/webrtc/src/whep.html
+  - ※利用にあたっては、ダッシュボードでLive Inputを作成した際の「webRTCPlayback」のURLをエンドポイントとして指定する
+
+ちなみにこちらのサンプルコードを読んでいて、WHEPのvideoとaudioは別々のMediaStreamに分かれているケースがあることが分かりました。自作のWHEPクライアントで接続する場合にはその配慮が必要です。
+
 
 
 
