@@ -29,13 +29,7 @@ WHIPの前提
 - 配信に特化しているため、映像/音声は配信クライアント→サーバの片方向のみ
 - 配信デバイスや、配信用ソフトウェアから使うことを想定
 - 最少1回のHTTP POSTリクエストの往復で、必要な情報を交換できるシンプルな設計
-  - リクエストでOffer SDPを送る
-  - レスポンスでAnswer SDPを受け取る
 - Bearer Tokenを使った認証あり
-
-![WHIPの流れ](/images/whip_client_server2.png)
-
-
 
 2023年10月現在のドラフト
 - [WebRTC-HTTP ingestion protocol (WHIP)](https://www.ietf.org/archive/id/draft-ietf-wish-whip-09.html)
@@ -49,6 +43,9 @@ WHIPの前提
   - ステータスコードは201(Created)を返す
   - Content-Typeは"application/sdp"
   - LocationヘッダーでWHIPリソースのURLを返す
+
+![WHIPの流れ](/images/whip_client_server2.png)
+
 
 - WHIPを切断する時は、WHIPリソースのURLに対してWHIPクライアントからDELETEリクエストを送る
 
