@@ -166,7 +166,8 @@ Sora LaboのWHIP接続はOBSからの利用だけを想定しているので、�
   });
 ```
 
-Offerがvideo→audioの順になっていても、サーバーから返ってくるAswerはaudio→videoの順に固定されている。そのためブラウザ側でAnswerを受け取る際に順番不一致のエラーになる。
+Offerがvideo→audioの順になっていても、サーバーから返ってくるAswerはaudio→videoの順に固定されているため、ブラウザ側でAnswerを受け取る際に順番不一致のエラーになります。
+そこで次のように明示的にaudio→videoの順になるようにしてやれば、エラーはなくなります。
 
 ```js:明示的にaudio→videoの順に追加すればOK
   // mediastream ... 送信するメディア
@@ -227,4 +228,6 @@ function setupAudioCodecs(transceiver) {
 
 ※Sora Laboでの接続で試したところ、コーデックの限定は行わなくても接続できました。
 
+
+# 終わりに
 
