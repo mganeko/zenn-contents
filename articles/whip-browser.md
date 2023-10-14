@@ -136,3 +136,90 @@ WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側
 
 もう一つWHIPに対応したサービスとして、時雨堂のSora Laboへの接続も試してみました。Sora/Sora LaboはWHIP対応を謳っているのではなく、OBSからのWHIP接続のみサポートしていると明記されています。今回のようにブラウザからの接続は対象外となるので、ご注意ください。
 
+- 事前準備： Sora Laboの利用には、GitHubアカウントによるサインサインアップが必要です
+  - ドキュメント： https://github.com/shiguredo/sora-labo-doc
+  - ※商用利用、アカデミック利用はできません。あくまで検証用でご利用ください
+
+
+### クロスオリジン対策
+
+Sora LaboのWHIP接続はOBSからの利用だけを想定しているので、ブラウザから直接POSTする際のクロスオリジンの利用はできません（ブラウザの制約にひっかっかる）。そのため、今回はNode.jsで中継するサーバーを用意しました。
+※本来、ブラウザから利用する場合は公式の[sora-js-sdk](https://github.com/shiguredo/sora-js-sdk)を利用し、WebSocket経由のシグナリングを利用します。
+
+通信イメージ
+※画像を用意予定
+
+### トラックの順序
+
+試行していて気がついたこととして、映像(video)と音声(audio)のトラックを音声→映像の順に追加する必要があります。OBSではこの順序が固定になっており、Sora Laboでもそれが前提となっているようです。
+
+```js:順序が場合によって異なり、接続できない場合がある
+  // mediastream ... 送信するメディア
+  // peer ... 通信に使うRTCPeerConnectionのオブジェクト
+  mediastream.getTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+```
+
+Offerがvideo→audioの順になっていても、サーバーから返ってくるAswerはaudio→videoの順に固定されている。そのためブラウザ側でAnswerを受け取る際に順番不一致のエラーになる。
+
+```js:明示的にaudio→videoの順に追加すればOK
+  // mediastream ... 送信するメディア
+  // peer ... 通信に使うRTCPeerConnectionのオブジェクト
+
+  // -- set auido track --
+  mediastream.getAudioTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+
+  // -- set video track --
+  mediastream.getVideoTracks().forEach(track => {
+    const sender = peer.addTrack(track, mediastream);
+  });
+```
+
+### コーデックの限定
+
+OBSではWHIPで利用できるコーデックが限定されています。
+
+- videoコーデック ... H.264のみ
+- audioコーデック ... Opusのみ
+
+Chrome系/Safariでは次のコードでコーデックを限定できます。
+
+```js
+const tranceivers = peer.getTransceivers();
+tranceivers.forEach(transceiver => {
+  transceiver.direction = 'sendonly'; // 通信方向を送信専用に設定する
+  if (transceiver.sender.track.kind === 'video') {
+    setupVideoCodecs(transceiver);
+  }
+  else if(transceiver.sender.track.kind === 'audio') {
+    setupAudioCodecs(transceiver);
+  }
+})
+  
+function setupVideoCodecs(transceiver) {
+  if (transceiver.sender.track.kind === 'video') {
+    const codecs = RTCRtpSender.getCapabilities('video').codecs;
+    
+    // コーデックをH.264でフィルタする
+    const h264Codecs = codecs.filter(codec => codec.mimeType == "video/H264");
+    transceiver.setCodecPreferences(h264Codecs);  // NOT supported in Firefox
+  }
+}
+
+function setupAudioCodecs(transceiver) {
+  if (transceiver.sender.track.kind === 'audio') {
+    const codecs = RTCRtpSender.getCapabilities('audio').codecs;
+
+    // コーデックをOPUSでフィルタする
+    const opusCodecs = codecs.filter(codec => codec.mimeType == "audio/opus");
+    transceiver.setCodecPreferences(opusCodecs);
+  }
+}
+```
+
+※Sora Laboでの接続で試したところ、コーデックの限定は行わなくても接続できました。
+
+
