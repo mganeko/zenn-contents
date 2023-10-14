@@ -149,8 +149,10 @@ WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側
 Sora LaboのWHIP接続はOBSからの利用だけを想定しているので、ブラウザから直接POSTする際のクロスオリジンの利用はできません（ブラウザの制約にひっかっかる）。そのため、今回はNode.jsで中継するサーバーを用意しました。
 ※本来、ブラウザから利用する場合は公式の[sora-js-sdk](https://github.com/shiguredo/sora-js-sdk)を利用し、WebSocket経由のシグナリングを利用します。
 
-通信イメージ
-※画像を用意予定
+中継サーバー（WHIP gateway)を介したWHIP接続
+
+![WHIPの流れ](/images/whip_gateway.png)
+
 
 ### トラックの順序
 
