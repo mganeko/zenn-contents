@@ -33,7 +33,7 @@ WHIPの前提
   - レスポンスでAnswer SDPを受け取る
 - Bearer Tokenを使った認証あり
 
-![WHIPの流れ](/images/whip_client_server.png)
+![WHIPの流れ](/images/whip_client_server2.png)
 
 
 
