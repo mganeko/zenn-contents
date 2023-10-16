@@ -92,37 +92,50 @@ cloudflare提供のWHIPクライアントのサンプルもありますが、今
   - https://github.com/cloudflare/workers-sdk/tree/main/templates/stream/webrtc
 
 ```js:SDP送信の例
-  // --- sdpを送信する ---
-  async function sendWHIP(sdp, endpoint, token) {
-    // -- ヘッダーを組み立てる --
-    const headers = new Headers();
-    const opt = {};
-    headers.set("Content-Type", "application/sdp");
-    if (token && token.length > 0) {
-      headers.set("Authorization", 'Bearer ' + token); // ※Cloudflareではtokenは使わない
-    }
-
-    opt.method = 'POST';
-    opt.headers = headers;
-    opt.body = sdp;
-    opt.keepalive = true;
-
-    const res = await fetch(endpoint, opt);
-    if (res.status === 201) {
-      // --- WHIPリソースを取得し、覚える --
-      whipResource = res.headers.get("Location");
-      setWhipResouce(whipResource); // 覚える
-
-      // -- answer SDPを返す ---
-      const sdp = await res.text();
-      return sdp;
-    }
-
-    // --- 何らかのエラーが発生 ---
-    // ... 省略 ...
+// --- sdp(offer/Answer)を交換する ---
+async function exchangeSDP(sdp, endpoint, token, resourceCallback) {
+  // -- ヘッダーを組み立てる --
+  const headers = new Headers();
+  const opt = {};
+  headers.set("Content-Type", "application/sdp");
+  if (token && token.length > 0) {
+    headers.set("Authorization", 'Bearer ' + token);
   }
 
+  opt.method = 'POST';
+  opt.headers = headers;
+  opt.body = sdp;
+  opt.keepalive = true;
+
+  // --- POSTする --
+  const res = await fetch(endpoint, opt)
+    .catch(e => {
+      console.error(e);
+      return null;
+    });
+
+  if (res.status === 201) {
+    // --- リソースを取得し、覚える --
+    resourceURL = res.headers.get("Location");
+    console.log('resource:', resourceURL);
+    if (resourceCallback) {
+      // set WHIP/WHEP resource
+      resourceCallback(resourceURL); // リソースを覚える
+    }
+    const sdp = await res.text();
+    return sdp; // Answer SDPを返す
+  }
+
+  // --- 何らかのエラーが発生 ---
+  // ... 省略 ...
+  return null;
+}
 ```
+
+- GitHub上のソースコード
+  - WHIP画面 ... https://github.com/mganeko/whip_gateway/blob/master/public/whipdirect.html
+  - WHIP接続のヘルパー関数 ... https://github.com/mganeko/whip_gateway/blob/master/public/js/whipwhep_helper.js#L8
+
 
 ### WHEPクライアント
 
