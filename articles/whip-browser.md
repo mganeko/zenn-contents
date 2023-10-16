@@ -132,7 +132,7 @@ async function exchangeSDP(sdp, endpoint, token, resourceCallback) {
 }
 ```
 
-- GitHub上のソースコード
+- サンプルソースコード（GitHub）
   - WHIP画面 ... https://github.com/mganeko/whip_gateway/blob/master/public/whipdirect.html
   - WHIP接続のヘルパー関数 ... https://github.com/mganeko/whip_gateway/blob/master/public/js/whipwhep_helper.js#L8
 
@@ -146,6 +146,9 @@ WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側
   - ※利用にあたっては、ダッシュボードでLive Inputを作成した際の「webRTCPlayback」のURLをエンドポイントとして指定する
 
 ちなみにこちらのサンプルコードを読んでいて、WHEPのvideoとaudioは別々のMediaStreamに分かれているケースがあることが分かりました。自作のWHEPクライアントで接続する場合にはその配慮が必要です。
+
+- サンプルソースコード（GitHub）
+  - WHEP画面 ... https://github.com/mganeko/whip_gateway/blob/master/public/whepseparate.html
 
 
 ## Sora LaboへのWHIP接続
