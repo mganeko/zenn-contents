@@ -75,7 +75,7 @@ Cloudflare StreamへのWHIP接続では、次の制限があります。
 - Cloudflare StreamのLive Inputを作成
   - 今回はダッシュボードから作成
   - webRTC - url の値がWHIPのエンドポイント（POST先）
-    - "https://xxxxxxx.cloudflarestream.com/xxxxxxxxxx/webRTC/publish" の形式
+    - "https&#58;//xxxxxxx.cloudflarestream.com/xxxxxxxxxx/webRTC/publish" の形式
 - ブラウザからOfferを送る
   - RTCPeerConnectionのオブジェクトを生成
     - 映像トラック、音声トラックを追加
@@ -84,7 +84,7 @@ Cloudflare StreamへのWHIP接続では、次の制限があります。
   - 上記で生成したエンドポイントに対して、Offer SDPをPOST
     - Bearer Tokenによる認証は無し
   - WHIPリソースは相対パスで戻ってくる
-    - 切断のDELETEリクエスト送信時は、https://xxxxxxx.cloudflarestream.com/WHIPリソース の形式でURLを組み立ててリクエストを送る必要がある
+    - 切断のDELETEリクエスト送信時は、https&#58;//xxxxxxx.cloudflarestream.com/WHIPリソース の形式でURLを組み立ててリクエストを送る必要がある
 
 cloudflare提供のWHIPクライアントのサンプルもありますが、今回は仕組みの確認のため自分でコードを書いて動作を確認しました。
 
