@@ -139,7 +139,7 @@ async function exchangeSDP(sdp, endpoint, token, resourceCallback) {
 
 ### WHEPクライアント
 
-WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側のプロトコルのWebRTC-HTTP egress protocol (WHEP)が規定されています。上記cloudflare社のサンプルにはWHIPクライアントも含まれているので、それを使って自作WHIPクライアントで配信した映像が見られることを確認しました、
+WHIPと同様にHTTPリクエストでシグナリングを行う、視聴者側のプロトコルのWebRTC-HTTP egress protocol (WHEP)が規定されています。上記cloudflare社のサンプルにはWHEPクライアントも含まれているので、それを使って自作WHIPクライアントで配信した映像が見られることを確認しました。
 
 - cloudflare社のサンプル WHEPクライアント
   - https://github.com/cloudflare/workers-sdk/blob/main/templates/stream/webrtc/src/whep.html
