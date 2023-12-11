@@ -6,17 +6,6 @@ topics: ["GPT4-V"] # タグ。["markdown", "rust", "aws"]のように指定す�
 published: false # 公開設定（falseにすると下書き）
 ---
 
-
-# メモ
-
-## 全体構成
-
-- getUserMedia() を使って、カメラの映像を取得
-- Video要素、Canvas要素を使って、画像を取得
-- GPT-4 vision を使って、画像の内容を解析
-- Viode API を使って、text-to-speech で読み上げ
-- Audio要素で再生
-
 # Visual Sonar とは
 
 Visual Sonarとは、スマホのカメラに映る映像を解析し、音声で教えてくれるWebアプリです。
@@ -59,7 +48,7 @@ async function startCamera() {
 
 ## 映像から画像をBase64で取得
 
-Canvas要素を使い、Video要素から1コマ画像を取得します。
+Canvas要素を使い、Video要素から1コマ画像をBase64で取得します。
 
 ```js
   // video ... 映像が表示されているVideo要素
@@ -72,4 +61,69 @@ Canvas要素を使い、Video要素から1コマ画像を取得します。
     // To Base64
     return canvas.toDataURL("image/jpeg");
   }
+```
+
+## GPT4-V で解析
+
+gpt-4-vision-preview を使って、画像を解析します。従来のChat APIと同様ですが、conentが単なるテキストでなく、テキストと画像URLのセットになっているのが違いです。
+
+```js
+// 画像のURL(またはBase64表記)とチャットメッセージを送信し、応答を返す
+async function singleChatWithImage(image_url, text) {
+  // 従来のChat APIと同様だが、conentが単なるテキストでなく、テキストと画像URLのセットになる
+  const userMessage = {
+    role: 'user',
+    content: [
+      {
+        "type": "text",
+        "text": text,
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": image_url,
+        }
+      }
+    ]
+  };
+
+
+  // -- request --
+  const API_KEY = 'sk-xxxxxxx';
+  const MODEL = 'gpt-4-vision-preview';
+  const API_URL = 'https://api.openai.com/v1/chat/completions';
+  const options = { temperature: 0, max_tokens: 1000 };
+  const response = await _chatCompletion([messages], API_KEY, MODEL, API_URL, options);
+  return response;
+}
+
+// chat API を呼び出す
+async function _chatCompletion(messages, apiKey, chatModel, url, options) {
+  //const apiKey = API_KEY;
+  //const CHATAPI_URL = "https://api.openai.com/v1/chat/completions";
+
+  const bodyJson = {
+    messages: messages,
+    model: chatModel,
+    temperature: options.temperature,
+    max_tokens: options.max_tokens,
+  };
+  const body = JSON.stringify(bodyJson);
+  const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body,
+  });
+
+  // 応答を解析
+  const data = await res.json();
+  const choiceIndex = 0;
+  const choices = data.choices;
+  return choices[choiceIndex].message;
+};
 ```
