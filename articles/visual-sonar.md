@@ -127,3 +127,10 @@ async function _chatCompletion(messages, apiKey, chatModel, url, options) {
   return choices[choiceIndex].message;
 };
 ```
+
+今回の試作では、次のプロンプトを渡して画像を解析させています。
+
+```
+  'What is this? Please answer in Japanese.'
+```
+
