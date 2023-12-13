@@ -25,7 +25,6 @@ iPhoneで動いている様子を、画面録画しました。最後の方で�
 
 - [vsonar_snow.mp4](https://mganeko.github.io/visual_sonar/video/vsonar_snow.mp4)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FwCqxHGfHAk" frameborder="0" allowfullscreen></iframe>
 
 # 使い方
 
