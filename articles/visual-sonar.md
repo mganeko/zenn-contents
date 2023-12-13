@@ -6,6 +6,8 @@ topics: ["GPT4-V"] # タグ。["markdown", "rust", "aws"]のように指定す�
 published: false # 公開設定（falseにすると下書き）
 ---
 
+これは非公式[Infocom Advent Calendar 2023](https://qiita.com/advent-calendar/2023/infocom)の22日目の記事です。
+
 # Visual Sonar とは
 
 Visual Sonarとは、スマホのカメラに映る映像を解析し、音声で教えてくれるWebアプリです。
