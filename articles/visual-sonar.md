@@ -19,9 +19,40 @@ OpenAIのGTP-4で画像を扱えるようになったので、それを使って
 - OpenAIのTTS(text-to-speech)を使い、テキストを音声に
 - Audio要素で再生
 
+# 動作している様子
+
+iPhoneで動いている様子を、画面録画しました。
+
+
+
+# 使い方
+
+GitHub Pagesで試すことができます
+
+## URL
+
+- [GitHub Pages vsonar](https://mganeko.github.io/visual_sonar/vsonar.html)
+
+## 使い方
+
+- [vsonar.html](https://mganeko.github.io/visual_sonar/vsonar.html)をブラウザで表示
+- [api key]に、OpenAIのAPIキーを指定
+  - または、vsonar.html?key=xxxxxx とURLのクエリーパラメータに指定してもOK
+- [Start]ボタンをクリック
+  - カメラの許可を求められらた、許可する
+  - カメラの映像が表示される
+- [Explain in Voice]ボタンをクリック
+  - 映像から画面を切り抜き
+  - OpenAIの GPT-4 Vで画面を解析
+  - TTSで音声に変換、それを再生して画像の説明をする
+- [Stop]ボタンをクリックすると、カメラの映像が停止
+
+
 # 各部の実装（抜粋）
 
-説明のために一部抜粋して簡略化しています。
+説明のために一部抜粋して簡略化しています。全体のソースはGitHubにあります
+
+- [mganeko/visual_sonar](https://github.com/mganeko/visual_sonar)
 
 ## カメラ映像の取得
 
@@ -99,9 +130,6 @@ async function singleChatWithImage(image_url, text) {
 
 // chat API を呼び出す
 async function _chatCompletion(messages, apiKey, chatModel, url, options) {
-  //const apiKey = API_KEY;
-  //const CHATAPI_URL = "https://api.openai.com/v1/chat/completions";
-
   const bodyJson = {
     messages: messages,
     model: chatModel,
@@ -132,5 +160,71 @@ async function _chatCompletion(messages, apiKey, chatModel, url, options) {
 
 ```
   'What is this? Please answer in Japanese.'
+```
+
+## TTSでテキスト読み上げ
+
+OpenAIのTTS(text-to-speech) APIを使って、テキストを音声に変換しています。
+
+```js
+async function textToSpeech(text, apiKey) {
+  const apiUrl = 'https://api.openai.com/v1/audio/speech';
+
+  // -- build header --
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
+
+  // --- build body ---
+  const bodyJson = {
+    model: 'tts-1',
+    input: text,
+    voice: "alloy",
+  };
+  const body = JSON.stringify(bodyJson);
+
+  // --- request ---
+  const res = await fetch(apiUrl, {
+    method: "POST",
+    headers: headers,
+    body,
+  }).catch(e => {
+    // エラー処理
+  });
+
+  // エラー判定
+  if (!res.ok) {
+    // エラー処理
+  }
+
+  const responseBlob = await res.blob();
+  return responseBlob;
+}
+```
+
+
+## Audio要素で再生
+
+TTS APIで取得したBlobを、Audio要素で再生します。
+
+```js
+async function playbacBlobAsync(audioElement, blob) {
+  const blobUrl = URL.createObjectURL(blob);
+  audioElement.src = blobUrl;
+  audioElement.onended = (evt) => {
+    URL.revokeObjectURL(blobUrl);
+  };
+  await audioElement.play();
+}
+```
+
+また、iOSではユーザー操作が無いとAudio要素で音声が再生できないので、最初にユーザーがボタン操作をした段階で、次のようにAudio要素で再生を試みておきます。
+
+```js
+function preparePlay(audioElement) {
+  audioElement.play().catch(err => { console.log('prepareAudio'); }); // エラーが発生するが無視OK
+  audioElement.pause();
+}
 ```
 
