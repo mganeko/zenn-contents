@@ -165,6 +165,16 @@ async function _chatCompletion(messages, apiKey, chatModel, url, options) {
   'What is this? Please answer in Japanese.'
 ```
 
+ちなみに画像についてチャットを続ける場合は、通常のChatと同様に過去のやりとりと新しいメッセージを配列に格納して送ればOKです。
+
+- 最初の画像込みのユーザーメッセージ
+- アシスタントの応答メッセージ
+- 次のユーザーからのメッセージ
+- それに対するアシスタントの応答メッセージ
+- さらにユーザーからのメッセージ...
+
+
+
 ## TTSでテキスト読み上げ
 
 OpenAIのTTS(text-to-speech) APIを使って、テキストを音声に変換しています。
