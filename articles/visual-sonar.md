@@ -13,7 +13,11 @@ published: false # 公開設定（falseにすると下書き）
 Visual Sonarとは、スマホのカメラに映る映像を解析し、音声で教えてくれるWebアプリです。
 OpenAIのGTP-4で画像を扱えるようになったので、それを使って作ってみました。
 
-# 構成要素
+![画面](/images/vsonar_example1.png)
+
+## 構成要素
+
+Visual Sonarは次の要素で構成されています。
 
 - mediaDevices.getUserMedia()を使って、カメラの映像取得
 - Cnavasを使って、映像から1コマ画像を取得
@@ -36,7 +40,7 @@ GitHub Pagesで試すことができます
 
 - [GitHub Pages vsonar](https://mganeko.github.io/visual_sonar/vsonar.html)
 
-## 使い方
+## 操作方法
 
 - [vsonar.html](https://mganeko.github.io/visual_sonar/vsonar.html)をブラウザで表示
 - [api key]に、OpenAIのAPIキーを指定
