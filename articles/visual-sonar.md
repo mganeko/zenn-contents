@@ -16,7 +16,7 @@ OpenAIのGTP-4で画像を扱えるようになったので、それを使って
 <img src="/images/vsonar_example1.png" width="300">
 
 
-![画面](/images/vsonar_example1.png)
+
 
 
 ## 構成要素
