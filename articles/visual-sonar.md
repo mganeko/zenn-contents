@@ -13,7 +13,11 @@ published: false # 公開設定（falseにすると下書き）
 Visual Sonarとは、スマホのカメラに映る映像を解析し、音声で教えてくれるWebアプリです。
 OpenAIのGTP-4で画像を扱えるようになったので、それを使って作ってみました。
 
+<img src="/images/vsonar_example1.png" width="300">
+
+
 ![画面](/images/vsonar_example1.png)
+
 
 ## 構成要素
 
