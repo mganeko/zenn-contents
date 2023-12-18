@@ -58,9 +58,9 @@ published: false # 公開設定（falseにすると下書き）
 
 ## Meta Questで動画を見る
 
-今回はSkyBox VR Playerを利用しました。以前に入手したアプリでしたが、今見たら有料でした。
+今回はSKYBOX VR PLAYERを利用しました。以前に入手したアプリでしたが、今見たら有料でした。
 
-- [SkyBox VR Player](https://www.meta.com/ja-jp/experiences/2063931653705427/)
+- [SKYBOX VR PLAYER](https://www.meta.com/ja-jp/experiences/2063931653705427/)
   - 990円 (2023年12月)
 
 水平方向の圧縮は解消され、立体映像を楽しむことが出来ます。感想としては「映像はキレイ、立体感は控えめ」でした。
