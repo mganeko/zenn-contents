@@ -32,7 +32,7 @@ published: false # 公開設定（falseにすると下書き）
   - 「空間ビデオ」アイコンをタップ
   - iPhoneを横向きにして、ビデオを録画
 
-![空間ビデオ](/images/spatial_on.png =300x)
+![空間ビデオ](/images/spatial_on.jpeg =300x)
 
 ## ステレオペアの動画に変換
 
@@ -45,7 +45,7 @@ published: false # 公開設定（falseにすると下書き）
 
 変換した動画は、1枚の動画の中に左右の映像が埋め込まれています。裸眼立体視（平行法）ができる人なら、そのままでも立体映像を見ることができます。ただし映像は水平方向に圧縮された状態です（縦長に見える）
 
-![ステレオペア動画](/images/sidebyside.png =400x)
+![ステレオペア動画](/images/sidebyside.jpeg =400x)
 
 ## 動画をMeta Questにコピー
 
