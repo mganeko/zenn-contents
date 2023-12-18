@@ -6,7 +6,7 @@ topics: ["iPhone", "MetaQuest"] # タグ。["markdown", "rust", "aws"]のよう�
 published: false # 公開設定（falseにすると下書き）
 ---
 
-これは非公式[Infocom Advent Calendar 2023](https://qiita.com/advent-calendar/2023/infocom)の2x日目の記事です。
+これは非公式[Infocom Advent Calendar 2023](https://qiita.com/advent-calendar/2023/infocom)の23日目の記事です。
 
 # 空間ビデオとは
 
