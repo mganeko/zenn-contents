@@ -11,6 +11,68 @@ published: false # 公開設定（falseにすると下書き）
 # 空間ビデオとは
 
 空間ビデオ(Spatial Video)は、来年発売と言われるAppleの｢Apple Vision Pro｣用の3D動画です。
-
 最近リリースされたiOS 17.2から、iPhone15 Pro/iPhone15 Pro Maxで撮影可能になりました。
+
+2023年12月現在Apple Vision Proは未発売のため、Spatial Videoを見ることはできません。が、MetaQuestのようなVRゴーグルがあれば、無理矢理見ることができます。
+
+# 空間ビデオをMetaQuestで見るまで
+
+手順は次の通りです。
+
+- iPhone15 Proで、空間ビデオを撮影
+- 空間ビデオを、ステレオペアの動画に変換
+- 動画をMetaQuestにコピーする
+- MetaQuestで動画を見る
+
+## iPhone15 Proで、空間ビデオを撮影
+
+- iOS 17.2にアップデートする
+- 「設定」の「カメラ」-「フォーマット」から、「Apple Vision Pro用の空間ビデオ」をオンにする
+- カメラアプリでビデオを撮影
+  - 「空間ビデオ」アイコンをタップ
+  - iPhoneを横向きにして、ビデオを録画
+
+![空間ビデオ](/images/spatial_on.png =300x)
+
+## ステレオペアの動画に変換
+
+空間ビデオは左眼用、右目用の映像が1つの動画ファイルに埋め込まれていますが、そのままでは通常の動画のようにしか見えません。そこで、左右の映像を1枚に並べた「ステレオペア動画」(Side-by-Side形式)に変換します。
+
+変換には今回はiPhone用の有料アプリ「Spaitial Video Converter」を使いました。
+
+- [Spaitial Video Converter](https://apps.apple.com/jp/app/spatial-video-converter/id6471887553)
+  - 300円 (2023年12月)
+
+変換した動画は、1枚の動画の中に左右の映像が埋め込まれています。裸眼立体視（平行法）ができる人なら、そのままでも立体映像を見ることができます。ただし映像は水平方向に圧縮された状態です（縦長に見える）
+
+![ステレオペア動画](/images/sidebyside.png =400x)
+
+## 動画をMetaQuestにコピー
+
+今回は母艦としてIntel Mac(OSはVentura)を使いました。
+
+- iPhone → Macに動画を取り込み （Macの写真アプリを利用)
+- Mac → MetaQuestに動画をコピー
+  - [Android File Transfer](https://www.android.com/filetransfer/) を利用
+  - ※VenturaやSonomaではうまく動かないケースもある様子
+
+## MetaQuestで動画を見る
+
+今回はSkyBox VR Playerを利用しました。以前に入手したアプリでしたが、今見たら有料でした。
+
+- [SkyBox VR Player](https://www.meta.com/ja-jp/experiences/2063931653705427/)
+  - 990円 (2023年12月)
+
+水平方向の圧縮は解消され、立体映像を楽しむことが出来ます。感想としてあ映像はキレイ、立体感は抑えめでした。
+
+
+# まとめ
+
+せっかく撮れるようになった空間ビデオ（3Dビデオ）を、50万円のApple Vison Pro無しでも今すぐ見ることができます。
+
+- MetaQuest2 ... 4万円
+- iPhoneアプリ ... 300円
+- MeteaQuestアプリ ... 990円
+
+ちなみに私はMetaQuest(初代Qculus Quest)を使いました。MetaQuest2/3でも問題なく見れるはずです。持っている方はお試しくあれ。
 
