@@ -72,7 +72,7 @@ published: false # 公開設定（falseにすると下書き）
 
 - MetaQuest2 ... 4万円
 - iPhoneアプリ ... 300円
-- MeteaQuestアプリ ... 990円
+- Meta Questアプリ ... 990円
 
 ちなみに私はMeta Quest(初代Qculus Quest)を使いました。Meta Quest2/3でも問題なく見れるはずです。持っている方はお試しくあれ。
 
