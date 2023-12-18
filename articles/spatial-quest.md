@@ -1,5 +1,5 @@
 ---
-title: "iPhone15 Proの空間ビデオを、Meta Questで見るには" # 記事のタイトル
+title: "iPhone15 Proの空間ビデオをMeta Questで見るには" # 記事のタイトル
 emoji: "🥽" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["iPhone", "MetaQuest"] # タグ。["markdown", "rust", "aws"]のように指定する
