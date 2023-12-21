@@ -3,7 +3,7 @@ title: "スマホのカメラに映る景色を音声で案内する Visual Sona
 emoji: "📷" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["GPT4-V"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 これは非公式[Infocom Advent Calendar 2023](https://qiita.com/advent-calendar/2023/infocom)の22日目の記事です。
@@ -11,7 +11,7 @@ published: false # 公開設定（falseにすると下書き）
 # Visual Sonar とは
 
 Visual Sonarとは、スマホのカメラに映る映像を解析し、音声で教えてくれるWebアプリです。
-OpenAIのGTP-4で画像を扱えるようになったので、それを使って作ってみました。
+OpenAIのGPT-4で画像を扱えるようになったので、それを使って作ってみました。
 
 
 ![画面](/images/vsonar_example1.png =300x)
