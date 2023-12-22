@@ -3,7 +3,7 @@ title: "iPhone15 Proの空間ビデオをMeta Questで見るには" # 記事の�
 emoji: "🥽" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["iPhone", "MetaQuest"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 これは非公式[Infocom Advent Calendar 2023](https://qiita.com/advent-calendar/2023/infocom)の23日目の記事です。
@@ -15,14 +15,14 @@ published: false # 公開設定（falseにすると下書き）
 
 2023年12月現在Apple Vision Proは未発売のため、Spatial Videoを見ることはできません。が、Meta QuestのようなVRゴーグルがあれば、無理矢理見ることができます。
 
-# 空間ビデオをMetaQuestで見るまで
+# 空間ビデオをMeta Questで見るまで
 
 手順は次の通りです。
 
 - iPhone15 Proで、空間ビデオを撮影
 - 空間ビデオを、ステレオペアの動画に変換
-- 動画をMetaQuestにコピーする
-- MetaQuestで動画を見る
+- 動画をMeta Questにコピーする
+- Meta Questで動画を見る
 
 ## iPhone15 Proで、空間ビデオを撮影
 
@@ -74,5 +74,5 @@ published: false # 公開設定（falseにすると下書き）
 - iPhoneアプリ ... 300円
 - Meta Questアプリ ... 990円
 
-ちなみに私はMeta Quest(初代Qculus Quest)を使いました。Meta Quest2/3でも問題なく見れるはずです。持っている方はお試しくあれ。
+ちなみに私はMeta Quest(初代Oculus Quest)を使いました。Meta Quest2/3でも問題なく見れるはずです。持っている方はお試しくあれ。
 
