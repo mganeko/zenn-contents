@@ -1,5 +1,5 @@
 ---
-title: "iPhone15 Proの空間ビデオをMeta Questで見るには" # 記事のタイトル
+title: "iPhone 15 Proの空間ビデオをMeta Questで見るには" # 記事のタイトル
 emoji: "🥽" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["iPhone", "MetaQuest"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -11,7 +11,7 @@ published: true # 公開設定（falseにすると下書き）
 # 空間ビデオとは
 
 空間ビデオ(Spatial Video)は、来年発売と言われるAppleの｢Apple Vision Pro｣用の3D動画です。
-最近リリースされたiOS 17.2から、iPhone15 Pro/iPhone15 Pro Maxで撮影可能になりました。
+最近リリースされたiOS 17.2から、iPhone 15 Pro/iPhone 15 Pro Maxで撮影可能になりました。
 
 2023年12月現在Apple Vision Proは未発売のため、Spatial Videoを見ることはできません。が、Meta QuestのようなVRゴーグルがあれば、無理矢理見ることができます。
 
@@ -19,7 +19,7 @@ published: true # 公開設定（falseにすると下書き）
 
 手順は次の通りです。
 
-- iPhone15 Proで、空間ビデオを撮影
+- iPhone 15 Proで、空間ビデオを撮影
 - 空間ビデオを、ステレオペアの動画に変換
 - 動画をMeta Questにコピーする
 - Meta Questで動画を見る
