@@ -81,7 +81,7 @@ model = AutoModel.from_pretrained(model_name)
 # ]
 input_text = '富士山の高さは？'
 
-
+# -- トークナイズ --
 def tokenize(model, text):
     input_ids = model.tokenizer(text,
         # return_tensors="pt", # NG
@@ -94,7 +94,7 @@ def tokenize(model, text):
     )
     return input_ids
 
-
+# -- 生成 --
 def generate(model, input_ids):
     generation_output = model.generate(
         mx.array(input_ids['input_ids']),
@@ -104,15 +104,15 @@ def generate(model, input_ids):
     )
     return generation_output
 
-def q(model, text):
-    # 推論の実行
+# -- 推論の実行 --
+def query(model, text):
     input_ids = tokenize(model, text)
     generation_output = generate(model, input_ids)
     return generation_output
 
 # --- main ---
 start = time.process_time()
-output = q(model, input_text)
+output = query(model, input_text)
 end = time.process_time()
 print('----------------')
 print(output)
@@ -136,3 +136,5 @@ print('--- ', end - start, ' sec ---')
 微妙に前後に余計なものが生成されていますが、動かすことができました。実行時間は20トークンで5分弱ということで、実用的には問題ありです。
 
 #  終わりに
+
+AirLLMのおかげで、自分のM1 Macでも高性能のLLMを動かすことができました。実行時間はまだまだですが、今後も様々な手法/ライブラリが出てきて、普通のローカルマシンでも快適に利用できるようになる日が来ることを期待しています。
