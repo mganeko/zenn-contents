@@ -22,5 +22,117 @@ published: false # 公開設定（falseにすると下書き）
 
 - [ELYZA-japanese-Llama-2-13b-fast-instruct](https://huggingface.co/elyza/ELYZA-japanese-Llama-2-13b-fast-instruct)
 
+# AirLLM
+
+AirLLMは、巨大なLLMモデルをメモリが少ないGPUで実行可能にするライブラリです。モデル全体をメモリに載せるのではなく、計算するレイヤーごとに分割してストレージからGPUメモリに載せることで、少ないGPUメモリで実行可能にしているようです（その分オーバーヘッドがあり、実行には時間がかかる）
+
+- [Unbelievable! Run 70B LLM Inference on a Single 4GB GPU with This NEW Technique](https://ai.gopubby.com/unbelievable-run-70b-llm-inference-on-a-single-4gb-gpu-with-this-new-technique-93e2057c7eeb)
+- [GitHub lyogavin/Anima/air_llm](https://github.com/lyogavin/Anima/tree/main/air_llm)
+
+今回対象としている13Bのモデルなら、十分実行可能なはずです。
+
+またAirLLMはApple siliconをサポートしているのも特徴です。「MLX」というApple silicon用のNumPyライクなライブラリを利用しています。
+
+- [MLX](https://ml-explore.github.io/mlx/build/html/index.html)
+  - [GitHub](https://github.com/ml-explore/mlx)
+
+MLXを使う場合は微妙に書き方が変わるようです。こちらのノートブックが参考になります。
+
+- [run_on_macos.ipynb](https://github.com/lyogavin/Anima/blob/main/air_llm/examples/run_on_macos.ipynb)
+
+# 動かしてみる
+
+Python 3.11.7 で動作させています。
+
+## モジュールのインストール
+
+必要なモジュールをインストールします。
+
+```
+pip install torch torchvision
+pip install mlx
+
+pip install airllm
+```
+
+## サンプルコード
+
+```py
+# elyze_airllm_mac.py
+
+from airllm import AutoModel
+import mlx.core as mx
+import time
+
+# モデル名を指定
+#model_name = "elyza/ELYZA-japanese-Llama-2-7b-fast-instruct"
+model_name = "elyza/ELYZA-japanese-Llama-2-13b-fast-instruct"
+
+MAX_LENGTH = 128
+MAX_NEW_TOKENS = 20
+
+# モデルの準備
+model = AutoModel.from_pretrained(model_name)
 
 
+# -- 入力テキスト --
+# input_text = [
+#     '富士山の高さは？'
+# ]
+input_text = '富士山の高さは？'
+
+
+def tokenize(model, text):
+    input_ids = model.tokenizer(text,
+        # return_tensors="pt", # NG
+        return_tensors="np", # OK
+
+        return_attention_mask=False,
+        truncation=True,
+        max_length=MAX_LENGTH,
+        #padding=False
+    )
+    return input_ids
+
+
+def generate(model, input_ids):
+    generation_output = model.generate(
+        mx.array(input_ids['input_ids']),
+        max_new_tokens=MAX_NEW_TOKENS,
+        use_cache=True,
+        return_dict_in_generate=True
+    )
+    return generation_output
+
+def q(model, text):
+    # 推論の実行
+    input_ids = tokenize(model, text)
+    generation_output = generate(model, input_ids)
+    return generation_output
+
+# --- main ---
+start = time.process_time()
+output = q(model, input_text)
+end = time.process_time()
+print('----------------')
+print(output)
+print('--- ', end - start, ' sec ---')
+
+```
+
+## 実行
+
+初回実行時はモデルがダウンロードされます。私の環境では数十分かかりました。
+
+- ダウンロード場所: ~/.cache/huggingface/hub/_モデル名_
+
+結果は次のようになりました。
+
+```
+- 富士山の高さは3776.12 mです。</s><s>
+---  287.62618599999996  sec ---
+```
+
+微妙に前後に余計なものが生成されていますが、動かすことができました。実行時間は20トークンで5分弱ということで、実用的には問題ありです。
+
+#  終わりに
