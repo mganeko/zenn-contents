@@ -3,12 +3,14 @@ title: "M1 Macでllama.cppを使ってElyza-13bを動かしてみた" # 記事�
 emoji: "🦙" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["macOS", "LLM", "llama"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # はじめに
 
 「ELYZA-japanese-Llama-2-13b」シリーズを、llama.cppを使ってM1 Mac (MacBook Air M1 16GB)で動かしてみました。
+
+- [llama.cpp](https://github.com/ggerganov/llama.cpp)
 
 # モデルの変換＆量子化
 
