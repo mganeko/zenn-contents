@@ -138,3 +138,7 @@ print('--- ', end - start, ' sec ---')
 #  終わりに
 
 AirLLMのおかげで、自分のM1 Macでも高性能のLLMを動かすことができました。実行時間はまだまだですが、今後も様々な手法/ライブラリが出てきて、普通のローカルマシンでも快適に利用できるようになる日が来ることを期待しています。
+
+## 関連記事
+
+- [M1 Macでllama.cppを使ってElyza-13bを動かしてみた](https://zenn.dev/mganeko/articles/llamacpp-elyza-mac)
