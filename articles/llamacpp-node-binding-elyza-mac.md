@@ -85,3 +85,10 @@ AI: 富士山の高さは3776.12 mです。
 User: エベレストは？
 AI: エベレストは8848 mです。
 ```
+
+# 終わりに
+
+Node.jsからllama.cppバインディングを使って、Elyzaの13Bモデルを動かすことができました。バイディングにはNode.js以外にもPythonをはじめとして色々な言語のものが用意されているようです。お試しあれ。
+
+- [llama.cppのDescription](https://github.com/ggerganov/llama.cpp#description)のBindingsを参照
+
