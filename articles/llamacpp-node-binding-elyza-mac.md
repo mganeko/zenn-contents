@@ -18,7 +18,7 @@ published: false # 公開設定（falseにすると下書き）
 - llama.cppをインストール
   - 参考： [M1 Macでllama.cppを使ってElyza-13bを動かしてみた - llama.cppのビルド](https://zenn.dev/mganeko/articles/llamacpp-elyza-mac#llama.cppのビルド)
 - モデルをダンロード
-  - [4bit量子化モデル](https://huggingface.co/mmnga/ELYZA-japanese-Llama-2-13b-fast-instruct-gguf/resolve/65774113f0e6849051d3669643060e0a650c7d61/ELYZA-japanese-Llama-2-13b-fast-instruct-q4_0.gguf)を利用
+  - [mmnga/ELYZA-japanese-Llama-2-13b-fast-instruct-gguf](https://huggingface.co/mmnga/ELYZA-japanese-Llama-2-13b-fast-instruct-gguf)から[4bit量子化モデル](https://huggingface.co/mmnga/ELYZA-japanese-Llama-2-13b-fast-instruct-gguf/resolve/65774113f0e6849051d3669643060e0a650c7d61/ELYZA-japanese-Llama-2-13b-fast-instruct-q4_0.gguf)を利用
 
 # node-llama-cppを利用するには
 
@@ -32,17 +32,19 @@ npm install node-llama-cpp
 
 ## モデルファイルの準備
 
+モデル用フォルダを作成し、modelsフォルダの中に、ダウンロードしたモデル（ELYZA-japanese-Llama-2-13b-fast-instruct-q4_0.gguf）を配置する（コピー or 移動 or シンボリックリンク）
+
 ```
 mkdir models
+cd models
+ln -s ダウンロードしたフォルダ/ELYZA-japanese-Llama-2-13b-fast-instruct-q4_0.gguf .
 ```
-
-modelsフォルダの中に、ダウンロードしたモデル（LYZA-japanese-Llama-2-13b-fast-instruct-q4_0.gguf）を配置する（コピー or 移動 or シンボリックリンク）
 
 ## サンプルコード
 
 [Getting Started](https://withcatai.github.io/node-llama-cpp/guide/#getting-started)を参考に、次のコードを作成
 
-```mjs
+```js
 // example.mjs
 mport {fileURLToPath} from "url";
 import path from "path";
