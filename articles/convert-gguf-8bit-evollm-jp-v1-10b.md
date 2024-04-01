@@ -3,7 +3,7 @@ title: "llama.cppを使って、EvoLLM-JP-v1-10Bを自分で量子化した手�
 emoji: "🦙" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["LLM", "llamacpp"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # はじめに
@@ -18,7 +18,7 @@ SakanaAIから進化的モデルマージという手法を用いたAIモデル�
 
 ## 今回の環境
 
-- Windows 11 + WSL2(Ubuntu 22.04LTS)
+- Windows 11 Pro + WSL2(Ubuntu 22.04LTS)
 - CUDA ... V12.3
 - GPU ...  RTX 4060 Ti 16GB
 
@@ -85,7 +85,7 @@ VS Code に Hex Editorという機能拡張を入れ、EvoLLM-JP-v1-10B/model-00
 
 ## gguf 変換
 
-改めてconvert.py を用いてgguf形式に変換します。そのままだと不明なモデルとのエラーが出るので、「--skip-unknown」オプションを指定して変換できました。
+改めてconvert.py を用いてgguf形式に変換します。そのままだと不明なモデルとのエラーが出るので、「--skip-unknown」オプションを指定することで変換できました。
 
 
 ```
