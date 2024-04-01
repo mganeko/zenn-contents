@@ -60,8 +60,21 @@ Webで検索しても対策が見つからず途方に暮れていましたが�
 
 - https://twitter.com/mutaguchi/status/1771541412506403085
 
-
 ![tweet](/images/tweet_evollm_header.png)
 
 どうやらヘッダー情報に誤りがあり、バイナリエディタで書き換えてあげれば良さそうです。
+
+## バイナリの編集
+
+VS Code に Hex Editorという機能拡張を入れ、EvoLLM-JP-v1-10B/model-00001-of-00004.safetensors というファイルのヘッダー部分を次のように変更しました。
+
+### 変更前
+
+![tweet](/images/evollm-10b-org.png)
+
+### 変更後
+
+
+![tweet](/images/evollm-10b-fix.png)
+
 
