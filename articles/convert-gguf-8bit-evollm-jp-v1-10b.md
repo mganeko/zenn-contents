@@ -62,7 +62,7 @@ $ python convert.py ../EvoLLM-JP-v1-10B
 
 ## ヒント
 
-Webで検索しても対策が見つからず途方に暮れていましたが、X(twitter)上でヒントを見つけました。
+Webで検索しても対策が見つからず途方に暮れていましたが、X(twitter)上でヒントを見つけました。どうもありがとうございます！
 
 - https://twitter.com/mutaguchi/status/1771541412506403085
 
