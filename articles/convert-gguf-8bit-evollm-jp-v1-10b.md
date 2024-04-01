@@ -16,6 +16,12 @@ SakanaAIから進化的モデルマージという手法を用いたAIモデル�
   
 これをllama.cppを用いて実行するために8bitに量子化を試みました。
 
+## 今回の環境
+
+- Windows 11 + WSL2(Ubuntu 20.04LTS)
+- CUDA ... V12.3
+- GPU ...  RTX 4060 Ti 16GB
+
 # 7Bモデルの量子化
 
 [llama.cpp](https://github.com/ggerganov/llama.cpp)に含まれる convert.py を用いて、次のようにgguf形式に変換することができました。
@@ -101,6 +107,9 @@ $  ./main-cuda -m '../EvoLLM-JP-v1-10B-q8_0.gguf' -p "### 指示: あなたは�
 
  ### 指示: あなたは役立つアシスタントです。 ### 入力:富士山の高さは？ ### 応答:富士山の高さは3776メートルで す。 [end of text]
  ```
+
+無事動かすことができました。
+
 
 # 終わりに
 
