@@ -58,17 +58,10 @@ $ python convert.py ../EvoLLM-JP-v1-10B
 
 Webで検索しても対策が見つからず途方に暮れていましたが、X(twitter)上でヒントを見つけました。
 
-https://twitter.com/mutaguchi/status/1771511523493458332
+- https://twitter.com/mutaguchi/status/1771541412506403085
 
-https://twitter.com/mutaguchi/status/1771540582474596492
 
-https://twitter.com/mutaguchi/status/1771541412506403085
-
-@[tweet](https://twitter.com/mutaguchi/status/1771511523493458332)
-
-@[tweet](https://twitter.com/mutaguchi/status/1771540582474596492)
-
-@[tweet](https://twitter.com/mutaguchi/status/1771541412506403085)
+![tweet](/images/tweet_evollm_header.png)
 
 どうやらヘッダー情報に誤りがあり、バイナリエディタで書き換えてあげれば良さそうです。
 
