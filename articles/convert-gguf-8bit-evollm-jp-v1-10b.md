@@ -18,7 +18,7 @@ SakanaAIから進化的モデルマージという手法を用いたAIモデル�
 
 ## 今回の環境
 
-- Windows 11 + WSL2(Ubuntu 20.04LTS)
+- Windows 11 + WSL2(Ubuntu 22.04LTS)
 - CUDA ... V12.3
 - GPU ...  RTX 4060 Ti 16GB
 
