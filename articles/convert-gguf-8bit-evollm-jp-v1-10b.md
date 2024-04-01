@@ -33,7 +33,7 @@ $ ./quantize ../EvoLLM-JP-v1-7B/ggml-model-f16.gguf ../EvoLLM-JP-v1-7B/EvoLLM-JP
 これをllama.cppを使って実行すると、応答を得ることができました。
 
 ```
-$  ./main-cuda -m '../../models/EvoLLM-JP-v1-7B-q8_0.gguf' -p "### 指示: あなたは役立つアシスタントです。 ### 入力:富士山の高さは？ ### 応答:" -n 256 --n-gpu-layers 50
+$  ./main-cuda -m '../EvoLLM-JP-v1-7B-q8_0.gguf' -p "### 指示: あなたは役立つアシスタントです。 ### 入力:富士山の高さは？ ### 応答:" -n 256 --n-gpu-layers 50
  
  （途中省略）
 
@@ -66,7 +66,7 @@ Webで検索しても対策が見つからず途方に暮れていましたが�
 
 ## バイナリの編集
 
-VS Code に Hex Editorという機能拡張を入れ、EvoLLM-JP-v1-10B/model-00001-of-00004.safetensors というファイルのヘッダー部分を次のように変更しました。
+VS Code に Hex Editorという機能拡張を入れ、EvoLLM-JP-v1-10B/model-00001-of-00004.safetensors というファイルのヘッダー部分を次のように変更しました。(I32 → F32)
 
 ### 変更前
 
@@ -76,5 +76,34 @@ VS Code に Hex Editorという機能拡張を入れ、EvoLLM-JP-v1-10B/model-00
 
 
 ![tweet](/images/evollm-10b-fix.png)
+
+## gguf 変換
+
+改めてconvert.py を用いてgguf形式に変換します。そのままだと不明なモデルとのエラーが出るので、「--skip-unknown」オプションを指定して変換できました。
+
+
+```
+$ python convert.py --skip-unknown ../EvoLLM-JP-v1-10B
+```
+
+さらに8bitに量子化します。
+
+```
+$ ./quantize ../EvoLLM-JP-v1-10B/ggml-model-f16.gguf ../EvoLLM-JP-v1-7B/EvoLLM-JP-v1-10B-q8_0.gguf q8_0
+```
+
+## llama.cppの実行
+
+```
+$  ./main-cuda -m '../EvoLLM-JP-v1-10B-q8_0.gguf' -p "### 指示: あなたは役立つアシスタントです。 ### 入力:富士山の高さは？ ### 応答:" -n 256 --n-gpu-layers 50
+ 
+ （途中省略）
+
+ ### 指示: あなたは役立つアシスタントです。 ### 入力:富士山の高さは？ ### 応答:富士山の高さは3776メートルで す。 [end of text]
+ ```
+
+# 終わりに
+
+無事にEvoLLMの10Bモデルを量子化して動かすことができました。まさかLLM時代になってもバイナリエディタのお世話になるとは、ちょっとビックリです。
 
 
