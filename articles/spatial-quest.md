@@ -15,6 +15,8 @@ published: true # 公開設定（falseにすると下書き）
 
 2023年12月現在Apple Vision Proは未発売のため、Spatial Videoを見ることはできません。が、Meta QuestのようなVRゴーグルがあれば、無理矢理見ることができます。
 
+※2024年4月現在、iPhone用のMeta Questアプリでクラウド経由でMeta Questに同期すると、Spatial Videoを変換して立体映像として見ることが可能になっています。
+
 # 空間ビデオをMeta Questで見るまで
 
 手順は次の通りです。
