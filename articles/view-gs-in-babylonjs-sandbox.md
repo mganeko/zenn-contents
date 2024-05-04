@@ -49,9 +49,9 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 上から（Top）と、横から（FRONT, LEFT, RIGHTのやりやすいもの）で切り抜くことで、対象物だけのデータを取り出すことができます。
 
-![top](/images/water_cropping_top.jpg =400x)
+![top](/images/water_cropping_top.jpg =300x)
 
-![front](/images/water_cropping_front.jpg =400x)
+![front](/images/water_cropping_front.jpg =300x)
 
 
 ### サンドボックスで表示
