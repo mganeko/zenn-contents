@@ -45,3 +45,19 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 ## Scaniverseで切り抜き
 
+最近のScaniverseのアップデートで、Gaussian Splatingの切り抜きできるようになりました。EDIT - CROP で切り抜きができます。
+
+上から（Top）と、横から（FRONT, LEFT, RIGHTのやりやすいもの）で切り抜くことで、対象物だけのデータを取り出すことができます。
+
+![top](/images/water_cropping_top.jpg)
+
+![front](/images/water_cropping_front.jpg)
+
+
+### サンドボックスで表示
+
+切り抜いた3Dデータを.plyに出力し、再びBabylon.jsのサンドボックスにドラッグ＆ドロップすると、無事3Dで表示されるようになりました。
+
+![cropped](/images/sandbox_gs_cropcrop.png)
+
+
