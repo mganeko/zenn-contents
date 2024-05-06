@@ -1,5 +1,5 @@
 ---
-title: "Scaniverseで撮影したGaussian SplatingをBabylon.jsのサンドボックスで表示させるまで" # 記事のタイトル
+title: "Scaniverseで撮影したGaussian SplattingをBabylon.jsのサンドボックスで表示させるまで" # 記事のタイトル
 emoji: "🥽" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["iPhone", "gaussiansplatting"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # はじめに
 
-ちょっと前から、iPhoneで3Dスキャンができるアプリ「Scaniverse」が、Gaussian Splatingをサポートするようになりました。
+ちょっと前から、iPhoneで3Dスキャンができるアプリ「Scaniverse」が、Gaussian Splattingをサポートするようになりました。
 
 - [Scaniverseが3D Gaussian Splattingをサポート](https://nianticlabs.com/news/scsniverse-3dgaussian?hl=ja)
 
@@ -30,7 +30,7 @@ Babylon.jsでは、ブラウザ上で簡単に3Dモデルを見ることがで�
 
 ## そのままアップロード
 
-ScaniverseからGaussian Splatingのモデル(.ply)をエクスポートし、PCにコピーします。
+ScaniverseからGaussian Splattingのモデル(.ply)をエクスポートし、PCにコピーします。
 WebGLに対応したブラウザでサンドボックスにアクセスし、PCにコピーした.plyファイルをドラッグ＆ドロップすればブラウザ上で3Dデータを見れるはずです。
 
 ところが実際に表示されるのは、こんな謎の球体です。
@@ -45,7 +45,7 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 ## Scaniverseで切り抜き
 
-最近のScaniverseのアップデートで、Gaussian Splatingの切り抜きできるようになりました。EDIT - CROP で切り抜きができます。
+最近のScaniverseのアップデートで、Gaussian Splattingの切り抜きできるようになりました。EDIT - CROP で切り抜きができます。
 
 上から（Top）と、横から（FRONT, LEFT, RIGHTのやりやすいもの）で切り抜くことで、対象物だけのデータを取り出すことができます。
 
@@ -112,7 +112,7 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 # 終わりに
 
-最近のScaniverseのバージョンアップで、手軽にGaussian Splatingを楽しむことができるようになりました。そこで初心者が戸惑う（私が戸惑った）編集方法について紹介しました。
+最近のScaniverseのバージョンアップで、手軽にGaussian Splattingを楽しむことができるようになりました。そこで初心者が戸惑う（私が戸惑った）編集方法について紹介しました。
 
 今後はbabylon.jsを使って自分で簡単なアプリケーションを作ってみる予定です。
 
