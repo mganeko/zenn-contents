@@ -108,6 +108,5 @@ https://playcanvas.com/supersplat/editor
 
 ダウンロードした.plyをBabylon.jsのサンドボックスにドラッグ＆ドロップすると、編集後の状態を表示することができます。
 
-
 ![sansbox-splats-clean](/images/sansbox_after_supersplat.png)
 
