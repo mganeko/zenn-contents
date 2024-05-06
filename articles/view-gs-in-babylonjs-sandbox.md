@@ -54,10 +54,58 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 ![front](/images/water_cropping_front.jpg =300x)
 
 
-### サンドボックスで表示
+## サンドボックスで表示
 
 切り抜いた3Dデータを.plyに出力し、再びBabylon.jsのサンドボックスにドラッグ＆ドロップすると、無事3Dで表示されるようになりました。
 
 ![cropped](/images/sandbox_gs_cropcrop.png =400x)
 
+
+# Super Splatを用いてブラウザで編集
+
+こちらのサイトを使って、.plyファイルをブラウザ上で編集することができます。Scanverseアプリ上よりもより細かく不要な部分を除去することができます。
+
+https://playcanvas.com/supersplat/editor
+
+## plyの読み込み
+
+左下から.ply ファイルを指定して読み込むと、球体が表示されます。
+
+![splats-ball](/images/supersplat_ball.png)
+
+それをグーっとズームすると、中心に対象物が現れます。
+
+![splats-zoom](/images/supersplat_zoom.png)
+
+## plyの編集
+
+編集方法は複数ありますが、1例として次の方法があります。
+
+(1) 左の「SELECTION」から「Brush」を選び、残したい対象物を塗りつぶす
+
+  ![splats-brush](/images/supersplat_brush.png)
+
+(2) 左の「SELECTION」の「Invert」をクリックすると、選択が反転し、周辺が選択される
+
+  ![splats-invert](/images/supersplat_invert.png)
+
+
+(3) 「Delete Selected Splats」をクリックすると、選択された周辺部分が削除される
+
+  ![splats-clean](/images/supersplat_deleted.png)
+
+(4) または削除したい部分をBrushで塗りつぶせば、そのまま「Delete Selected Splats」をクリックして、選択した箇所が削除する
+
+これを向きを変えながら何度か繰り返せば、欲しい部分だけ残すことができます。
+
+## plyのエクスポート
+
+「EXPORT TO」の「Ply file」をクリックすれば、編集後の.plyファイルをダンロードすることができます。
+
+## サンドボックスで表示
+
+ダウンロードした.plyをBabylon.jsのサンドボックスにドラッグ＆ドロップすると、編集後の状態を表示することができます。
+
+
+![sansbox-splats-clean](/images/sansbox_after_supersplat.png)
 
