@@ -75,7 +75,7 @@ https://playcanvas.com/supersplat/editor
 
 それをグーっとズームすると、中心に対象物が現れます。
 
-![splats-zoom](/images/supersplat_zoom.png)
+![splats-zoom](/images/supersplat_zoom.jpg)
 
 ## plyの編集
 
@@ -101,6 +101,8 @@ https://playcanvas.com/supersplat/editor
 ## plyのエクスポート
 
 「EXPORT TO」の「Ply file」をクリックすれば、編集後の.plyファイルをダンロードすることができます。
+
+![splats-export](/images/supersplat_export.jpg)
 
 ## サンドボックスで表示
 
