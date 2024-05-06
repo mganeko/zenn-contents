@@ -58,7 +58,7 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 切り抜いた3Dデータを.plyに出力し、再びBabylon.jsのサンドボックスにドラッグ＆ドロップすると、無事3Dで表示されるようになりました。
 
-![cropped](/images/sandbox_gs_cropcrop.png =400x)
+![cropped](/images/sandbox_gs_cropcrop.png)
 
 
 # Super Splatを用いてブラウザで編集
@@ -71,11 +71,11 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 左下から.ply ファイルを指定して読み込むと、球体が表示されます。
 
-![splats-ball](/images/supersplat_ball.png =400x)
+![splats-ball](/images/supersplat_ball.png)
 
 それをグーっとズームすると、中心に対象物が現れます。
 
-![splats-zoom](/images/supersplat_zoom.jpg =400x)
+![splats-zoom](/images/supersplat_zoom.jpg)
 
 ## plyの編集
 
@@ -83,16 +83,16 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 (1) 左の「SELECTION」から「Brush」を選び、残したい対象物を塗りつぶす
 
-  ![splats-brush](/images/supersplat_brush.png =400x)
+  ![splats-brush](/images/supersplat_brush.png)
 
 (2) 左の「SELECTION」の「Invert」をクリックすると、選択が反転し、周辺が選択される
 
-  ![splats-invert](/images/supersplat_invert.png =400x)
+  ![splats-invert](/images/supersplat_invert.png)
 
 
 (3) 「Delete Selected Splats」をクリックすると、選択された周辺部分が削除される
 
-  ![splats-clean](/images/supersplat_deleted.png =400x)
+  ![splats-clean](/images/supersplat_deleted.png)
 
 (4) または削除したい部分をBrushで塗りつぶせば、そのまま「Delete Selected Splats」をクリックして、選択した箇所が削除する
 
@@ -102,11 +102,17 @@ WebGLに対応したブラウザでサンドボックスにアクセスし、PC�
 
 「EXPORT TO」の「Ply file」をクリックすれば、編集後の.plyファイルをダンロードすることができます。
 
-![splats-export](/images/supersplat_export.jpg =400x)
+![splats-export](/images/supersplat_export.jpg)
 
 ## サンドボックスで表示
 
 ダウンロードした.plyをBabylon.jsのサンドボックスにドラッグ＆ドロップすると、編集後の状態を表示することができます。
 
-![sansbox-splats-clean](/images/sansbox_after_supersplat.png =400x)
+![sansbox-splats-clean](/images/sansbox_after_supersplat.png)
+
+# 終わりに
+
+最近のScaniverseのバージョンアップで、手軽にGaussian Splattingを楽しむことができるようになりました。そこで初心者が戸惑う（私が戸惑った）編集方法について紹介しました。
+
+今後はbabylon.jsを使って自分で簡単なアプリケーションを作ってみる予定です。
 
