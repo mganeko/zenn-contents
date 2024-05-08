@@ -25,10 +25,10 @@ Babylon.jsでは、ブラウザ上で簡単に3Dモデルを見ることがで�
 
 - https://sandbox.babylonjs.com
 
-.glb, .obj, などの3Dデータだけでなく、Gaussian Splattingのデータ(.ply, .splat)も表示することができます。
+.glb, .obj, などの3Dデータだけでなく、Gaussian Splattingのデータ(.ply, .splat)も表示することができます。ブラウザ内で動作しサーバーにアップロードされる訳ではありません。共有はできませんが、自分の手元で手軽に試すことができます。
 
 
-## そのままアップロード
+## そのまま読み込み
 
 ScaniverseからGaussian Splattingのモデル(.ply)をエクスポートし、PCにコピーします。
 WebGLに対応したブラウザでサンドボックスにアクセスし、PCにコピーした.plyファイルをドラッグ＆ドロップすればブラウザ上で3Dデータを見れるはずです。
