@@ -6,7 +6,17 @@ topics: ["VS Code", "CORS", "proxy"] # タグ。["markdown", "rust", "aws"]の�
 published: false # 公開設定（falseにすると下書き）
 ---
 
-# どんな時
+# どんな時に使うのか？
+
+手軽にWebサーバーと立てるには、VS Code の機能拡張である[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)が便利です。
+
+JavaScriptからfetch()を使ってWebAPIを呼び出すケースは頻繁にありますが、API側がCORS対応していない場合、ブラウザーがAPI呼び出しを弾いてしまいます。Python等のコードから呼び出すことを想定していて、ブラウザからの呼び出しを想定しないケースで起こります。
+
+本番サービスではリバースプロキシや中継サーバーを挟んで対処することになりますが、開発環境では手軽に済ませたいです。そんな時に、Live ServerのProxy機能が役に立ちます。
+
+# Proxy機能の概要
+
+
 
 # Live　Server の設定
 
