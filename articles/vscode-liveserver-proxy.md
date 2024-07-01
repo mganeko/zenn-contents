@@ -20,6 +20,22 @@ JavaScriptからfetch()を使ってWebAPIを呼び出すケースは頻繁にあ
 
 # Live　Server の設定
 
+機能拡張の歯車マークから、「機能拡張の設定」を開きます。
+
+![tweet](/images/liveserver.png)
+
+設定の中から、Live Server > Settings Proxy を探し、詳細を設定します。
+
+![tweet](/images/liveserver_proxy.png)
+
+- enable: true （proxy機能を有効にする場合）
+- baseUri: LiveServerのWebサーバー上の相対uri
+- proxyUri: 転送先のuri
+
+ポートがデフォルトの5500のままの場合、この図の例では次のようにLiveServerを経由してアクセスすることが出来ます。
+
+- ブラウザーのJS → `http://localhost:5500/searchapi` → `https://api.example.com/search`
+
 
 # 参考
 
