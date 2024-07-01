@@ -10,23 +10,26 @@ published: false # 公開設定（falseにすると下書き）
 
 手軽にWebサーバーと立てるには、VS Code の機能拡張である[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)が便利です。
 
-JavaScriptからfetch()を使ってWebAPIを呼び出すケースは頻繁にありますが、API側がCORS対応していない場合、ブラウザーがAPI呼び出しを弾いてしまいます。Python等のコードから呼び出すことを想定していて、ブラウザからの呼び出しを想定しないケースで起こります。
+JavaScriptからfetch()を使ってWebAPIを呼び出すケースは頻繁にありますが、API側がCORS対応していない場合、ブラウザーがAPI呼び出しを弾いてしまいます。
+例えばAPI側がPython等のコードから呼び出すことを想定していて、ブラウザからの呼び出しを想定していないケースで起こります。
 
 本番サービスではリバースプロキシや中継サーバーを挟んで対処することになりますが、開発環境では手軽に済ませたいです。そんな時に、Live ServerのProxy機能が役に立ちます。
 
 # Proxy機能の概要
 
+今回の用途では、次のようにクライアント(JavaScriptのコード)とサーバー(WebAPI)の、間にLiveServerが入って通信の中継を行います。それによってCORSが発生していないようにブラウザには見えるようになります。
 
+![proxy_flow](/images/proxy_flow.png)
 
 # Live　Server の設定
 
 機能拡張の歯車マークから、「機能拡張の設定」を開きます。
 
-![tweet](/images/liveserver.png)
+![setting](/images/liveserver.png)
 
 設定の中から、Live Server > Settings Proxy を探し、詳細を設定します。
 
-![tweet](/images/liveserver_proxy.png)
+![proxy](/images/liveserver_proxy.png)
 
 - enable: true （proxy機能を有効にする場合）
 - baseUri: LiveServerのWebサーバー上の相対uri
