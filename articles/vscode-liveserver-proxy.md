@@ -11,7 +11,8 @@ published: true # 公開設定（falseにすると下書き）
 手軽にWebサーバーと立てるには、VS Code の機能拡張である[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)が便利です。
 
 JavaScriptからfetch()を使ってWebAPIを呼び出すケースは頻繁にありますが、API側がCORS対応していない場合、ブラウザーがAPI呼び出しを弾いてしまいます。
-例えばAPI側がPython等のコードから呼び出すことを想定していて、ブラウザからの呼び出しを想定していないケースで起こります。
+例えばAPI側がPython等のコードから呼び出すことを想定していて、ブラウザからの呼び出しを想定していないケースで起こります。 （今回の場合、VS Code + [AI Toolkit](https://marketplace.visualstudio.com/items?itemName=ms-windows-ai-studio.windows-ai-studio) で立てたWebAPIを利用する際に発生しました）
+
 
 本番サービスではリバースプロキシや中継サーバーを挟んで対処することになりますが、開発環境では手軽に済ませたいです。そんな時に、Live ServerのProxy機能が役に立ちます。
 
