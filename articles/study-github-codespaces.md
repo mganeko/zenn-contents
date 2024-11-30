@@ -36,7 +36,23 @@ GitHubのリポジトリのページから、 「Code」 - 「Codespaces」 - �
 
 ## リモートウィンドウアイコンからの設定
 
-Codespacesを利用しているブラウザ上のVS Codeから操作します。
+Codespaceを利用しているブラウザ上のVS Codeから操作します。
+
+- 一番左下の「リモートウィンドウアイコン」の「Codesapces」をクリック
+- コマンドパレットが開くので、「Add Dev Container Config」を選択
+- 選択肢の中から適切な環境を選ぶ
+  - .devcontainer/devcontainer.json が追加される
+- 環境をリビルドするか確認されるので、リビルドする
+- 指定しランタイムで、Codespaceが再起動する
+
+![start-codespace](/images/codespace-leftbottom.png)
+
+![start-codespace](/images/add-dev-container-config.png)
+
+
+※ 指定が反映されていない場合は、リポジトリページからCodespaceを削除し、改めて作成すると反映される
+
+
 
 
 
