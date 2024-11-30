@@ -23,9 +23,28 @@ published: false # 公開設定（falseにすると下書き）
 
 GitHubのリポジトリのページから、 「Code」 - 「Codespaces」 - 「Create codespace on master」とクリックすると、クラウド上でコンテナ環境が起動され、ブラウザ上のVS Codeから操作できるようになります。
 
-![start-codespace](/images/start_new_codespace.png)
+![start-codespace](/images/start_new_codespace.png =400x)
 
 # ランタイム環境の固定
+
+上記のように既存のリポジトリからCodespecesを起動すると、ランタイム環境が自動に選択されてコンテナが開始します。
+
+私の場合はNode.jsのサーバーのリポジトリから開始したところ、ある時はnode v20が、また別の時にはnode v16がセットアップされ、一部の機能が動かないことがありました。
+
+そこでハッカソンに参加していたメンターに教わり、2つの方法があることがわかりました。
+
+
+## リモートウィンドウアイコンからの設定
+
+Codespacesを利用しているブラウザ上のVS Codeから操作します。
+
+
+
+## リポジトリページからの設定
+
+
+
+
 
 
 # シークレット情報の設定
