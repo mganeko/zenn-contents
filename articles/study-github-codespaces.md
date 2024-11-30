@@ -17,7 +17,7 @@ published: false # 公開設定（falseにすると下書き）
 
 - codespace は、クラウドでホストされている開発環境です。 構成ファイルをリポジトリにコミットすることで、GitHub Codespaces のプロジェクトをカスタマイズできます (コードとしての構成とよく呼ばれます)。これにより、プロジェクトのすべてのユーザーに対して繰り返し可能な codespace 構成が作成されます。
 
-実体はクラウド上で起動されるコンテナで、ブラウザ内で動くVS Codeから操作することができます。
+実体はクラウド上で起動されるコンテナで、ブラウザ内で動くVS Code(エディタ)から操作することができます。
 
 ## Codespacesの起動
 
@@ -45,22 +45,36 @@ Codespaceを利用しているブラウザ上のVS Codeから操作します。
 - 環境をリビルドするか確認されるので、リビルドする
 - 指定しランタイムで、Codespaceが再起動する
 
-![start-codespace](/images/codespace-leftbottom.png)
+![start-codespace](/images/codespace-leftbottom.png =400x)
 
-![start-codespace](/images/add-dev-container-config.png)
-
-
-※ 指定が反映されていない場合は、リポジトリページからCodespaceを削除し、改めて作成すると反映される
+![start-codespace](/images/add-dev-container-config.png =400x)
 
 
-
+※ 指定が反映されていない場合は、リポジトリページからCodespaceを削除し、改めて作成すると反映されます。
 
 
 ## リポジトリページからの設定
 
+devcontainer.json で指定する内容がわかっている場合は、Codespaceを起動する前に設定することが可能です。
 
+- 「Code」 - 「Codespaces」 - 「...」 - 「Config dev container」をクリック
+- .devcontainer/devcontainer.json の編集画面が開くので、ブラウザ上で編集
+- 右上の「Commit changes...」ボタンをクリックし、変更をコミット
+- その後、Codespaceを起動すると、指定に従ってランタイム環境が立ち上がる
 
+![start-codespace](/images/config-codespace.png)
 
+例）node.js v20 + typescriptの場合
+
+```:json
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+  "features": {
+  }
+}
+```
+
+これで環境ガチャを回さずに済みます。
 
 
 # シークレット情報の設定
