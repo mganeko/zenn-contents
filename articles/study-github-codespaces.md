@@ -8,8 +8,10 @@ published: false # 公開設定（falseにすると下書き）
 
 # はじめに
 
-11月末にグループ会社含む社内ハッカソンが開催され、私も参加してきました。
-今回は開発環境として初めてGitHub Codespacesを使ったのですが、ちょっとしたコツをメンターに教わったので、自分の備忘録を兼ねて記事にします。
+この記事は非公式の[Infocom Advent Calendar 2024](https://qiita.com/advent-calendar/2024/infocom)の2日目の記事です。
+
+11月末にグループ会社含む[社内ハッカソン](https://qiita.com/fugasat/items/e622a523e302be17e92f)が開催され、私も参加してきました。
+今回は開発環境として初めてGitHub Codespacesを使いました。その際にちょっとしたコツをメンターに教わったので、自分の備忘録を兼ねて記事にします。
 
 # GitHub Codespacesとは
 
@@ -62,11 +64,11 @@ devcontainer.json で指定する内容がわかっている場合は、Codespac
 - 右上の「Commit changes...」ボタンをクリックし、変更をコミット
 - その後、Codespaceを起動すると、指定に従ってランタイム環境が立ち上がる
 
-![start-codespace](/images/config-codespace.png)
+![start-codespace](/images/config-codespace.png =400x)
 
 例）node.js v20 + typescriptの場合
 
-```:json
+```devcontainer.json:json
 {
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
   "features": {
@@ -79,6 +81,21 @@ devcontainer.json で指定する内容がわかっている場合は、Codespac
 
 # シークレット情報の設定
 
+APIキーのようなシークレット情報を保存するのに、ローカル環境ではgit対象外の.envファイルを利用していました。
+
+codespacesを新規に起動し直すたびにgit対象外のファイルは無くなっているので
+、別の方法で指定する必要があります。
+
+## GitHubでのシークレット指定
+
+- リポジトリの設定(Settings)を開く（⚙️アイコン）
+- 「Security」セクション - 「Secrets and variables」-「Codespaces」をクリック
+- 「New repository scret」をクリックし、APIキーなどを設定
+
+![start-codespace](/images/setting-secrets.png)
+
+これで実行時には環境変数として読み込むことが可能です。
 
 # 終わりに
+
 
