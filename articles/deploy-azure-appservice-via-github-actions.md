@@ -1,6 +1,6 @@
 ---
 title: "ハッカソで学んだGitHub ActionsでAzure App Seriveにデプロイする手順" # 記事のタイトル
-emoji: "☁" # アイキャッチとして使われる絵文字（1文字だけ）
+emoji: "☁️" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["Azure", "githubactions", "Actions"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: false # 公開設定（falseにすると下書き）
@@ -12,7 +12,7 @@ published: false # 公開設定（falseにすると下書き）
 
 # 連携の手順
 
-- App Serviceを作成
+- AzureでApp Serviceを作成
 - Azure App Serviceで、発行プロファイルを準備
   - 認証形式を指定
   - 発行
