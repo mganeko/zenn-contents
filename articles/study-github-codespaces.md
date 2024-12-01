@@ -66,7 +66,7 @@ devcontainer.json で指定する内容がわかっている場合は、Codespac
 
 ![start-codespace](/images/config-codespace.png =400x)
 
-devcontainer.jsonの例）node.js v20 + typescriptの場合
+#### devcontainer.jsonの例）node.js v20 + typescriptの場合
 
 ```:json
 {
@@ -83,8 +83,7 @@ devcontainer.jsonの例）node.js v20 + typescriptの場合
 
 APIキーのようなシークレット情報を保存するのに、ローカル環境ではgit対象外の.envファイルを利用していました。
 
-codespacesを新規に起動し直すたびにgit対象外のファイルは無くなっているので
-、別の方法で指定する必要があります。
+codespacesを新規に起動し直すたびにgit対象外のファイルは無くなってしまうので、別の方法で指定する必要があります。
 
 ## GitHubでのシークレット指定
 
