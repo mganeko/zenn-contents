@@ -1,5 +1,5 @@
 ---
-title: "ハッカソンでGitHub Codespacesの使い方を学んだ話" # 記事のタイトル
+title: "ハッカソンで学んだGitHub Codespaces利用のコツ" # 記事のタイトル
 emoji: "🐙" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["GitHub", "Codespaces"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -66,9 +66,9 @@ devcontainer.json で指定する内容がわかっている場合は、Codespac
 
 ![start-codespace](/images/config-codespace.png =400x)
 
-例）node.js v20 + typescriptの場合
+devcontainer.jsonの例）node.js v20 + typescriptの場合
 
-```devcontainer.json:json
+```:json
 {
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
   "features": {
@@ -92,10 +92,11 @@ codespacesを新規に起動し直すたびにgit対象外のファイルは無�
 - 「Security」セクション - 「Secrets and variables」-「Codespaces」をクリック
 - 「New repository scret」をクリックし、APIキーなどを設定
 
-![start-codespace](/images/setting-secrets.png)
+![start-codespace](/images/setting-secrets.png =400x)
 
 これで実行時には環境変数として読み込むことが可能です。
 
 # 終わりに
 
+今回のハッカソンではCodespacesの他に、GitHub ActionsからAzure App ServiceへのCI/CDも初めて構築しました。色々なことを習得できて個人的にも非常に収穫の多いイベントとなりました。
 
