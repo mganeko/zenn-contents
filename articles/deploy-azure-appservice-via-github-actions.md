@@ -54,15 +54,15 @@ published: false # 公開設定（falseにすると下書き）
 - GitHubのリポジトリで、Actions用のシークレットを指定
   - 「Securtity」 - 「Secrets and Variables」- 「Actions」から
   - 「New repository secret」を追加
-    - 「xxxxx」という名前で、上記発行プロファイルの内容を設定
+    - 「AZURE_WEBAPP_PUBLISH_PROFILE」という名前で、上記発行プロファイルの内容を設定
 
-![start-codespace](/images/setting-secrets.png)
+![start-codespace](/images/actions-secret.png)
 
 - GitHub Actionsを作成
   - 「Deploy Node.js to Azure Web App」テンプレートを利用
   - azure-webapps-node.yml を編集
   - AppService名を指定
-  - 発行プロファイルを示すシークレット名は、「」として設定済み
+  - 発行プロファイルを示すシークレット名は、「AZURE_WEBAPP_PUBLISH_PROFILE」として参照している（そのまま）
 
 
 ```:yaml
