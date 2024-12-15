@@ -41,18 +41,36 @@ published: false # 公開設定（falseにすると下書き）
 ![start-codespace](/images/app-service-profile.png)
 
 
+#### 発行プロファイル(profile.publishsettings)の内容
+
+```
+<publishData><publishProfile profileName="xxxxxxxxx" … >
+ … 省略 …
+</publishProfile></publishData>
+```
+
 ### GitHub Actionsの設定
 
 - GitHubのリポジトリで、Actions用のシークレットを指定
+  - 「Securtity」 - 「Secrets and Variables」- 「Actions」から
+  - 「New repository secret」を追加
+    - 「xxxxx」という名前で、上記発行プロファイルの内容を設定
+
+![start-codespace](/images/setting-secrets.png)
 
 - GitHub Actionsを作成
   - 「Deploy Node.js to Azure Web App」テンプレートを利用
   - azure-webapps-node.yml を編集
   - AppService名を指定
-  
-  - Actionsのシークレットを指定
-  - テンプレートを利用
+  - 発行プロファイルを示すシークレット名は、「」として設定済み
 
+
+```:yaml
+env:
+  AZURE_WEBAPP_NAME: ここにApp Serviceのアプリ名を指定 
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  NODE_VERSION: '20.x'
+```
 
 ## コツ
 
