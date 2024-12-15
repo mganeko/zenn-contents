@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # はじめに
 
-この記事は非公式の[Infocom Advent Calendar 2024](https://qiita.com/advent-calendar/2024/infocom)のx日目の記事です。
+この記事は非公式の[Infocom Advent Calendar 2024](https://qiita.com/advent-calendar/2024/infocom)の15日目の記事です。
 
 
 # やりたいこと
