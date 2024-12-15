@@ -26,7 +26,7 @@ published: false # 公開設定（falseにすると下書き）
 
 # 連携の手順
 
-### Azure側の準備
+## Azure側の準備
 
 - AzureでApp Serviceを作成
 - Azure App Serviceで、発行プロファイルを準備
@@ -41,7 +41,7 @@ published: false # 公開設定（falseにすると下書き）
 ![start-codespace](/images/app-service-profile.png)
 
 
-#### 発行プロファイル(profile.publishsettings)の内容
+### 発行プロファイル(profile.publishsettings)の内容
 
 ```
 <publishData><publishProfile profileName="xxxxxxxxx" … >
@@ -49,7 +49,7 @@ published: false # 公開設定（falseにすると下書き）
 </publishProfile></publishData>
 ```
 
-### GitHub Actionsの設定
+## GitHub Actionsの設定
 
 - GitHubのリポジトリで、Actions用のシークレットを指定
   - 「Securtity」 - 「Secrets and Variables」- 「Actions」から
@@ -62,8 +62,7 @@ published: false # 公開設定（falseにすると下書き）
   - 「Deploy Node.js to Azure Web App」テンプレートを利用
   - azure-webapps-node.yml を編集
   - AppService名を指定
-  - 発行プロファイルを示すシークレット名は、「AZURE_WEBAPP_PUBLISH_PROFILE」として参照している（そのまま）
-
+  - 発行プロファイルを示すシークレット名は、「AZURE_WEBAPP_PUBLISH_PROFILE」として参照している（そのまま利用）
 
 ```:yaml
 env:
@@ -72,14 +71,32 @@ env:
   NODE_VERSION: '20.x'
 ```
 
-## コツ
+## 連携時つまづいたこと、対処のコツ
 
-- App Service側でのログの見方
-- TSを利用していた → 完全にビルドしてから、nodeで実行
-- ポートの指定
-  - App Serviceのデフォルトは 8080
-  - 変更も可能？
-- 起動コマンドの指定
-  - デフォルトは npm start
-  - 変更も可能
-- シークレットを環境変数で指定
+### Actionsの実行は成功したが、App Serviceが動いていない
+
+- App Service側のログは、「ログストリーム」から参照可能
+  - Nodeプロセス起動後のエラーはそこで確認できる
+
+![start-codespace](/images/app-service-logstream.png)
+
+
+### 起動コマンドの指定
+
+- App Service (Node.jsランタイム)では、「npm start」でプロセスを起動
+  - package.json を適切に記述しておく必要がある
+- ※App Service側の設定で、起動コマンドを指定することも可能
+
+### TCPポートの指定
+
+- App ServiceのデフォルトのTCPポートは8080
+  - 元々のコードでは、3000番を利用していたので、8080に変更
+- ※App Service側の設定で、ポート番号を変更することも可能
+
+# 終わりに
+
+GitHub Actions自体は過去に利用したことがありましたが、Azure App Serviceとの連携は今回初めてでした。
+やってみると複数のつまづきポイントがあり、メンターの方々の助けで突破することができました。どうもありがとうございました！
+
+
+
