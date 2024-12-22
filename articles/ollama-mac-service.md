@@ -12,15 +12,15 @@ published: false # 公開設定（falseにすると下書き）
 
 # やりたいこと
 
-- ローカルLLM実行ツールの[ollama](https://ollama.com)を、誰もログインしていない状態で動かしたい
+- Mac上にインストールしたローカルLLM実行ツールの[ollama](https://ollama.com)を、誰もログインしていない状態で動かしたい
   - いわゆるServiceやdaemonの状態
-- nginxでリバースプロキシをたて、他のマシンから接続できるようにしたい
+- nginxでリバースプロキシをたて、他のマシンからOllamaのAPIを利用できるようにしたい
 
 # Ollamaをサービスとして起動する
 
 ## Ollamaのインストール
 
-今回はインストーラーではなく、homebrewでインストール
+今回はApple SiliconのMacに、インストーラーではなく、homebrewを使ってOllamaをインストールしました。
 
 ```
 % brew install ollama
@@ -48,10 +48,6 @@ published: false # 公開設定（falseにすると下書き）
 
 - /Library/LaunchDaemons/homebrew.mxcl.ollama.plist
 
-この設定ファイルの元になるものは、homebrew側のディレクトリにあります。設定を変更する場合は、元ファイルの方を編集する必要があります。
-
-- /opt/homebrew/Cellar/ollama/_バージョン番号_/homebrew.mxcl.ollama.plist
-
 ## ログの確認
 
 今回サービス（デーモン）として指定した後にpsコマンドで確認したところ、実際にはプロセスが存在しませんでした。起動直後に何らかの問題が発生して以上終了している可能性があります。
@@ -68,7 +64,7 @@ panic: $HOME is not defined
 
 ## 設定ファイルの編集
 
-サービスの設定ファイルは停止時に削除されてしまうため、homebrew側のディレクトリにあある元になるファイルを編集する必要があります。
+サービスの設定ファイルは停止時に削除されてしまうため、homebrew側のディレクトリにある元ファイルを編集する必要があります。
 
 - /opt/homebrew/Cellar/ollama/_バージョン番号_/homebrew.mxcl.ollama.plist
 
@@ -104,4 +100,33 @@ homebrewを使ってollamaをバージョアップ(upgrade)すると、元にな
 
 # nginxによるリバースプロキシの設定
 
+## Ollama API
 
+ollamaサーバーは、WebAPIを提供しています。デフォルトでは次のURLでAPIにアクセスできます。
+
+- http://localhost:11434/
+
+ただし、デフォルトでは同じマシン上からだけアクセス可能で、他のマシンからは接続できません。
+
+## nginxの設定
+
+そこで今回はnginxをリバースプロキシとして利用し、他のマシンからもAPIを利用できるようにします。
+
+- nginxが動いているサーバーを server.mydomain とする
+- Ollama APIを、http://serer.mydomain/ollama/〜 として公開する
+
+nginxの設定ファイルには、次の記述を追加します。
+
+```
+    # --- for ollama  --- 
+    location /ollama/ {
+      proxy_pass http://localhost:11434/;
+      proxy_set_header Host localhost;
+    }
+```
+
+※良く例にあるように、proxy_set_header Host $host; としてしまうと、アクセスをが拒否されてしまいます。
+
+# 終わりに
+
+一連の手順で、Ollamaをサーバー的に動かすことが可能になりました。Macをサーバー用途として使うのは意外と面倒でしたが、なんとかやりたいことが実現できました。ご参考まで。
